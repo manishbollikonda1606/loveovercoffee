@@ -149,11 +149,11 @@
   <div id="toastContainer" class="fixed top-5 left-1/2 z-50 pointer-events-none transition-all duration-300"></div>
 
   <!-- ================= ORDER DESTINATION MODAL (ZOMATO / SWIGGY / WHATSAPP / INLINE) ================= -->
-  <div id="orderPlatformModal" onclick="if(event.target === this) closeOrderModal()" class="fixed inset-0 z-50 hidden opacity-0 bg-black/75 backdrop-blur-md transition-all duration-300 flex items-center justify-center p-4">
-    <div id="orderPlatformContent" onclick="event.stopPropagation()" class="bg-brand-alabaster rounded-3xl shadow-2xl w-full max-w-xl p-6 sm:p-8 pointer-events-auto transform scale-95 transition-all duration-300 border border-brand-cardBorder relative max-h-[92vh] overflow-y-auto">
+  <div id="orderPlatformModal" onclick="if(event.target === this) closeOrderModal()" class="fixed inset-0 z-50 hidden opacity-0 bg-black/80 backdrop-blur-md transition-all duration-300 overflow-y-auto p-3 sm:p-6 flex items-start sm:items-center justify-center">
+    <div id="orderPlatformContent" onclick="event.stopPropagation()" class="bg-brand-alabaster rounded-3xl shadow-2xl w-full max-w-xl p-5 sm:p-8 pointer-events-auto transform scale-95 transition-all duration-300 border border-brand-cardBorder relative my-auto max-h-[88vh] overflow-y-auto">
       
       <!-- Modal Close Button -->
-      <button onclick="closeOrderModal()" aria-label="Close Order Modal" class="absolute top-5 right-5 p-2 rounded-full hover:bg-brand-sand text-brand-muted hover:text-brand-charcoal transition-colors z-10 cursor-pointer">
+      <button type="button" id="closeOrderModalBtn" onclick="closeOrderModal()" aria-label="Close Order Modal" class="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full bg-brand-sand/80 hover:bg-brand-sand text-brand-charcoal hover:text-black transition-colors z-20 cursor-pointer shadow-sm">
         <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
       </button>
 
@@ -287,7 +287,7 @@
               <p class="text-xs text-brand-cream/80">Freshly crafted for Jaipur foodies</p>
             </div>
           </div>
-          <button onclick="closeCartDrawer()" aria-label="Close Cart" class="p-2 rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-colors cursor-pointer">
+          <button type="button" id="closeCartBtn" onclick="closeCartDrawer()" aria-label="Close Cart" class="p-2 rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-colors cursor-pointer">
             <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
           </button>
         </div>
@@ -352,7 +352,7 @@
           <i data-lucide="search" class="w-5 h-5 text-brand-bronze pointer-events-none"></i>
           <input type="text" id="searchInput" placeholder="Search 55+ coffee, frappes, pizza, maggi, pasta..." class="w-full bg-transparent border-none text-brand-charcoal focus:outline-none placeholder:text-brand-muted text-base">
         </div>
-        <button onclick="closeSearchModal()" aria-label="Close Search" class="text-brand-muted hover:text-brand-charcoal p-1 cursor-pointer">
+        <button type="button" id="closeSearchBtn" onclick="closeSearchModal()" aria-label="Close Search" class="text-brand-muted hover:text-brand-charcoal p-1 cursor-pointer">
           <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
         </button>
       </div>
@@ -363,15 +363,15 @@
   </div>
 
   <!-- ================= VIDEO MODAL ================= -->
-  <div id="videoModal" class="fixed inset-0 z-50 pointer-events-none opacity-0 bg-black/85 backdrop-blur-md transition-all duration-300 flex items-center justify-center p-4">
-    <div class="bg-brand-dark rounded-2xl overflow-hidden max-w-2xl w-full border border-white/15 shadow-2xl relative pointer-events-auto">
+  <div id="videoModal" onclick="if(event.target === this) closeVideoModal()" class="fixed inset-0 z-50 hidden opacity-0 bg-black/85 backdrop-blur-md transition-all duration-300 flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="bg-brand-dark rounded-2xl overflow-hidden max-w-2xl w-full border border-white/15 shadow-2xl relative pointer-events-auto">
       <div class="p-4 bg-brand-forest flex items-center justify-between text-brand-offwhite border-b border-white/10">
         <div class="flex items-center space-x-2.5">
           <span class="w-2.5 h-2.5 rounded-full bg-brand-gold animate-pulse"></span>
           <span class="font-serif text-sm font-semibold tracking-wide">Love Over Coffee — The New Chapter (JLN Road & C-Scheme)</span>
         </div>
-        <button id="closeVideoBtn" class="text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors">
-          <i data-lucide="x" class="w-5 h-5"></i>
+        <button type="button" id="closeVideoBtn" onclick="closeVideoModal()" aria-label="Close Video Modal" class="text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
         </button>
       </div>
       <div class="aspect-video w-full bg-black relative">
@@ -1053,7 +1053,7 @@
                 <span>Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
               </button>
-              <button onclick="document.getElementById('videoModal').classList.remove('opacity-0', 'pointer-events-none')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors">
+              <button onclick="openVideoModal()" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors cursor-pointer">
                 Watch Tour
               </button>
             </div>
@@ -2134,11 +2134,8 @@
       { id: 'm7', title: 'French Fries', category: 'Maggi & Sandwiches', price: 140, badge: 'Crispy Snack', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Double-fried golden potato fingers with peri-peri dust', image: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80' }
     ];
 
-    // Initial Cart State
-    let cart = [
-      { id: 'c2', title: 'Cafe Frappe', price: 200, qty: 1, image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=200&q=80' },
-      { id: 'm6', title: 'Masala Maggi', price: 120, qty: 1, image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=200&q=80' }
-    ];
+    // Initial Cart State (starts empty - populated when user clicks '+')
+    let cart = [];
 
     // Selected Outlet State
     let selectedOutlet = 'c_scheme';
@@ -2211,11 +2208,6 @@
         handleOutletChange();
       }
 
-      // If cart is completely empty, offer to add signature bestseller
-      if (cart.length === 0) {
-        addToCart('Cafe Frappe', 200, 'Cold Coffee & Signature Frappes');
-      }
-
       // Reset form view vs confirmation screen
       const formContent = document.getElementById('orderPlatformFormContent');
       const confirmScreen = document.getElementById('orderConfirmationScreen');
@@ -2236,12 +2228,24 @@
 
       const list = document.getElementById('modalItemsList');
       if (list) {
-        list.innerHTML = cart.map(item => `
-          <div class="flex items-center justify-between py-1">
-            <span class="text-brand-charcoal font-medium">${item.qty}x ${item.title}</span>
-            <span class="text-brand-muted">₹${(item.price * item.qty).toFixed(2)}</span>
-          </div>
-        `).join('');
+        if (cart.length === 0) {
+          list.innerHTML = `
+            <div class="py-4 text-center text-brand-muted">
+              <p class="font-serif text-sm text-brand-charcoal font-semibold">Your cart is empty</p>
+              <p class="text-[11px] mt-0.5 text-brand-muted">Click "+" on any item from the menu to add dishes to your order!</p>
+            </div>
+          `;
+        } else {
+          list.innerHTML = cart.map(item => `
+            <div class="flex items-center justify-between py-1.5">
+              <div class="flex items-center space-x-2">
+                <span class="w-5 h-5 rounded-full bg-brand-sand flex items-center justify-center font-bold text-[10px] text-brand-forest">${item.qty}x</span>
+                <span class="text-brand-charcoal font-medium text-xs">${item.title}</span>
+              </div>
+              <span class="text-brand-forest font-bold text-xs">₹${(item.price * item.qty).toFixed(2)}</span>
+            </div>
+          `).join('');
+        }
       }
 
       // Close cart drawer if open
@@ -2255,20 +2259,23 @@
       modal.classList.add('opacity-100');
       content.classList.remove('scale-95');
       content.classList.add('scale-100');
+      document.body.style.overflow = 'hidden';
     }
 
     function closeOrderModal() {
       const modal = document.getElementById('orderPlatformModal');
       const content = document.getElementById('orderPlatformContent');
+      if (!modal || !content) return;
       content.classList.remove('scale-100');
       content.classList.add('scale-95');
       modal.classList.remove('opacity-100');
       modal.classList.add('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = '';
       setTimeout(() => {
         if (modal.classList.contains('opacity-0')) {
           modal.classList.add('hidden');
         }
-      }, 300);
+      }, 250);
     }
 
     // Direct In-App Order Placement
@@ -2455,17 +2462,33 @@
     // Backend Order Dispatch Function (Mobile & Desktop Reliable)
     function dispatchOrder(platform) {
       const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+      const outletName = selectedOutlet === 'c_scheme' ? 'C-Scheme Flagship' : 'B2 Bypass Hub';
+      
+      // Auto-copy cart summary to user clipboard so they can paste it directly on Zomato / Swiggy
+      if (cart.length > 0 && navigator.clipboard && navigator.clipboard.writeText) {
+        const cartText = `Love Over Coffee (${outletName}):\n` + 
+          cart.map(i => `• ${i.qty}x ${i.title} (₹${(i.price * i.qty).toFixed(2)})`).join('\n') + 
+          `\nTotal: ₹${subtotal.toFixed(2)}`;
+        navigator.clipboard.writeText(cartText).catch(() => {});
+      }
+
       let targetUrl = '';
       if (platform === 'zomato') {
         targetUrl = selectedOutlet === 'c_scheme' 
-          ? 'https://www.zomato.com/jaipur/love-over-coffee-1-c-scheme' 
-          : 'https://link.zomato.com/xqzv/rshare?id=5673658930563eba';
+          ? 'https://www.zomato.com/jaipur/love-over-coffee-1-c-scheme/order' 
+          : (cart.length > 0 
+              ? `https://www.zomato.com/jaipur/restaurants?q=${encodeURIComponent('Love Over Coffee ' + cart[0].title)}` 
+              : 'https://www.zomato.com/jaipur/restaurants?q=Love%20Over%20Coffee');
       } else if (platform === 'swiggy') {
-        targetUrl = 'https://www.swiggy.com/city/jaipur/love-over-coffee-c-scheme-rest382901';
+        targetUrl = cart.length > 0 
+          ? `https://www.swiggy.com/city/jaipur/search?query=${encodeURIComponent('Love Over Coffee ' + cart[0].title)}` 
+          : 'https://www.swiggy.com/city/jaipur/search?query=Love%20Over%20Coffee';
       } else {
         const phone = selectedOutlet === 'c_scheme' ? '917976198506' : '919928783999';
-        const itemsText = cart.map(i => `• ${i.qty}x ${i.title} (₹${i.price})`).join('%0A');
-        const text = `Hi Love Over Coffee (${selectedOutlet === 'c_scheme' ? 'C-Scheme' : 'B2 Bypass'}), I would like to order:%0A${itemsText}%0A*Total: ₹${subtotal.toFixed(2)}*`;
+        const itemsText = cart.length > 0 
+          ? cart.map(i => `• ${i.qty}x ${i.title} (₹${i.price})`).join('%0A')
+          : '• Cafe Frappe (₹200.00)';
+        const text = `Hi Love Over Coffee (${outletName}), I would like to order:%0A${itemsText}%0A*Total: ₹${subtotal.toFixed(2)}*`;
         targetUrl = `https://wa.me/${phone}?text=${text}`;
       }
 
@@ -2484,7 +2507,11 @@
         }).catch(err => console.log(err));
       } catch(e) {}
 
-      showToast(`Redirecting to ${platform.toUpperCase()} for ${selectedOutlet === 'c_scheme' ? 'C-Scheme' : 'B2 Bypass'}...`);
+      if (cart.length > 0 && (platform === 'zomato' || platform === 'swiggy')) {
+        showToast(`📋 Cart copied! Opening ${platform.toUpperCase()} (${outletName})...`);
+      } else {
+        showToast(`Redirecting to ${platform.toUpperCase()} for ${outletName}...`);
+      }
       closeOrderModal();
 
       // Open immediately in user-click thread to bypass popup blocker
@@ -2743,9 +2770,15 @@
       const totalCount = cart.reduce((acc, curr) => acc + curr.qty, 0);
       const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
 
-      document.getElementById('cartNavBadge').textContent = totalCount;
-      document.getElementById('cartSubtotal').textContent = `₹${subtotal.toFixed(2)}`;
-      document.getElementById('cartTotal').textContent = `₹${subtotal.toFixed(2)}`;
+      const navBadge = document.getElementById('cartNavBadge');
+      if (navBadge) navBadge.textContent = totalCount;
+      const mobBadge = document.getElementById('mobileCartBadge');
+      if (mobBadge) mobBadge.textContent = `${totalCount} item${totalCount === 1 ? '' : 's'}`;
+
+      const cartSubtotal = document.getElementById('cartSubtotal');
+      if (cartSubtotal) cartSubtotal.textContent = `₹${subtotal.toFixed(2)}`;
+      const cartTotal = document.getElementById('cartTotal');
+      if (cartTotal) cartTotal.textContent = `₹${subtotal.toFixed(2)}`;
 
       const listContainer = document.getElementById('cartItemList');
       if (cart.length === 0) {
@@ -2947,13 +2980,42 @@
       }
     });
 
-    // Video Modal
-    const videoModal = document.getElementById('videoModal');
-    document.getElementById('heroVideoTrigger').addEventListener('click', () => videoModal.classList.remove('opacity-0', 'pointer-events-none'));
-    document.getElementById('closeVideoBtn').addEventListener('click', () => videoModal.classList.add('opacity-0', 'pointer-events-none'));
-    videoModal.addEventListener('click', (e) => {
-      if (e.target === videoModal) videoModal.classList.add('opacity-0', 'pointer-events-none');
-    });
+    // ================= VIDEO MODAL CONTROLS =================
+    function openVideoModal() {
+      const modal = document.getElementById('videoModal');
+      if (!modal) return;
+      modal.classList.remove('hidden');
+      void modal.offsetWidth;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeVideoModal() {
+      const modal = document.getElementById('videoModal');
+      if (!modal) return;
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      document.body.style.overflow = '';
+      setTimeout(() => {
+        if (modal.classList.contains('opacity-0')) {
+          modal.classList.add('hidden');
+          const iframe = document.getElementById('chapterVideoIframe');
+          if (iframe) {
+            const currentSrc = iframe.src;
+            iframe.src = currentSrc;
+          }
+        }
+      }, 300);
+    }
+
+    const heroVideoTrigger = document.getElementById('heroVideoTrigger');
+    if (heroVideoTrigger) heroVideoTrigger.addEventListener('click', openVideoModal);
+    const closeVideoBtn = document.getElementById('closeVideoBtn');
+    if (closeVideoBtn) closeVideoBtn.addEventListener('click', closeVideoModal);
+
+    window.openVideoModal = openVideoModal;
+    window.closeVideoModal = closeVideoModal;
 
     // Mobile Menu Toggle
     document.getElementById('mobileMenuToggle').addEventListener('click', () => {
@@ -2963,10 +3025,9 @@
     // Keyboard Shortcuts (Esc to close modals)
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        cartDrawer.classList.add('opacity-0', 'pointer-events-none');
-        cartDrawerContent.classList.add('translate-x-full');
-        searchModal.classList.add('opacity-0', 'pointer-events-none');
-        videoModal.classList.add('opacity-0', 'pointer-events-none');
+        closeCartDrawer();
+        closeSearchModal();
+        closeVideoModal();
         closeOrderModal();
       }
     });
