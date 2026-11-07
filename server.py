@@ -18,12 +18,13 @@ PORT = 4321
 DIRECTORY = os.path.dirname(os.path.abspath(__file__))
 ORDERS_FILE = os.path.join(DIRECTORY, 'orders.json')
 
-# Zomato & Swiggy Jaipur Outlet URL mappings
+# Zomato, Swiggy, Magicpin & WhatsApp Jaipur Outlet URL mappings
 PLATFORM_URLS = {
     'zomato_c_scheme': 'https://www.zomato.com/jaipur/love-over-coffee-1-c-scheme/order',
     'zomato_b2_bypass': 'https://link.zomato.com/xqzv/rshare?id=5673658930563eba',
-    'swiggy_c_scheme': 'https://www.swiggy.com/city/jaipur/love-over-coffee-c-scheme-rest382901',
-    'swiggy_b2_bypass': 'https://www.swiggy.com/city/jaipur/love-over-coffee-tonk-road-rest382902',
+    'swiggy_c_scheme': 'https://www.swiggy.com/city/jaipur/love-over-coffee-prince-road-vaishali-nagar-rest550658',
+    'swiggy_b2_bypass': 'https://www.swiggy.com/city/jaipur/love-over-coffee-prince-road-vaishali-nagar-rest550658',
+    'magicpin': 'https://magicpin.in/Jaipur/Malviya-Nagar/Restaurant/Love-Over-Coffee/store/164c367/menu?srsltid=AYCX9vIZdsOL7GfZf0EKMD6xJBi7SXYbmUKGkKypOnIwoq18Y6mo27hK',
     'whatsapp_c_scheme': '917976198506',
     'whatsapp_b2_bypass': '919928783999'
 }
@@ -130,6 +131,8 @@ class LOCHandler(http.server.SimpleHTTPRequestHandler):
                 redirect_url = PLATFORM_URLS.get(f"zomato_{outlet}", PLATFORM_URLS['zomato_c_scheme'])
             elif platform == 'swiggy':
                 redirect_url = PLATFORM_URLS.get(f"swiggy_{outlet}", PLATFORM_URLS['swiggy_c_scheme'])
+            elif platform == 'magicpin':
+                redirect_url = PLATFORM_URLS.get('magicpin', '')
 
             response_payload = {
                 "success": True,
