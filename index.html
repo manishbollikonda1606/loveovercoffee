@@ -2347,6 +2347,12 @@
       const modal = document.getElementById('orderPlatformModal');
       const content = document.getElementById('orderPlatformContent');
       if (!modal || !content) return;
+      const confirmScreen = document.getElementById('orderConfirmationScreen');
+      if (confirmScreen && !confirmScreen.classList.contains('hidden')) {
+        cart = [];
+        saveCartIfConsented();
+        updateCartUI();
+      }
       content.classList.remove('scale-100');
       content.classList.add('scale-95');
       modal.classList.remove('opacity-100');
