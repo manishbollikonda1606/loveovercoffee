@@ -141,6 +141,20 @@
         display: none !important;
       }
     }
+
+    /* Background Scroll Locking when Modals/Drawers are open */
+    html.overflow-hidden, body.overflow-hidden {
+      overflow: hidden !important;
+      height: 100% !important;
+      overscroll-behavior: none !important;
+      touch-action: none;
+    }
+
+    .modal-scrollable {
+      overscroll-behavior: contain !important;
+      -webkit-overflow-scrolling: touch;
+      touch-action: pan-y;
+    }
   </style>
 </head>
 <body class="bg-brand-alabaster text-brand-charcoal font-sans antialiased selection:bg-brand-gold selection:text-white min-h-screen flex flex-col">
@@ -148,9 +162,30 @@
   <!-- ================= NOTIFICATION TOAST ================= -->
   <div id="toastContainer" class="fixed top-5 left-1/2 z-50 pointer-events-none transition-all duration-300"></div>
 
+  <!-- ================= COOKIE CONSENT BANNER ================= -->
+  <div id="cookieConsentBanner" class="fixed bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-50 hidden bg-brand-dark/95 backdrop-blur-md text-brand-offwhite p-4 sm:p-5 rounded-2xl border border-brand-gold/30 shadow-2xl space-y-3 transition-all duration-300">
+    <div class="flex items-start gap-3">
+      <span class="text-2xl shrink-0">🍪</span>
+      <div class="space-y-1">
+        <h5 class="font-serif font-bold text-sm text-brand-cream">Save Your Cafe Order & Preferences</h5>
+        <p class="text-xs text-brand-offwhite/80 leading-relaxed">
+          We use cookies and local storage to remember your selected items, cart dishes, and preferred Jaipur outlet for future visits. If declined, each visit begins with a fresh, empty order page.
+        </p>
+      </div>
+    </div>
+    <div class="flex items-center justify-end gap-2.5 pt-1">
+      <button onclick="declineCookies()" type="button" class="px-3.5 py-1.5 rounded-full text-xs font-semibold text-brand-offwhite/80 hover:text-white hover:bg-white/10 transition-colors cursor-pointer">
+        Decline
+      </button>
+      <button onclick="acceptCookies()" type="button" class="px-4 py-1.5 rounded-full text-xs font-bold bg-brand-gold hover:bg-brand-goldHover text-brand-dark transition-all shadow-sm cursor-pointer">
+        Accept Cookies
+      </button>
+    </div>
+  </div>
+
   <!-- ================= ORDER DESTINATION MODAL (ZOMATO / SWIGGY / WHATSAPP / INLINE) ================= -->
-  <div id="orderPlatformModal" onclick="if(event.target === this) closeOrderModal()" class="fixed inset-0 z-50 hidden opacity-0 bg-black/80 backdrop-blur-md transition-all duration-300 overflow-y-auto p-3 sm:p-6 flex items-start sm:items-center justify-center">
-    <div id="orderPlatformContent" onclick="event.stopPropagation()" class="bg-brand-alabaster rounded-3xl shadow-2xl w-full max-w-xl p-5 sm:p-8 pointer-events-auto transform scale-95 transition-all duration-300 border border-brand-cardBorder relative my-auto max-h-[88vh] overflow-y-auto">
+  <div id="orderPlatformModal" onclick="if(event.target === this) closeOrderModal()" class="fixed inset-0 z-50 hidden opacity-0 bg-black/80 backdrop-blur-md transition-all duration-300 overflow-y-auto p-3 sm:p-6 flex items-start sm:items-center justify-center overscroll-contain modal-scrollable">
+    <div id="orderPlatformContent" onclick="event.stopPropagation()" class="bg-brand-alabaster rounded-3xl shadow-2xl w-full max-w-xl p-5 sm:p-8 pointer-events-auto transform scale-95 transition-all duration-300 border border-brand-cardBorder relative my-auto max-h-[88vh] overflow-y-auto overscroll-contain modal-scrollable">
       
       <!-- Modal Close Button -->
       <button type="button" id="closeOrderModalBtn" onclick="closeOrderModal()" aria-label="Close Order Modal" class="absolute top-4 right-4 sm:top-5 sm:right-5 p-2 rounded-full bg-brand-sand/80 hover:bg-brand-sand text-brand-charcoal hover:text-black transition-colors z-20 cursor-pointer shadow-sm">
@@ -275,11 +310,11 @@
   </div>
 
   <!-- ================= CART DRAWER OVERLAY ================= -->
-  <div id="cartDrawer" onclick="if(event.target === this) closeCartDrawer()" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 bg-black/60 backdrop-blur-sm">
-    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10" onclick="event.stopPropagation()">
-      <div class="w-screen max-w-md bg-brand-alabaster shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out" id="cartDrawerContent">
+  <div id="cartDrawer" onclick="if(event.target === this) closeCartDrawer()" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 bg-black/60 backdrop-blur-sm overscroll-contain">
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-6 sm:pl-10 overscroll-contain" onclick="event.stopPropagation()">
+      <div class="w-screen max-w-md bg-brand-alabaster shadow-2xl flex flex-col h-full transform translate-x-full transition-transform duration-300 ease-in-out overscroll-contain modal-scrollable" id="cartDrawerContent">
         <!-- Drawer Header -->
-        <div class="p-6 bg-brand-forest text-brand-offwhite flex items-center justify-between">
+        <div class="p-6 bg-brand-forest text-brand-offwhite flex items-center justify-between shrink-0">
           <div class="flex items-center space-x-3">
             <img src="assets/logo.jpg" alt="Love Over Coffee" class="w-9 h-9 rounded-full object-cover border border-brand-gold">
             <div>
@@ -293,12 +328,12 @@
         </div>
 
         <!-- Drawer Body: Cart Items -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cartItemList">
+        <div class="flex-1 overflow-y-auto p-5 sm:p-6 space-y-3 sm:space-y-4 overscroll-contain modal-scrollable" id="cartItemList">
           <!-- Dynamic Cart Items Rendered Here -->
         </div>
 
         <!-- Drawer Footer: Subtotal & Actions -->
-        <div class="p-6 bg-white border-t border-brand-cardBorder space-y-4">
+        <div class="p-6 bg-white border-t border-brand-cardBorder space-y-4 shrink-0">
           <div class="space-y-1.5 text-sm">
             <div class="flex justify-between text-brand-muted">
               <span>Subtotal</span>
@@ -1217,18 +1252,18 @@
           <div class="lg:col-span-2 space-y-4">
             <h4 class="font-serif text-base font-bold text-brand-charcoal">Menu & Brochure</h4>
             <ul class="space-y-2 text-xs text-brand-muted font-medium">
-              <li><a href="#/menu-gateway" class="text-brand-forest font-semibold hover:text-brand-gold flex items-center gap-1">Menu Gateway <i data-lucide="arrow-right" class="w-3 h-3"></i></a></li>
-              <li><a href="#/menu-brochure" class="hover:text-brand-forest transition-colors">Full 55+ Item Menu</a></li>
-              <li><a href="javascript:void(0)" onclick="openAndPrintBrochure()" class="hover:text-brand-forest transition-colors flex items-center gap-1"><span>📥 Download PDF</span></a></li>
-              <li><a href="https://wa.me/917976198506?text=Hi%20LOC%20C-Scheme" target="_blank" class="hover:text-brand-forest transition-colors">C-Scheme WhatsApp</a></li>
+              <li><a href="#/menu-gateway" onclick="window.location.hash='#/menu-gateway'; handleRouting();" class="text-brand-forest font-semibold hover:text-brand-gold flex items-center gap-1">Menu Gateway <i data-lucide="arrow-right" class="w-3 h-3"></i></a></li>
+              <li><a href="#/menu-brochure" onclick="window.location.hash='#/menu-brochure'; handleRouting();" class="hover:text-brand-forest transition-colors">Full 55+ Item Menu</a></li>
+              <li><button type="button" onclick="openAndPrintBrochure()" class="hover:text-brand-forest transition-colors flex items-center gap-1 text-left cursor-pointer"><span>📥 Download PDF</span></button></li>
+              <li><a href="https://wa.me/917976198506?text=Hi%20Love%20Over%20Coffee%20C-Scheme,%20I%20would%20like%20to%20order" target="_blank" class="hover:text-brand-forest transition-colors">C-Scheme WhatsApp</a></li>
               <li class="space-y-1">
-                <button onclick="openOrderModal()" class="text-brand-forest font-semibold hover:text-brand-gold flex items-center gap-1 cursor-pointer text-left">
+                <button type="button" onclick="openOrderModal()" class="text-brand-forest font-semibold hover:text-brand-gold flex items-center gap-1 cursor-pointer text-left">
                   <span>Order on Zomato / Swiggy</span>
                   <i data-lucide="external-link" class="w-3 h-3"></i>
                 </button>
                 <div class="flex items-center gap-1.5 pt-0.5">
-                  <button onclick="dispatchOrder('zomato')" class="px-2 py-0.5 rounded-full bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 text-[10px] font-bold transition-all cursor-pointer">Zomato ↗</button>
-                  <button onclick="dispatchOrder('swiggy')" class="px-2 py-0.5 rounded-full bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 text-[10px] font-bold transition-all cursor-pointer">Swiggy ↗</button>
+                  <button type="button" onclick="dispatchOrder('zomato')" class="px-2 py-0.5 rounded-full bg-red-50 text-red-700 hover:bg-red-100 border border-red-200 text-[10px] font-bold transition-all cursor-pointer">Zomato ↗</button>
+                  <button type="button" onclick="dispatchOrder('swiggy')" class="px-2 py-0.5 rounded-full bg-orange-50 text-orange-700 hover:bg-orange-100 border border-orange-200 text-[10px] font-bold transition-all cursor-pointer">Swiggy ↗</button>
                 </div>
               </li>
             </ul>
@@ -1259,7 +1294,7 @@
                 <span><strong>Vaishali, Vidhyadhar Nagar & Jagatpura</strong></span>
               </li>
               <li class="pt-2">
-                <a href="#/location" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-forest text-brand-cream font-bold text-[11px] hover:bg-brand-dark transition-all shadow-sm">
+                <a href="#/location" onclick="window.location.hash='#/location'; handleRouting();" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-forest text-brand-cream font-bold text-[11px] hover:bg-brand-dark transition-all shadow-sm cursor-pointer">
                   <i data-lucide="map" class="w-3.5 h-3.5 text-brand-gold"></i>
                   <span>Explore Interactive Map Page ➔</span>
                 </a>
@@ -2259,7 +2294,8 @@
       modal.classList.add('opacity-100');
       content.classList.remove('scale-95');
       content.classList.add('scale-100');
-      document.body.style.overflow = 'hidden';
+      document.documentElement.classList.add('overflow-hidden');
+      document.body.classList.add('overflow-hidden');
     }
 
     function closeOrderModal() {
@@ -2270,7 +2306,8 @@
       content.classList.add('scale-95');
       modal.classList.remove('opacity-100');
       modal.classList.add('opacity-0', 'pointer-events-none');
-      document.body.style.overflow = '';
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden');
       setTimeout(() => {
         if (modal.classList.contains('opacity-0')) {
           modal.classList.add('hidden');
@@ -2393,6 +2430,7 @@
 
     function resetAndCloseOrderModal() {
       cart = [];
+      saveCartIfConsented();
       updateCartUI();
       closeOrderModal();
       const formContent = document.getElementById('orderPlatformFormContent');
@@ -2763,6 +2801,7 @@
         });
       }
       updateCartUI();
+      saveCartIfConsented();
       showToast(`Added "${title}" to your order!`);
     }
 
@@ -2818,6 +2857,7 @@
         cart = cart.filter(i => i.title !== title);
       }
       updateCartUI();
+      saveCartIfConsented();
     }
 
     // ================= CART DRAWER CONTROLS =================
@@ -2831,6 +2871,8 @@
       drawer.classList.remove('opacity-0', 'pointer-events-none');
       drawer.classList.add('opacity-100');
       content.classList.remove('translate-x-full');
+      document.documentElement.classList.add('overflow-hidden');
+      document.body.classList.add('overflow-hidden');
     }
 
     function closeCartDrawer() {
@@ -2840,6 +2882,8 @@
       content.classList.add('translate-x-full');
       drawer.classList.remove('opacity-100');
       drawer.classList.add('opacity-0', 'pointer-events-none');
+      document.documentElement.classList.remove('overflow-hidden');
+      document.body.classList.remove('overflow-hidden');
       setTimeout(() => {
         if (drawer.classList.contains('opacity-0')) {
           drawer.classList.add('hidden');
@@ -3032,11 +3076,82 @@
       }
     });
 
+    // ================= COOKIE & CART PERSISTENCE =================
+    function initCookieAndCartState() {
+      const consent = localStorage.getItem('loc_cookie_consent');
+      if (consent === 'accepted') {
+        try {
+          const savedCart = localStorage.getItem('loc_cart');
+          if (savedCart) {
+            cart = JSON.parse(savedCart);
+          } else {
+            cart = [];
+          }
+        } catch(e) {
+          cart = [];
+        }
+      } else if (consent === 'declined') {
+        cart = [];
+        localStorage.removeItem('loc_cart');
+      } else {
+        // First visit / no choice made yet: cart starts fresh and empty
+        cart = [];
+        setTimeout(() => {
+          const banner = document.getElementById('cookieConsentBanner');
+          if (banner) banner.classList.remove('hidden');
+        }, 800);
+      }
+      updateCartUI();
+    }
+
+    function acceptCookies() {
+      localStorage.setItem('loc_cookie_consent', 'accepted');
+      try {
+        localStorage.setItem('loc_cart', JSON.stringify(cart));
+      } catch(e) {}
+      const banner = document.getElementById('cookieConsentBanner');
+      if (banner) banner.classList.add('hidden');
+      showToast("🍪 Preferences saved! Your cart will be remembered across visits.");
+    }
+
+    function declineCookies() {
+      localStorage.setItem('loc_cookie_consent', 'declined');
+      localStorage.removeItem('loc_cart');
+      const banner = document.getElementById('cookieConsentBanner');
+      if (banner) banner.classList.add('hidden');
+      showToast("Fresh order page will load on every visit.");
+    }
+
+    function saveCartIfConsented() {
+      if (localStorage.getItem('loc_cookie_consent') === 'accepted') {
+        try {
+          localStorage.setItem('loc_cart', JSON.stringify(cart));
+        } catch(e) {}
+      }
+    }
+
+    window.acceptCookies = acceptCookies;
+    window.declineCookies = declineCookies;
+    window.saveCartIfConsented = saveCartIfConsented;
+
+    // Prevent background scrolling when scrolling backdrop of modals/drawers
+    ['cartDrawer', 'orderPlatformModal'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) {
+        el.addEventListener('wheel', (e) => {
+          if (e.target === el) e.preventDefault();
+        }, { passive: false });
+        el.addEventListener('touchmove', (e) => {
+          if (e.target === el) e.preventDefault();
+        }, { passive: false });
+      }
+    });
+
     // Initialize Page
     renderHomeMenu('all');
     renderBrochureCategoryPills();
     renderBrochureView('', 'all');
-    updateCartUI();
+    initCookieAndCartState();
   </script>
 </body>
 </html>
