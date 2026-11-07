@@ -387,9 +387,13 @@
         </a>
 
         <!-- Center Navigation Links (With Smooth Scroll To Sections) -->
-        <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-brand-offwhite/90">
+        <nav class="hidden md:flex items-center space-x-6 text-sm font-medium text-brand-offwhite/90">
           <a href="#/" class="text-brand-offwhite hover:text-brand-cream transition-colors relative py-1 border-b-2 border-brand-gold font-semibold">Home</a>
           <a href="#/menu-gateway" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Menu</a>
+          <a href="#/location" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60 flex items-center gap-1">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-gold"></i>
+            <span>Locations</span>
+          </a>
           <button onclick="navigateToSection('story')" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60 font-medium">Our Story</button>
           <button onclick="navigateToSection('outlets')" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60 font-medium">Outlets</button>
           <button onclick="navigateToSection('testimonials')" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60 font-medium">Reviews</button>
@@ -426,6 +430,10 @@
       <div id="mobileMenu" class="hidden md:hidden bg-brand-dark/98 backdrop-blur-md border-b border-white/10 px-6 py-4 space-y-2">
         <a href="#/" onclick="closeMobileMenu()" class="block py-2 text-brand-cream font-medium text-sm border-b border-white/5">Home</a>
         <a href="#/menu-gateway" onclick="closeMobileMenu()" class="block py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Menu Brochure & Gateway</a>
+        <a href="#/location" onclick="closeMobileMenu()" class="block py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5 flex items-center justify-between">
+          <span>Locations & Live Map</span>
+          <i data-lucide="map-pin" class="w-4 h-4 text-brand-gold"></i>
+        </a>
         <button onclick="navigateToSection('story')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Our Story</button>
         <button onclick="navigateToSection('outlets')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Outlets (6+ Locations)</button>
         <button onclick="navigateToSection('testimonials')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Reviews (4.3★)</button>
@@ -939,14 +947,17 @@
               </div>
             </div>
             <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
-              <a href="#/menu-brochure" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
-                <span>View Full Menu</span>
-                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
-              </a>
-              <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors flex items-center gap-1">
-                <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
-                <span>Order Now</span>
+              <button onclick="openGoogleMaps('C-Scheme')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <span>Google Maps</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
               </button>
+              <div class="flex items-center space-x-2">
+                <a href="#/menu-brochure" class="text-xs font-semibold text-brand-forest hover:text-brand-gold hidden sm:inline">Menu</a>
+                <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors flex items-center gap-1">
+                  <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+                  <span>Order Now</span>
+                </button>
+              </div>
             </div>
           </div>
 
@@ -970,10 +981,10 @@
               </div>
             </div>
             <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
-              <a href="https://maps.google.com/maps?q=Love+over+coffee+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+              <button onclick="openGoogleMaps('B2 Bypass')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
                 <span>Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-              </a>
+              </button>
               <button onclick="openOrderModal('b2_bypass')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
                 Order Online
               </button>
@@ -1000,10 +1011,10 @@
               </div>
             </div>
             <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
-              <a href="https://maps.google.com/maps?q=Love+over+coffee+JLN+Road+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+              <button onclick="openGoogleMaps('JLN Road')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
                 <span>Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-              </a>
+              </button>
               <button onclick="document.getElementById('videoModal').classList.remove('opacity-0', 'pointer-events-none')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors">
                 Watch Tour
               </button>
@@ -1030,10 +1041,10 @@
               </div>
             </div>
             <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
-              <a href="https://maps.google.com/maps?q=Love+over+coffee+Durgapura+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+              <button onclick="openGoogleMaps('Durgapura')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
                 <span>Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-              </a>
+              </button>
               <a href="tel:+919928783999" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
                 Call Outlet
               </a>
@@ -1060,10 +1071,10 @@
               </div>
             </div>
             <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
-              <a href="https://maps.google.com/maps?q=Love+over+coffee+Vidhyadhar+Nagar+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+              <button onclick="openGoogleMaps('Vidhyadhar Nagar')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
                 <span>Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-              </a>
+              </button>
               <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
                 Order Online
               </button>
@@ -1090,15 +1101,40 @@
               </div>
             </div>
             <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
-              <a href="https://maps.google.com/maps?q=Love+over+coffee+Vaishali+Nagar+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+              <button onclick="openGoogleMaps('Vaishali Nagar')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
                 <span>Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-              </a>
+              </button>
               <button onclick="openOrderModal('b2_bypass')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
                 Order Online
               </button>
             </div>
           </div>
+
+        </div>
+
+        <!-- Dedicated Map & Navigation Page Banner -->
+        <div class="mt-12 bg-white rounded-3xl p-6 sm:p-8 border-2 border-brand-cardBorder shadow-sm flex flex-col sm:flex-row items-center justify-between gap-6">
+          <div class="flex items-center space-x-4">
+            <div class="w-14 h-14 rounded-2xl bg-brand-sand text-brand-forest flex items-center justify-center border border-brand-cardBorder shrink-0">
+              <i data-lucide="map" class="w-7 h-7 text-brand-forest"></i>
+            </div>
+            <div>
+              <h4 class="font-serif text-xl font-bold text-brand-charcoal">Want an Interactive Map Experience?</h4>
+              <p class="text-xs text-brand-muted mt-0.5">Explore our live embedded Google Map with turn-by-turn routing to all 6+ Pink City locations.</p>
+            </div>
+          </div>
+          <div class="flex items-center space-x-3 shrink-0">
+            <a href="#/location" class="inline-flex items-center space-x-2 px-6 py-3 rounded-full bg-brand-forest hover:bg-brand-darkHover text-brand-cream font-bold text-xs uppercase tracking-wider shadow-md transition-all">
+              <span>View Interactive Map Page</span>
+              <i data-lucide="arrow-right" class="w-4 h-4 text-brand-gold"></i>
+            </a>
+            <button onclick="openGoogleMaps()" class="inline-flex items-center space-x-1.5 px-4 py-3 rounded-full bg-brand-sand hover:bg-brand-cream text-brand-forest font-bold text-xs uppercase tracking-wider border border-brand-cardBorder transition-all">
+              <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              <span>Open in Maps</span>
+            </button>
+          </div>
+        </div>
 
         </div>
       </div>
@@ -1175,10 +1211,16 @@
                 <span class="text-brand-bronze shrink-0">📍</span>
                 <span><strong>Vaishali, Vidhyadhar Nagar & Jagatpura</strong></span>
               </li>
+              <li class="pt-2">
+                <a href="#/location" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-brand-forest text-brand-cream font-bold text-[11px] hover:bg-brand-dark transition-all shadow-sm">
+                  <i data-lucide="map" class="w-3.5 h-3.5 text-brand-gold"></i>
+                  <span>Explore Interactive Map Page ➔</span>
+                </a>
+              </li>
             </ul>
           </div>
 
-          <!-- Column 4: FOLLOW US (1st Circle WhatsApp, 2nd Circle Instagram) -->
+          <!-- Column 4: FOLLOW US (1st Circle WhatsApp, 2nd Circle Instagram, 3rd Circle Google Maps) -->
           <div class="lg:col-span-3 space-y-4">
             <h4 class="font-serif text-base font-bold text-brand-charcoal">Follow Us</h4>
             
@@ -1211,16 +1253,15 @@
                 </svg>
               </a>
 
-              <!-- 3rd Circle: GOOGLE MAPS -->
-              <a 
-                href="https://maps.google.com/maps?q=Love+over+coffee+Jaipur" 
-                target="_blank" 
-                title="View on Google Maps" 
+              <!-- 3rd Circle: GOOGLE MAPS (Redirects to exact verified location) -->
+              <button 
+                onclick="openGoogleMaps()" 
+                title="View Exact Jaipur Location on Google Maps" 
                 aria-label="Google Maps" 
                 class="w-11 h-11 rounded-full bg-brand-forest hover:bg-brand-darkHover text-brand-cream flex items-center justify-center transition-all shadow-md transform hover:scale-110"
               >
                 <i data-lucide="map-pin" class="w-5 h-5 text-brand-gold"></i>
-              </a>
+              </button>
 
               <!-- 4th Circle: ORDER ON ZOMATO / SWIGGY -->
               <button 
@@ -1521,6 +1562,371 @@
   </div>
 
 
+  <!-- ================= VIEW 4: DEDICATED LOCATION & MAPS PAGE (/location) ================= -->
+  <div id="viewLocation" class="app-view hidden bg-brand-alabaster text-brand-charcoal min-h-screen flex flex-col">
+    
+    <!-- Sticky Top Header Bar (Brand Editorial Theme) -->
+    <header class="sticky top-0 z-40 bg-brand-forest/95 backdrop-blur-md text-brand-offwhite shadow-lg border-b border-white/10 no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between">
+        <div class="flex items-center space-x-3 sm:space-x-4">
+          <a href="#/" class="flex items-center space-x-1.5 text-brand-cream hover:text-white px-3 py-1.5 rounded-full bg-white/10 text-xs font-semibold uppercase tracking-wider transition-all">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span>Home</span>
+          </a>
+          <span class="text-white/30 hidden sm:inline">•</span>
+          <div class="flex items-center space-x-2.5">
+            <img src="assets/logo.jpg" alt="Love Over Coffee Emblem" class="w-7 h-7 sm:w-8 sm:h-8 rounded-full object-cover border border-brand-gold">
+            <div>
+              <span class="font-serif font-bold text-sm sm:text-base text-brand-offwhite block leading-tight">Love Over Coffee Locations</span>
+              <span class="text-[9px] text-brand-gold uppercase tracking-wider font-medium hidden sm:block">Jaipur Outlets & Official Google Maps Guide</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="flex items-center space-x-2.5 sm:space-x-3">
+          <button onclick="openGoogleMaps()" class="inline-flex items-center space-x-1.5 px-3.5 sm:px-4 py-1.5 rounded-full bg-brand-gold text-brand-dark font-bold text-xs uppercase tracking-wider hover:bg-brand-goldHover transition-all shadow-md">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+            <span>Google Maps</span>
+          </button>
+          <button onclick="openOrderModal()" class="inline-flex items-center space-x-1 px-3 sm:px-4 py-1.5 rounded-full bg-brand-cream text-brand-forest font-bold text-xs uppercase tracking-wider hover:bg-brand-creamHover transition-all">
+            <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">Order Now</span>
+            <span class="sm:hidden">Order</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-8 py-8 sm:py-12 space-y-12">
+      
+      <!-- Title & Hero Banner -->
+      <div class="text-center max-w-3xl mx-auto space-y-3">
+        <span class="text-xs font-bold tracking-[0.25em] uppercase text-brand-bronze block">OFFICIAL JAIPUR STORE DIRECTORY</span>
+        <h1 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-brand-charcoal">
+          Locate Your Nearest LOC
+        </h1>
+        <p class="text-xs sm:text-sm text-brand-muted leading-relaxed">
+          From late-night cravings on Tonk Road running till 4:00 AM to quiet afternoon artisanal pour-overs at JLN Road and bistro vibes at C-Scheme, find live map directions, contact numbers, hours, and direct online ordering.
+        </p>
+      </div>
+
+      <!-- Spotlight: Embedded Live Map & C-Scheme Flagship Card -->
+      <div class="bg-white rounded-3xl p-5 sm:p-8 border-2 border-brand-cardBorder shadow-xl overflow-hidden grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+        
+        <!-- Interactive Map Embed Left -->
+        <div class="lg:col-span-7 rounded-2xl overflow-hidden border border-brand-cardBorder shadow-md relative bg-brand-sand min-h-[340px] sm:min-h-[440px]">
+          <iframe 
+            title="Love Over Coffee Jaipur Location Map"
+            src="https://maps.google.com/maps?q=Love+over+coffee+Jaipur&t=&z=14&ie=UTF8&iwloc=&output=embed" 
+            width="100%" 
+            height="100%" 
+            class="w-full h-[340px] sm:h-[440px] border-0" 
+            style="border:0;" 
+            allowfullscreen="" 
+            loading="lazy" 
+            referrerpolicy="no-referrer-when-downgrade"
+          ></iframe>
+          <div class="absolute bottom-3 left-3 bg-brand-forest/90 backdrop-blur-md text-brand-offwhite px-3.5 py-1.5 rounded-full text-[11px] font-semibold flex items-center gap-2 shadow-md">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            <span>Live Interactive Google Map Embed</span>
+          </div>
+        </div>
+
+        <!-- Flagship Details Right -->
+        <div class="lg:col-span-5 space-y-5">
+          <div class="flex items-center justify-between">
+            <span class="px-3 py-1 rounded-full bg-brand-sand text-brand-forest text-xs font-bold uppercase tracking-wider">
+              Flagship Bistro
+            </span>
+            <span class="text-xs font-bold text-brand-gold flex items-center gap-1">
+              ★ 4.6 (264+ Reviews)
+            </span>
+          </div>
+
+          <div>
+            <h2 class="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal">
+              C-Scheme Flagship
+            </h2>
+            <p class="text-xs sm:text-sm text-brand-muted mt-2 flex items-start gap-2">
+              <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+              <span>F-5, Jamnalal Bajaj Marg, Ashok Nagar, C-Scheme, Jaipur, Rajasthan 302001</span>
+            </p>
+          </div>
+
+          <div class="p-4 rounded-2xl bg-brand-sand/50 border border-brand-cardBorder space-y-2 text-xs text-brand-charcoal">
+            <div class="flex items-center justify-between">
+              <span class="text-brand-muted font-medium">Opening Hours:</span>
+              <span class="font-bold text-brand-forest">Daily 11:00 AM – 11:00 PM</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-brand-muted font-medium">Direct WhatsApp:</span>
+              <span class="font-bold">+91 79761 98506</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-brand-muted font-medium">Ambience:</span>
+              <span>Aesthetic indoor & alfresco seating</span>
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-brand-muted font-medium">Amenities:</span>
+              <span>High-speed Wi-Fi • Power sockets • Pet friendly</span>
+            </div>
+          </div>
+
+          <!-- Direct Primary Action Redirect Button -->
+          <div class="space-y-2.5 pt-2">
+            <button 
+              onclick="openGoogleMaps('C-Scheme')" 
+              class="w-full py-3.5 px-6 rounded-full bg-brand-forest hover:bg-brand-darkHover text-brand-cream font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center space-x-2 group"
+            >
+              <i data-lucide="navigation" class="w-4 h-4 text-brand-gold group-hover:scale-110 transition-transform"></i>
+              <span>Open Exact Location in Google Maps ↗</span>
+            </button>
+            <div class="grid grid-cols-2 gap-2">
+              <a 
+                href="https://wa.me/917976198506?text=Hi%20Love%20Over%20Coffee%20C-Scheme,%20I%20would%20like%20to%20reserve%20a%20table%20or%20order" 
+                target="_blank" 
+                class="py-2.5 px-3 rounded-full bg-green-50 text-[#128C7E] border border-green-200 font-bold text-[11px] text-center hover:bg-green-100 transition-colors flex items-center justify-center gap-1"
+              >
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                <span>WhatsApp Desk</span>
+              </a>
+              <button 
+                onclick="openOrderModal('c_scheme')" 
+                class="py-2.5 px-3 rounded-full bg-brand-cream text-brand-forest font-bold text-[11px] text-center hover:bg-brand-creamHover transition-colors flex items-center justify-center gap-1 shadow-sm"
+              >
+                <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+                <span>Order Online</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Complete 6 Outlets Grid -->
+      <div class="space-y-6 pt-6">
+        <div class="flex flex-col sm:flex-row sm:items-end justify-between gap-2 border-b border-brand-cardBorder pb-4">
+          <div>
+            <h3 class="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal">All 6+ Jaipur Outlets</h3>
+            <p class="text-xs text-brand-muted mt-0.5">Click any outlet below to launch turn-by-turn Google Maps navigation or order delivery.</p>
+          </div>
+          <span class="text-xs text-brand-bronze font-semibold flex items-center gap-1">
+            <i data-lucide="map" class="w-3.5 h-3.5"></i>
+            <span>Pink City Network</span>
+          </span>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Card 1: C-Scheme Flagship -->
+          <div class="bg-white p-6 rounded-2xl border-2 border-brand-gold/60 shadow-warm flex flex-col justify-between relative overflow-hidden">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-sand text-brand-charcoal text-[10px] font-bold uppercase tracking-wider">
+                  Flagship Bistro
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">4.6★ (264+ Reviews)</span>
+              </div>
+              <h4 class="font-serif text-xl font-bold text-brand-charcoal mb-1">C-Scheme Flagship</h4>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>F-5, Jamnalal Bajaj Marg, Ashok Nagar, C-Scheme, Jaipur</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 11:00 AM – 11:00 PM</p>
+                <p><strong>WhatsApp Orders:</strong> +91 79761 98506</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <button onclick="openGoogleMaps('C-Scheme')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <i data-lucide="navigation" class="w-3.5 h-3.5 text-brand-gold"></i>
+                <span>Google Maps</span>
+              </button>
+              <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors flex items-center gap-1">
+                <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+                <span>Order Now</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: B2 Bypass Late-Night Hub -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-forest text-brand-cream text-[10px] font-bold uppercase tracking-wider">
+                  Open Till 4:00 AM
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">4.3★ (2.4K+ Reviews)</span>
+              </div>
+              <h4 class="font-serif text-xl font-bold text-brand-charcoal mb-1">B2 Bypass Late-Night Hub</h4>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>Tonk Rd, opp. Bella Casa, Surplus House, Jaipur, Rajasthan 302018</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Open daily till 4:00 AM</p>
+                <p><strong>Phone:</strong> 072320 99909 / +91 99287 83999</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <button onclick="openGoogleMaps('B2 Bypass')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <i data-lucide="navigation" class="w-3.5 h-3.5 text-brand-gold"></i>
+                <span>Google Maps</span>
+              </button>
+              <button onclick="openOrderModal('b2_bypass')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+                Order Online
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 3: JLN Road New Chapter -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-gold/20 text-brand-bronze text-[10px] font-bold uppercase tracking-wider">
+                  Newest Chapter
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">Aesthetic Select</span>
+              </div>
+              <h4 class="font-serif text-xl font-bold text-brand-charcoal mb-1">JLN Road, Jawahar Circle</h4>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>C-16, JLN Road, Jawahar Circle, Keshav Vihar, Near Airport Terminal 2</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 9:00 AM – 11:30 PM</p>
+                <p><strong>Highlights:</strong> Specialty Pour-overs & Rosetta Art</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <button onclick="openGoogleMaps('JLN Road')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <i data-lucide="navigation" class="w-3.5 h-3.5 text-brand-gold"></i>
+                <span>Google Maps</span>
+              </button>
+              <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+                Order Online
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 4: Durgapura HQ -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-sand text-brand-charcoal text-[10px] font-bold uppercase tracking-wider">
+                  Original Branch
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">Cozy Vibes</span>
+              </div>
+              <h4 class="font-serif text-xl font-bold text-brand-charcoal mb-1">Durgapura Branch</h4>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>S-7 Lakhanpuri, Durgapura, Jaipur, Rajasthan 302018</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 9:00 AM – 11:00 PM</p>
+                <p><strong>Phone:</strong> +91 99287 83999</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <button onclick="openGoogleMaps('Durgapura')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <i data-lucide="navigation" class="w-3.5 h-3.5 text-brand-gold"></i>
+                <span>Google Maps</span>
+              </button>
+              <a href="tel:+919928783999" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+                Call Outlet
+              </a>
+            </div>
+          </div>
+
+          <!-- Card 5: Vidhyadhar Nagar -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-sand text-brand-charcoal text-[10px] font-bold uppercase tracking-wider">
+                  North Jaipur
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">Birthday Friendly</span>
+              </div>
+              <h4 class="font-serif text-xl font-bold text-brand-charcoal mb-1">Vidhyadhar Nagar (VDN)</h4>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>Central Spine, Vidhyadhar Nagar, Jaipur</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 10:00 AM – 11:00 PM</p>
+                <p><strong>District Special:</strong> Complimentary Birthday Pastry</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <button onclick="openGoogleMaps('Vidhyadhar Nagar')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <i data-lucide="navigation" class="w-3.5 h-3.5 text-brand-gold"></i>
+                <span>Google Maps</span>
+              </button>
+              <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+                Order Online
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 6: Vaishali & Jagatpura -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-sand text-brand-charcoal text-[10px] font-bold uppercase tracking-wider">
+                  Neighborhood Spots
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">5.0★ Community</span>
+              </div>
+              <h4 class="font-serif text-xl font-bold text-brand-charcoal mb-1">Vaishali Nagar & Jagatpura</h4>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>Amrapali Marg, Vaishali & Mahal Road, Jagatpura, Jaipur</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 9:30 AM – 11:00 PM</p>
+                <p><strong>Atmosphere:</strong> Work-friendly, quiet nooks & high speed Wi-Fi</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <button onclick="openGoogleMaps('Vaishali Nagar')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <i data-lucide="navigation" class="w-3.5 h-3.5 text-brand-gold"></i>
+                <span>Google Maps</span>
+              </button>
+              <button onclick="openOrderModal('b2_bypass')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+                Order Online
+              </button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </main>
+
+    <!-- Location View Footer -->
+    <footer class="bg-white border-t border-brand-cardBorder py-8 mt-12 no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between text-xs text-brand-muted gap-4">
+        <div class="flex items-center space-x-2.5">
+          <img src="assets/logo.jpg" alt="LOC" class="w-6 h-6 rounded-full object-cover">
+          <span class="font-serif font-bold text-brand-charcoal">Love Over Coffee Jaipur</span>
+        </div>
+        <p>© 2026 Love Over Coffee. Handcrafted brews & late-night memories.</p>
+        <div class="flex items-center space-x-5 font-medium">
+          <a href="#/" class="hover:text-brand-forest">Home</a>
+          <a href="#/menu-gateway" class="hover:text-brand-forest">Menu</a>
+          <a href="#/menu-brochure" class="hover:text-brand-forest">Brochure</a>
+          <button onclick="openGoogleMaps()" class="text-brand-forest font-semibold hover:underline flex items-center gap-1">
+            <span>Google Maps</span>
+            <i data-lucide="external-link" class="w-3 h-3"></i>
+          </button>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
   <!-- ================= JAVASCRIPT LOGIC & COMPLETE C-SCHEME DATASET ================= -->
   <script>
     // Initialize Lucide Icons
@@ -1698,22 +2104,39 @@
     ];
     let currentReviewIndex = 0;
 
+    // Official Exact Google Maps URL provided by brand
+    const LOC_EXACT_MAPS_URL = "https://maps.google.com/maps?vet=10CAAQoqAOahcKEwig8pzirvaXAxUAAAAAHQAAAAAQBQ..i&sca_esv=caf0baf30b081fed&udm&client=opera-gx&hs=1Dp&fvr=1&pvq=Cg0vZy8xMWY2NGM1X3RqIhYKEGxvdmUgb3ZlciBjb2ZmZWUQAhgD&lqi=Chdsb3ZlIG92ZXIgY29mZmVlIGphaXB1ckiw_svFmK2AgAhaMRAAEAEQAhgAGAEYAhgDIhdsb3ZlIG92ZXIgY29mZmVlIGphaXB1cioICAIQABABEAKSAQRjYWZl&cs=1&um=1&ie=UTF-8&fb=1&gl=in&sa=X&ftid=0x396db592beb1f851:0x35a50e7949924fae";
+
+    function openGoogleMaps(outletQuery = '') {
+      if (!outletQuery || outletQuery.toLowerCase().includes('c-scheme') || outletQuery.toLowerCase().includes('flagship')) {
+        window.open(LOC_EXACT_MAPS_URL, '_blank');
+      } else {
+        const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent('Love Over Coffee ' + outletQuery + ' Jaipur')}`;
+        window.open(url, '_blank');
+      }
+    }
+
     // ================= ROUTING SYSTEM =================
     function handleRouting() {
       const hash = window.location.hash || '#/';
       const viewHome = document.getElementById('viewHome');
       const viewGateway = document.getElementById('viewGateway');
       const viewBrochure = document.getElementById('viewBrochure');
+      const viewLocation = document.getElementById('viewLocation');
 
       viewHome.classList.add('hidden');
       viewGateway.classList.add('hidden');
       viewBrochure.classList.add('hidden');
+      if (viewLocation) viewLocation.classList.add('hidden');
 
       if (hash === '#/menu-gateway') {
         viewGateway.classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else if (hash === '#/menu-brochure') {
         viewBrochure.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#/location') {
+        if (viewLocation) viewLocation.classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
       } else {
         viewHome.classList.remove('hidden');
@@ -1743,7 +2166,7 @@
 
       // If cart is completely empty, offer to add signature bestseller
       if (cart.length === 0) {
-        addToCart('Cafe Frappe', 470, 'Cold Coffee & Signature Frappes');
+        addToCart('Cafe Frappe', 200, 'Cold Coffee & Signature Frappes');
       }
 
       // Populate modal summary
@@ -1811,12 +2234,14 @@
       const viewHome = document.getElementById('viewHome');
       const viewGateway = document.getElementById('viewGateway');
       const viewBrochure = document.getElementById('viewBrochure');
+      const viewLocation = document.getElementById('viewLocation');
 
       if (viewHome.classList.contains('hidden')) {
         window.location.hash = '#/';
         viewHome.classList.remove('hidden');
         viewGateway.classList.add('hidden');
         viewBrochure.classList.add('hidden');
+        if (viewLocation) viewLocation.classList.add('hidden');
       }
 
       setTimeout(() => {

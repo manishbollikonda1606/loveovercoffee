@@ -138,8 +138,9 @@ class LOCHandler(http.server.SimpleHTTPRequestHandler):
 
         self.send_error(404, "Endpoint not found")
 
-class ReusableTCPServer(socketserver.TCPServer):
+class ReusableTCPServer(socketserver.ThreadingMixIn, socketserver.TCPServer):
     allow_reuse_address = True
+    daemon_threads = True
 
 if __name__ == '__main__':
     with ReusableTCPServer(("", PORT), LOCHandler) as httpd:
