@@ -498,7 +498,8 @@
 
           <!-- ORDER NOW Button -> Always Visible on Desktop and Mobile -->
           <button id="mainOrderNowBtn" onclick="openOrderModal()" class="inline-flex items-center justify-center px-3 sm:px-6 py-1.5 sm:py-2.5 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-[10px] sm:text-xs tracking-wider uppercase transition-all shadow-md transform hover:-translate-y-0.5 active:scale-95 shrink-0 cursor-pointer">
-            Order
+            <span class="hidden sm:inline">ORDER NOW</span>
+            <span class="sm:hidden">ORDER</span>
           </button>
 
           <!-- Mobile Menu Hamburger -->
@@ -1034,13 +1035,15 @@
               </div>
             </div>
             <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
-              <button onclick="openGoogleMaps('C-Scheme')" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
-                <span>Google Maps</span>
-                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
-              </button>
+              <a href="#/menu-brochure" onclick="window.location.hash='#/menu-brochure'; handleRouting();" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1 cursor-pointer">
+                <span>View Full Menu</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </a>
               <div class="flex items-center space-x-2">
-                <a href="#/menu-brochure" class="text-xs font-semibold text-brand-forest hover:text-brand-gold hidden sm:inline">Menu</a>
-                <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors flex items-center gap-1">
+                <button onclick="openGoogleMaps('C-Scheme')" title="Open Google Maps" class="p-1.5 rounded-full hover:bg-brand-sand text-brand-forest transition-colors cursor-pointer" aria-label="Google Maps">
+                  <i data-lucide="map-pin" class="w-3.5 h-3.5"></i>
+                </button>
+                <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors flex items-center gap-1 cursor-pointer">
                   <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
                   <span>Order Now</span>
                 </button>
@@ -2232,6 +2235,18 @@
       } else if (hash === '#/location') {
         if (viewLocation) viewLocation.classList.remove('hidden');
         window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#/outlets' || hash === '#outlets') {
+        viewHome.classList.remove('hidden');
+        setTimeout(() => navigateToSection('outlets'), 50);
+      } else if (hash === '#/reviews' || hash === '#reviews' || hash === '#/testimonials') {
+        viewHome.classList.remove('hidden');
+        setTimeout(() => navigateToSection('testimonials'), 50);
+      } else if (hash === '#/story' || hash === '#story') {
+        viewHome.classList.remove('hidden');
+        setTimeout(() => navigateToSection('story'), 50);
+      } else if (hash === '#/specials' || hash === '#specials') {
+        viewHome.classList.remove('hidden');
+        setTimeout(() => navigateToSection('specials'), 50);
       } else {
         viewHome.classList.remove('hidden');
       }
