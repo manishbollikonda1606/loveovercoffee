@@ -329,32 +329,37 @@
   </div>
 
   <!-- ================= VIDEO MODAL ================= -->
-  <div id="videoModal" class="fixed inset-0 z-50 pointer-events-none opacity-0 bg-black/75 backdrop-blur-md transition-all duration-300 flex items-center justify-center p-4">
-    <div class="bg-brand-dark rounded-2xl overflow-hidden max-w-2xl w-full border border-white/10 shadow-2xl relative pointer-events-auto">
-      <div class="p-4 bg-brand-forest flex items-center justify-between text-brand-offwhite">
-        <div class="flex items-center space-x-2">
+  <div id="videoModal" class="fixed inset-0 z-50 pointer-events-none opacity-0 bg-black/85 backdrop-blur-md transition-all duration-300 flex items-center justify-center p-4">
+    <div class="bg-brand-dark rounded-2xl overflow-hidden max-w-2xl w-full border border-white/15 shadow-2xl relative pointer-events-auto">
+      <div class="p-4 bg-brand-forest flex items-center justify-between text-brand-offwhite border-b border-white/10">
+        <div class="flex items-center space-x-2.5">
           <span class="w-2.5 h-2.5 rounded-full bg-brand-gold animate-pulse"></span>
-          <span class="font-serif text-sm tracking-wide">Love Over Coffee — The New Chapter (JLN Road & C-Scheme)</span>
+          <span class="font-serif text-sm font-semibold tracking-wide">Love Over Coffee — The New Chapter (JLN Road & C-Scheme)</span>
         </div>
-        <button id="closeVideoBtn" class="text-white/80 hover:text-white">
+        <button id="closeVideoBtn" class="text-white/80 hover:text-white p-1 rounded-full hover:bg-white/10 transition-colors">
           <i data-lucide="x" class="w-5 h-5"></i>
         </button>
       </div>
-      <div class="aspect-video bg-black flex flex-col items-center justify-center p-8 text-center text-brand-offwhite relative">
-        <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80" alt="Cafe vibe" class="absolute inset-0 w-full h-full object-cover opacity-40">
-        <div class="relative z-10 space-y-4 max-w-md">
-          <div class="w-16 h-16 rounded-full bg-brand-cream text-brand-dark flex items-center justify-center mx-auto shadow-lg">
-            <i data-lucide="play" class="w-8 h-8 fill-brand-dark ml-1"></i>
-          </div>
-          <h4 class="font-serif text-2xl font-bold text-brand-cream">A New Aesthetic Coffee Sanctuary</h4>
-          <p class="text-sm text-brand-offwhite/90 font-light">Experience the newest SELECT outlet at C-16, JLN Road, Jawahar Circle. Late nights, rosetta art, warm acoustics, and authentic conversations.</p>
-          <div class="pt-2">
-            <a href="https://www.instagram.com/loveovercoffee_?utm_source=ig_web_button_share_sheet&dlrf=ZDNlZDc0MzIxNw==" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 bg-brand-gold hover:bg-brand-goldHover text-brand-dark font-semibold rounded-full text-xs uppercase tracking-wider transition-all">
-              <i data-lucide="instagram" class="w-4 h-4"></i>
-              <span>Watch Reel on Instagram (11.6K+)</span>
-            </a>
-          </div>
+      <div class="aspect-video w-full bg-black relative">
+        <iframe 
+          id="chapterVideoIframe"
+          class="w-full h-full"
+          src="https://www.youtube-nocookie.com/embed/1W9lqgV27lY?enablejsapi=1&rel=0&modestbranding=1" 
+          title="Love Over Coffee Jaipur Chapter"
+          frameborder="0" 
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+          allowfullscreen
+        ></iframe>
+      </div>
+      <div class="p-4 sm:p-5 bg-brand-forest/90 flex flex-col sm:flex-row items-center justify-between gap-3 text-xs text-brand-offwhite">
+        <div class="text-center sm:text-left">
+          <h5 class="font-serif font-bold text-sm text-brand-cream">Aesthetic Coffee Sanctuary</h5>
+          <p class="text-brand-offwhite/80 text-[11px] mt-0.5">Specialty Arabica roasts, late nights, rosetta art & cozy Pink City corners.</p>
         </div>
+        <a href="https://www.instagram.com/loveovercoffee_?utm_source=ig_web_button_share_sheet&dlrf=ZDNlZDc0MzIxNw==" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 bg-brand-gold hover:bg-brand-goldHover text-brand-dark font-bold rounded-full text-xs uppercase tracking-wider shrink-0 transition-all shadow-md">
+          <i data-lucide="instagram" class="w-3.5 h-3.5"></i>
+          <span>Watch on Instagram (11.6K+)</span>
+        </a>
       </div>
     </div>
   </div>
@@ -363,54 +368,54 @@
   <!-- ================= VIEW 1: HOME PAGE VIEW ================= -->
   <div id="viewHome" class="app-view block">
 
-    <!-- Top Navigation Bar -->
-    <header class="absolute top-0 left-0 right-0 z-40 transition-all duration-300">
-      <div class="max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center justify-between">
+    <!-- Top Navigation Bar (Sticky with Glassmorphism) -->
+    <header class="sticky top-0 left-0 right-0 z-40 bg-brand-forest/95 backdrop-blur-md border-b border-white/10 transition-all duration-300 shadow-md">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 md:px-12 py-3.5 sm:py-4 flex items-center justify-between">
         
         <!-- Brand Logo Left with User Provided Golden Cup Emblem -->
-        <a href="#/" class="flex items-center space-x-3.5 group">
-          <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-brand-gold/80 shadow-md flex items-center justify-center bg-brand-sand group-hover:scale-105 transition-transform duration-300">
+        <a href="#/" class="flex items-center space-x-2.5 sm:space-x-3.5 group">
+          <div class="w-10 h-10 sm:w-12 sm:h-12 rounded-full overflow-hidden border-2 border-brand-gold/80 shadow-md flex items-center justify-center bg-brand-sand group-hover:scale-105 transition-transform duration-300 shrink-0">
             <img src="assets/logo.jpg" alt="Love Over Coffee Jaipur Emblem" class="w-full h-full object-cover">
           </div>
           <div class="flex flex-col">
-            <span class="font-serif text-xl md:text-2xl font-bold tracking-tight text-brand-offwhite flex items-center gap-1.5">
+            <span class="font-serif text-lg sm:text-2xl font-bold tracking-tight text-brand-offwhite flex items-center gap-1.5">
               Love Over Coffee
-              <span class="text-brand-gold text-xs font-sans px-1.5 py-0.5 rounded-full border border-brand-gold/40 font-normal">LOC</span>
+              <span class="text-brand-gold text-[10px] sm:text-xs font-sans px-1.5 py-0.5 rounded-full border border-brand-gold/40 font-normal">LOC</span>
             </span>
-            <span class="text-[9px] tracking-[0.28em] text-brand-gold uppercase font-medium">JAIPUR • EST. CAFE</span>
+            <span class="text-[8px] sm:text-[9px] tracking-[0.25em] sm:tracking-[0.28em] text-brand-gold uppercase font-medium">JAIPUR • EST. CAFE</span>
           </div>
         </a>
 
-        <!-- Center Navigation Links -->
-        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-brand-offwhite/90">
+        <!-- Center Navigation Links (With Smooth Scroll To Sections) -->
+        <nav class="hidden md:flex items-center space-x-7 text-sm font-medium text-brand-offwhite/90">
           <a href="#/" class="text-brand-offwhite hover:text-brand-cream transition-colors relative py-1 border-b-2 border-brand-gold font-semibold">Home</a>
           <a href="#/menu-gateway" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Menu</a>
-          <a href="#story" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Our Story</a>
-          <a href="#outlets" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Outlets</a>
-          <a href="#testimonials" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Reviews</a>
-          <a href="#footer" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Contact</a>
+          <button onclick="navigateToSection('story')" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60 font-medium">Our Story</button>
+          <button onclick="navigateToSection('outlets')" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60 font-medium">Outlets</button>
+          <button onclick="navigateToSection('testimonials')" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60 font-medium">Reviews</button>
+          <button onclick="navigateToSection('footer')" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60 font-medium">Contact</button>
         </nav>
 
         <!-- Right Action CTAs -->
-        <div class="flex items-center space-x-4">
+        <div class="flex items-center space-x-2.5 sm:space-x-4">
           <!-- Search Trigger -->
-          <button id="openSearchBtn" aria-label="Search Menu" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all">
+          <button id="openSearchBtn" aria-label="Search Menu" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all">
             <i data-lucide="search" class="w-4 h-4"></i>
           </button>
 
           <!-- Cart Trigger with Badge -->
-          <button id="openCartBtn" aria-label="Shopping Cart" class="relative w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all">
+          <button id="openCartBtn" aria-label="Shopping Cart" class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all">
             <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-            <span id="cartNavBadge" class="absolute -top-1 -right-1 bg-brand-gold text-brand-dark font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-brand-dark">2</span>
+            <span id="cartNavBadge" class="absolute -top-1 -right-1 bg-brand-gold text-brand-dark font-bold text-[9px] sm:text-[10px] w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-md border-2 border-brand-dark">2</span>
           </button>
 
-          <!-- ORDER NOW Button -> Directly triggers Order Modal -->
-          <button onclick="openOrderModal()" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-xs tracking-wider uppercase transition-all shadow-md transform hover:-translate-y-0.5 active:scale-95">
+          <!-- ORDER NOW Button -> Always Visible on Desktop and Mobile -->
+          <button onclick="openOrderModal()" class="inline-flex items-center justify-center px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all shadow-md transform hover:-translate-y-0.5 active:scale-95 shrink-0">
             Order Now
           </button>
 
           <!-- Mobile Menu Hamburger -->
-          <button id="mobileMenuToggle" class="md:hidden p-2 text-brand-offwhite">
+          <button id="mobileMenuToggle" aria-label="Toggle Navigation Menu" class="md:hidden p-1.5 text-brand-offwhite hover:text-brand-cream">
             <i data-lucide="menu" class="w-6 h-6"></i>
           </button>
         </div>
@@ -418,15 +423,15 @@
       </div>
 
       <!-- Mobile Nav Dropdown -->
-      <div id="mobileMenu" class="hidden md:hidden bg-brand-dark/95 backdrop-blur-md border-b border-white/10 px-6 py-4 space-y-3">
-        <a href="#/" class="block py-2 text-brand-cream font-medium text-sm">Home</a>
-        <a href="#/menu-gateway" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Menu Brochure & Gateway</a>
-        <a href="#story" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Our Story</a>
-        <a href="#outlets" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Outlets (6+ Locations)</a>
-        <a href="#testimonials" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Reviews (4.3★)</a>
-        <a href="#footer" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Contact & Hours</a>
+      <div id="mobileMenu" class="hidden md:hidden bg-brand-dark/98 backdrop-blur-md border-b border-white/10 px-6 py-4 space-y-2">
+        <a href="#/" onclick="closeMobileMenu()" class="block py-2 text-brand-cream font-medium text-sm border-b border-white/5">Home</a>
+        <a href="#/menu-gateway" onclick="closeMobileMenu()" class="block py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Menu Brochure & Gateway</a>
+        <button onclick="navigateToSection('story')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Our Story</button>
+        <button onclick="navigateToSection('outlets')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Outlets (6+ Locations)</button>
+        <button onclick="navigateToSection('testimonials')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Reviews (4.3★)</button>
+        <button onclick="navigateToSection('footer')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Contact & Hours</button>
         <div class="pt-2">
-          <button onclick="openOrderModal()" class="w-full text-center py-2.5 rounded-full bg-brand-cream text-brand-forest font-semibold text-xs uppercase tracking-wider">
+          <button onclick="openOrderModal(); closeMobileMenu();" class="w-full text-center py-2.5 rounded-full bg-brand-gold text-brand-dark font-bold text-xs uppercase tracking-wider shadow-md">
             Order Now (Zomato / Swiggy / WhatsApp)
           </button>
         </div>
@@ -666,7 +671,8 @@
           </button>
         </div>
 
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-8" id="menuGrid">
+        <!-- Compressed Responsive 2-Column Mobile Grid -> 5 Column Desktop -->
+        <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 sm:gap-4 md:gap-6 mt-6 sm:mt-8" id="menuGrid">
           <!-- Populated by JS -->
         </div>
 
@@ -1793,40 +1799,43 @@
       }
     }
 
-    // Backend Order Dispatch Function
-    async function dispatchOrder(platform) {
-      const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
-      const payload = {
-        name: "Valued Customer",
-        phone: "+91 99999 99999",
-        outlet: selectedOutlet,
-        platform: platform,
-        items: cart,
-        subtotal: subtotal
-      };
+    // Mobile Menu Helper
+    function closeMobileMenu() {
+      const m = document.getElementById('mobileMenu');
+      if (m) m.classList.add('hidden');
+    }
 
-      try {
-        // Send order to our local backend API
-        const res = await fetch('/api/order', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
+    // Smooth Navigation to Sections from any view
+    function navigateToSection(sectionId) {
+      closeMobileMenu();
+      const viewHome = document.getElementById('viewHome');
+      const viewGateway = document.getElementById('viewGateway');
+      const viewBrochure = document.getElementById('viewBrochure');
 
-        if (res.ok) {
-          const data = await res.json();
-          showToast(`Order created (#${data.order_id})! Opening ${platform.toUpperCase()}...`);
-          closeOrderModal();
-          setTimeout(() => {
-            window.open(data.redirect_url, '_blank');
-          }, 400);
-          return;
-        }
-      } catch (err) {
-        console.log("Local backend fetch note (fallback to direct link):", err);
+      if (viewHome.classList.contains('hidden')) {
+        window.location.hash = '#/';
+        viewHome.classList.remove('hidden');
+        viewGateway.classList.add('hidden');
+        viewBrochure.classList.add('hidden');
       }
 
-      // Fallback direct redirection if server offline
+      setTimeout(() => {
+        const target = document.getElementById(sectionId);
+        if (target) {
+          const navOffset = 80;
+          const elementPosition = target.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - navOffset;
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+        }
+      }, 70);
+    }
+
+    // Backend Order Dispatch Function (Mobile & Desktop Reliable)
+    function dispatchOrder(platform) {
+      const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
       let targetUrl = '';
       if (platform === 'zomato') {
         targetUrl = selectedOutlet === 'c_scheme' 
@@ -1841,8 +1850,31 @@
         targetUrl = `https://wa.me/${phone}?text=${text}`;
       }
 
+      // Record in local API asynchronously without blocking mobile browser redirection
+      try {
+        fetch('/api/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: "Customer",
+            outlet: selectedOutlet,
+            platform: platform,
+            items: cart,
+            subtotal: subtotal
+          })
+        }).catch(err => console.log(err));
+      } catch(e) {}
+
+      showToast(`Redirecting to ${platform.toUpperCase()} for ${selectedOutlet === 'c_scheme' ? 'C-Scheme' : 'B2 Bypass'}...`);
       closeOrderModal();
-      window.open(targetUrl, '_blank');
+
+      // Robust redirection avoiding mobile Safari/Chrome popup blocker
+      setTimeout(() => {
+        const win = window.open(targetUrl, '_blank');
+        if (!win || win.closed || typeof win.closed == 'undefined') {
+          window.location.href = targetUrl;
+        }
+      }, 100);
     }
 
     function dispatchDirectWhatsApp() {
@@ -1850,7 +1882,16 @@
       const phone = selectedOutlet === 'c_scheme' ? '917976198506' : '919928783999';
       const itemsText = cart.map(i => `• ${i.qty}x ${i.title} (₹${i.price})`).join('%0A');
       const text = `Hi Love Over Coffee (${selectedOutlet === 'c_scheme' ? 'C-Scheme Flagship' : 'B2 Bypass Hub'}), I would like to order:%0A${itemsText}%0A*Total: ₹${subtotal.toFixed(2)}*`;
-      window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
+      const url = `https://wa.me/${phone}?text=${text}`;
+      
+      showToast("Opening WhatsApp with pre-filled order...");
+      closeOrderModal();
+      setTimeout(() => {
+        const win = window.open(url, '_blank');
+        if (!win || win.closed || typeof win.closed == 'undefined') {
+          window.location.href = url;
+        }
+      }, 100);
     }
 
     // ================= RENDER HOME MENU SPECIALS =================
@@ -1859,29 +1900,29 @@
       const filtered = category === 'all' ? HOME_SPECIALS : HOME_SPECIALS.filter(item => item.category === category);
 
       container.innerHTML = filtered.map(item => `
-        <div class="bg-white rounded-2xl border border-brand-cardBorder overflow-hidden shadow-sm hover:shadow-warm transition-all duration-300 flex flex-col justify-between group transform hover:-translate-y-1">
+        <div class="bg-white rounded-xl sm:rounded-2xl border border-brand-cardBorder overflow-hidden shadow-sm hover:shadow-warm transition-all duration-300 flex flex-col justify-between group transform hover:-translate-y-1">
           <div>
             <div class="aspect-square w-full overflow-hidden relative bg-brand-sand">
               <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
-              <span class="absolute top-3 left-3 text-[10px] font-semibold px-2.5 py-1 rounded-full ${item.badgeColor} shadow-sm">
+              <span class="absolute top-2 left-2 sm:top-3 sm:left-3 text-[8px] sm:text-[10px] font-semibold px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full ${item.badgeColor} shadow-sm">
                 ${item.badge}
               </span>
             </div>
-            <div class="p-4 space-y-1">
-              <h3 class="font-serif font-bold text-brand-charcoal text-base group-hover:text-brand-forest transition-colors line-clamp-1">
+            <div class="p-2.5 sm:p-4 space-y-0.5 sm:space-y-1">
+              <h3 class="font-serif font-bold text-brand-charcoal text-xs sm:text-base group-hover:text-brand-forest transition-colors line-clamp-1">
                 ${item.title}
               </h3>
-              <p class="text-xs text-brand-muted line-clamp-2 leading-relaxed">
+              <p class="text-[10px] sm:text-xs text-brand-muted line-clamp-2 leading-relaxed">
                 ${item.desc}
               </p>
             </div>
           </div>
-          <div class="p-4 pt-1 flex items-center justify-between border-t border-brand-cardBorder/60 mt-1">
-            <span class="font-sans font-bold text-base text-brand-charcoal">
+          <div class="p-2.5 sm:p-4 pt-1 flex items-center justify-between border-t border-brand-cardBorder/60 mt-1">
+            <span class="font-sans font-bold text-xs sm:text-base text-brand-charcoal">
               ₹${item.price.toFixed(2)}
             </span>
-            <button onclick="addToCart('${item.title}', ${item.price}, '${item.category}', '${item.image}', '${item.id}')" aria-label="Add ${item.title} to Cart" class="w-9 h-9 rounded-full bg-brand-sand group-hover:bg-brand-forest text-brand-forest group-hover:text-brand-cream border border-brand-cardBorder flex items-center justify-center transition-all shadow-sm hover:scale-110 active:scale-95">
-              <i data-lucide="plus" class="w-4 h-4 stroke-[2.5]"></i>
+            <button onclick="addToCart('${item.title.replace(/'/g, "\\'")}', ${item.price}, '${item.category}', '${item.image}', '${item.id}')" aria-label="Add ${item.title} to Cart" class="w-7 h-7 sm:w-9 sm:h-9 rounded-full bg-brand-sand group-hover:bg-brand-forest text-brand-forest group-hover:text-brand-cream border border-brand-cardBorder flex items-center justify-center transition-all shadow-sm hover:scale-110 active:scale-95">
+              <i data-lucide="plus" class="w-3.5 h-3.5 sm:w-4 sm:h-4 stroke-[2.5]"></i>
             </button>
           </div>
         </div>
