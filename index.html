@@ -52,7 +52,7 @@
   </script>
 
   <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@0.263.1"></script>
+  <script src="https://unpkg.com/lucide@1.70.0/dist/umd/lucide.min.js"></script>
 
   <style>
     /* Custom styling for editorial perfection */
@@ -2028,8 +2028,17 @@
 
   <!-- ================= JAVASCRIPT LOGIC & COMPLETE C-SCHEME DATASET ================= -->
   <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
+    // Defensive Lucide Icons initializer
+    function safeCreateIcons() {
+      try {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
+      } catch (e) {
+        console.warn('Lucide icon render skipped:', e);
+      }
+    }
+    safeCreateIcons();
 
     // COMPLETE 10-CATEGORY C-SCHEME JAIPUR DATASET (55+ ITEMS)
     const COMPLETE_MENU_DATASET = [
@@ -2256,7 +2265,7 @@
       } else {
         viewHome.classList.remove('hidden');
       }
-      lucide.createIcons();
+      safeCreateIcons();
     }
 
     window.addEventListener('hashchange', handleRouting);
@@ -2458,7 +2467,7 @@
             </div>
           </div>
         `;
-        lucide.createIcons();
+        safeCreateIcons();
       }
 
       showToast(`🎉 Order #${orderId} received! Preparing at ${outletName}`);
@@ -2657,7 +2666,7 @@
           </div>
         </div>
       `).join('');
-      lucide.createIcons();
+      safeCreateIcons();
     }
 
     // Home Filter pills
@@ -2760,7 +2769,7 @@
       }
 
       container.innerHTML = html;
-      lucide.createIcons();
+      safeCreateIcons();
     }
 
     // Render Brochure Category Bar Pills
@@ -2818,7 +2827,7 @@
         <span>${message}</span>
       `;
       container.appendChild(toast);
-      lucide.createIcons();
+      safeCreateIcons();
       setTimeout(() => toast.remove(), 3100);
     }
 
@@ -2882,7 +2891,7 @@
           </div>
         `).join('');
       }
-      lucide.createIcons();
+      safeCreateIcons();
     }
 
     function changeQty(title, delta) {
