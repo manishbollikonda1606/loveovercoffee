@@ -39,6 +39,31 @@ class LOCHandler(http.server.SimpleHTTPRequestHandler):
         self.send_header('Access-Control-Allow-Headers', 'Content-Type')
         self.end_headers()
 
+    def do_GET(self):
+        parsed_path = urllib.parse.urlparse(self.path)
+        if parsed_path.path == '/api/orders':
+            orders = []
+            if os.path.exists(ORDERS_FILE):
+                try:
+                    with open(ORDERS_FILE, 'r') as f:
+                        orders = json.load(f)
+                except Exception:
+                    orders = []
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps(orders).encode('utf-8'))
+            return
+        elif parsed_path.path == '/api/health':
+            self.send_response(200)
+            self.send_header('Content-Type', 'application/json')
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.end_headers()
+            self.wfile.write(json.dumps({"status": "ok", "service": "Love Over Coffee Backend"}).encode('utf-8'))
+            return
+        super().do_GET()
+
     def do_POST(self):
         parsed_path = urllib.parse.urlparse(self.path)
 

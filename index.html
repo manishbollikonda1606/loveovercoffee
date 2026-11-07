@@ -148,113 +148,135 @@
   <!-- ================= NOTIFICATION TOAST ================= -->
   <div id="toastContainer" class="fixed top-5 left-1/2 z-50 pointer-events-none transition-all duration-300"></div>
 
-  <!-- ================= ORDER DESTINATION MODAL (ZOMATO / SWIGGY / WHATSAPP) ================= -->
-  <div id="orderPlatformModal" class="fixed inset-0 z-50 pointer-events-none opacity-0 bg-black/75 backdrop-blur-md transition-all duration-300 flex items-center justify-center p-4">
-    <div id="orderPlatformContent" class="bg-brand-alabaster rounded-3xl shadow-2xl w-full max-w-xl p-6 sm:p-8 pointer-events-auto transform scale-95 transition-all duration-300 border border-brand-cardBorder relative">
+  <!-- ================= ORDER DESTINATION MODAL (ZOMATO / SWIGGY / WHATSAPP / INLINE) ================= -->
+  <div id="orderPlatformModal" onclick="if(event.target === this) closeOrderModal()" class="fixed inset-0 z-50 hidden opacity-0 bg-black/75 backdrop-blur-md transition-all duration-300 flex items-center justify-center p-4">
+    <div id="orderPlatformContent" onclick="event.stopPropagation()" class="bg-brand-alabaster rounded-3xl shadow-2xl w-full max-w-xl p-6 sm:p-8 pointer-events-auto transform scale-95 transition-all duration-300 border border-brand-cardBorder relative max-h-[92vh] overflow-y-auto">
       
       <!-- Modal Close Button -->
-      <button onclick="closeOrderModal()" class="absolute top-6 right-6 p-2 rounded-full hover:bg-brand-sand text-brand-muted hover:text-brand-charcoal transition-colors">
-        <i data-lucide="x" class="w-5 h-5"></i>
+      <button onclick="closeOrderModal()" aria-label="Close Order Modal" class="absolute top-5 right-5 p-2 rounded-full hover:bg-brand-sand text-brand-muted hover:text-brand-charcoal transition-colors z-10 cursor-pointer">
+        <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
       </button>
 
-      <!-- Header -->
-      <div class="text-left space-y-2 pb-5 border-b border-brand-cardBorder">
-        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-forest/10 border border-brand-forest/20 text-brand-forest text-[11px] font-bold uppercase tracking-wider">
-          <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-brand-gold"></i>
-          <span>Complete Your Order</span>
+      <!-- Main Form Container -->
+      <div id="orderPlatformFormContent" class="space-y-4">
+        <!-- Header -->
+        <div class="text-left space-y-1.5 pb-4 border-b border-brand-cardBorder">
+          <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-forest/10 border border-brand-forest/20 text-brand-forest text-[11px] font-bold uppercase tracking-wider">
+            <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-brand-gold"></i>
+            <span>Complete Your Order</span>
+          </div>
+          <h3 class="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal">
+            Choose How to Order
+          </h3>
+          <p class="text-xs text-brand-muted">
+            Select your nearest Jaipur outlet and order directly or dispatch to Zomato / Swiggy / WhatsApp.
+          </p>
         </div>
-        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal">
-          Where Would You Like to Order?
-        </h3>
-        <p class="text-xs text-brand-muted">
-          Select your nearest Jaipur outlet and choose whether to order via Zomato, Swiggy, or directly on WhatsApp.
-        </p>
-      </div>
 
-      <!-- Selected Items Overview -->
-      <div class="py-4">
-        <div class="flex items-center justify-between text-xs text-brand-charcoal font-semibold mb-2">
-          <span>Items in Your Order (<span id="modalItemCount">2</span>):</span>
-          <span id="modalSubtotal" class="font-bold text-brand-forest text-sm">₹320.00</span>
+        <!-- Selected Items Overview -->
+        <div class="py-2">
+          <div class="flex items-center justify-between text-xs text-brand-charcoal font-semibold mb-2">
+            <span>Items in Your Order (<span id="modalItemCount">2</span>):</span>
+            <span id="modalSubtotal" class="font-bold text-brand-forest text-sm">₹320.00</span>
+          </div>
+          <div id="modalItemsList" class="max-h-36 overflow-y-auto space-y-1.5 p-3 rounded-2xl bg-white border border-brand-cardBorder text-xs divide-y divide-brand-cardBorder/50">
+            <!-- Dynamic Items Injected Here -->
+          </div>
         </div>
-        <div id="modalItemsList" class="max-h-36 overflow-y-auto space-y-1.5 p-3 rounded-2xl bg-white border border-brand-cardBorder text-xs divide-y divide-brand-cardBorder/50">
-          <!-- Dynamic Items Injected Here -->
-        </div>
-      </div>
 
-      <!-- Outlet Selector -->
-      <div class="space-y-2 mb-5">
-        <label class="block text-xs font-bold text-brand-charcoal uppercase tracking-wider">
-          1. Choose Jaipur Outlet:
-        </label>
-        <div class="grid grid-cols-2 gap-3">
-          <label class="flex items-center space-x-2.5 p-3 rounded-2xl border-2 border-brand-forest bg-white cursor-pointer transition-all outlet-radio-label" id="label_outlet_cscheme">
-            <input type="radio" name="orderOutlet" value="c_scheme" checked onchange="handleOutletChange()" class="accent-brand-forest">
-            <div class="text-left">
-              <span class="font-serif font-bold text-xs block text-brand-charcoal">C-Scheme Flagship</span>
-              <span class="text-[10px] text-brand-muted">Jamnalal Bajaj Marg (4.6★)</span>
-            </div>
+        <!-- Outlet Selector -->
+        <div class="space-y-2">
+          <label class="block text-xs font-bold text-brand-charcoal uppercase tracking-wider">
+            1. Select Jaipur Branch:
           </label>
-          <label class="flex items-center space-x-2.5 p-3 rounded-2xl border-2 border-brand-cardBorder bg-white cursor-pointer transition-all outlet-radio-label" id="label_outlet_b2bypass">
-            <input type="radio" name="orderOutlet" value="b2_bypass" onchange="handleOutletChange()" class="accent-brand-forest">
-            <div class="text-left">
-              <span class="font-serif font-bold text-xs block text-brand-charcoal">B2 Bypass Hub</span>
-              <span class="text-[10px] text-brand-muted">Tonk Rd (Open till 4 AM)</span>
-            </div>
+          <div class="grid grid-cols-2 gap-3">
+            <label class="flex items-center space-x-2.5 p-3 rounded-2xl border-2 border-brand-forest bg-white cursor-pointer transition-all outlet-radio-label" id="label_outlet_cscheme">
+              <input type="radio" name="orderOutlet" value="c_scheme" checked onchange="handleOutletChange()" class="accent-brand-forest">
+              <div class="text-left">
+                <span class="font-serif font-bold text-xs block text-brand-charcoal">C-Scheme Flagship</span>
+                <span class="text-[10px] text-brand-muted">Jamnalal Bajaj Marg (4.6★)</span>
+              </div>
+            </label>
+            <label class="flex items-center space-x-2.5 p-3 rounded-2xl border-2 border-brand-cardBorder bg-white cursor-pointer transition-all outlet-radio-label" id="label_outlet_b2bypass">
+              <input type="radio" name="orderOutlet" value="b2_bypass" onchange="handleOutletChange()" class="accent-brand-forest">
+              <div class="text-left">
+                <span class="font-serif font-bold text-xs block text-brand-charcoal">B2 Bypass Hub</span>
+                <span class="text-[10px] text-brand-muted">Tonk Rd (Open till 4 AM)</span>
+              </div>
+            </label>
+          </div>
+        </div>
+
+        <!-- Platform Selection Buttons -->
+        <div class="space-y-2 pt-1">
+          <label class="block text-xs font-bold text-brand-charcoal uppercase tracking-wider">
+            2. Choose Order Platform:
           </label>
+          
+          <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+            <!-- Zomato Option -->
+            <button onclick="dispatchOrder('zomato')" type="button" class="flex flex-col items-center justify-center p-3 rounded-2xl border border-red-200 bg-red-50/60 hover:bg-red-100 hover:border-red-400 text-red-700 transition-all group cursor-pointer shadow-sm">
+              <span class="font-serif font-bold text-sm block">Zomato</span>
+              <span class="text-[10px] text-red-600/80 mt-0.5">Order on Zomato App</span>
+              <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-600 text-white flex items-center gap-1 group-hover:scale-105 transition-transform">
+                <span>Open Zomato</span>
+                <i data-lucide="external-link" class="w-3 h-3"></i>
+              </span>
+            </button>
+
+            <!-- Swiggy Option -->
+            <button onclick="dispatchOrder('swiggy')" type="button" class="flex flex-col items-center justify-center p-3 rounded-2xl border border-orange-200 bg-orange-50/60 hover:bg-orange-100 hover:border-orange-400 text-orange-700 transition-all group cursor-pointer shadow-sm">
+              <span class="font-serif font-bold text-sm block">Swiggy</span>
+              <span class="text-[10px] text-orange-600/80 mt-0.5">Fast Local Delivery</span>
+              <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-500 text-white flex items-center gap-1 group-hover:scale-105 transition-transform">
+                <span>Open Swiggy</span>
+                <i data-lucide="external-link" class="w-3 h-3"></i>
+              </span>
+            </button>
+
+            <!-- WhatsApp Direct Order -->
+            <button onclick="dispatchOrder('whatsapp')" type="button" class="flex flex-col items-center justify-center p-3 rounded-2xl border-2 border-[#25D366] bg-green-50/60 hover:bg-green-100 text-[#128C7E] transition-all group cursor-pointer shadow-sm">
+              <span class="font-serif font-bold text-sm block">WhatsApp</span>
+              <span class="text-[10px] text-green-700/80 mt-0.5">Direct Barista Desk</span>
+              <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#25D366] text-white flex items-center gap-1 group-hover:scale-105 transition-transform shadow-sm">
+                <span>Send Cart List</span>
+                <i data-lucide="send" class="w-3 h-3"></i>
+              </span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Option 3: Direct In-App Order Form -->
+        <div class="pt-3 border-t border-brand-cardBorder space-y-2.5">
+          <div class="flex items-center justify-between">
+            <label class="block text-xs font-bold text-brand-charcoal uppercase tracking-wider">
+              3. Or Place Instant Direct Order:
+            </label>
+            <span class="text-[10px] text-brand-forest font-semibold">⚡ Pay at Outlet / Delivery</span>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <input type="text" id="directOrderName" placeholder="Your Name" value="Guest Foodie" class="p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none focus:border-brand-forest">
+            <input type="tel" id="directOrderPhone" placeholder="Mobile / WhatsApp (+91)" class="p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none focus:border-brand-forest">
+          </div>
+          <input type="text" id="directOrderAddress" placeholder="Table Number (Dine-in) or Delivery Address in Jaipur" class="w-full p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none focus:border-brand-forest">
+          <button onclick="submitDirectOrder()" type="button" class="w-full py-3 rounded-full bg-brand-forest hover:bg-brand-darkHover text-brand-cream font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer">
+            <i data-lucide="check-circle" class="w-4 h-4 text-brand-gold"></i>
+            <span>Confirm & Place Direct Order</span>
+          </button>
         </div>
       </div>
 
-      <!-- Platform Selection Buttons -->
-      <div class="space-y-3">
-        <label class="block text-xs font-bold text-brand-charcoal uppercase tracking-wider">
-          2. Select Order Platform:
-        </label>
-        
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
-          <!-- Zomato Option -->
-          <button onclick="dispatchOrder('zomato')" class="flex flex-col items-center justify-center p-3.5 rounded-2xl border border-red-200 bg-red-50/50 hover:bg-red-100 hover:border-red-400 text-red-700 transition-all group">
-            <span class="font-serif font-bold text-sm block">Zomato</span>
-            <span class="text-[10px] text-red-600/80 mt-0.5">Order on App/Web</span>
-            <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-600 text-white flex items-center gap-1 group-hover:scale-105 transition-transform">
-              <span>Open Zomato</span>
-              <i data-lucide="external-link" class="w-3 h-3"></i>
-            </span>
-          </button>
-
-          <!-- Swiggy Option -->
-          <button onclick="dispatchOrder('swiggy')" class="flex flex-col items-center justify-center p-3.5 rounded-2xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100 hover:border-orange-400 text-orange-700 transition-all group">
-            <span class="font-serif font-bold text-sm block">Swiggy</span>
-            <span class="text-[10px] text-orange-600/80 mt-0.5">Fast Local Delivery</span>
-            <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-500 text-white flex items-center gap-1 group-hover:scale-105 transition-transform">
-              <span>Open Swiggy</span>
-              <i data-lucide="external-link" class="w-3 h-3"></i>
-            </span>
-          </button>
-
-          <!-- WhatsApp Direct Order (Recommended) -->
-          <button onclick="dispatchOrder('whatsapp')" class="flex flex-col items-center justify-center p-3.5 rounded-2xl border-2 border-[#25D366] bg-green-50/60 hover:bg-green-100 text-[#128C7E] transition-all group shadow-sm">
-            <span class="font-serif font-bold text-sm block">WhatsApp</span>
-            <span class="text-[10px] text-green-700/80 mt-0.5">Direct Outlet Chat</span>
-            <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#25D366] text-white flex items-center gap-1 group-hover:scale-105 transition-transform shadow-sm">
-              <span>Send Cart List</span>
-              <i data-lucide="send" class="w-3 h-3"></i>
-            </span>
-          </button>
-        </div>
+      <!-- Confirmation Screen (Rendered on successful inline direct order) -->
+      <div id="orderConfirmationScreen" class="hidden text-center py-4 space-y-4">
+        <!-- Injected via submitDirectOrder() -->
       </div>
-
-      <!-- Quick Note -->
-      <p class="text-[11px] text-brand-muted text-center pt-4">
-        ✨ Clicking <strong>WhatsApp</strong> automatically formats your selected items & total so the barista prepares them right away!
-      </p>
 
     </div>
   </div>
 
   <!-- ================= CART DRAWER OVERLAY ================= -->
-  <div id="cartDrawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0 bg-black/60 backdrop-blur-sm">
-    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 pointer-events-auto">
+  <div id="cartDrawer" onclick="if(event.target === this) closeCartDrawer()" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 bg-black/60 backdrop-blur-sm">
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10" onclick="event.stopPropagation()">
       <div class="w-screen max-w-md bg-brand-alabaster shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out" id="cartDrawerContent">
         <!-- Drawer Header -->
         <div class="p-6 bg-brand-forest text-brand-offwhite flex items-center justify-between">
@@ -265,8 +287,8 @@
               <p class="text-xs text-brand-cream/80">Freshly crafted for Jaipur foodies</p>
             </div>
           </div>
-          <button id="closeCartBtn" class="p-2 rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-colors">
-            <i data-lucide="x" class="w-5 h-5"></i>
+          <button onclick="closeCartDrawer()" aria-label="Close Cart" class="p-2 rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-colors cursor-pointer">
+            <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
           </button>
         </div>
 
@@ -294,13 +316,25 @@
 
           <div class="space-y-2 pt-2">
             <!-- Order Now Primary Action -> Prompts Order Platform Selection Modal -->
-            <button onclick="openOrderModal()" class="w-full flex items-center justify-center space-x-2 py-3.5 bg-brand-forest hover:bg-brand-darkHover text-brand-cream rounded-full font-bold text-sm transition-all shadow-md">
+            <button onclick="openOrderModal()" class="w-full flex items-center justify-center space-x-2 py-3.5 bg-brand-forest hover:bg-brand-darkHover text-brand-cream rounded-full font-bold text-sm transition-all shadow-md cursor-pointer">
               <i data-lucide="shopping-bag" class="w-4 h-4 text-brand-gold"></i>
-              <span>Proceed to Order (Zomato / Swiggy / WhatsApp)</span>
+              <span>Choose Order Platform (Zomato / Swiggy)</span>
             </button>
 
+            <!-- Quick Dual Platforms Row -->
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="dispatchOrder('zomato')" class="py-2.5 px-3 rounded-full bg-red-50 text-red-700 border border-red-200 font-bold text-xs hover:bg-red-100 transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                <span>Zomato</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </button>
+              <button onclick="dispatchOrder('swiggy')" class="py-2.5 px-3 rounded-full bg-orange-50 text-orange-700 border border-orange-200 font-bold text-xs hover:bg-orange-100 transition-colors flex items-center justify-center gap-1.5 cursor-pointer">
+                <span>Swiggy</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </button>
+            </div>
+
             <!-- Quick WhatsApp Direct Order Button -->
-            <button onclick="dispatchDirectWhatsApp()" class="w-full flex items-center justify-center space-x-2 py-3 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full font-semibold text-xs uppercase tracking-wider transition-all shadow-sm">
+            <button onclick="dispatchDirectWhatsApp()" class="w-full flex items-center justify-center space-x-2 py-2.5 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full font-semibold text-xs uppercase tracking-wider transition-all shadow-sm cursor-pointer">
               <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.122-.519-1.428-.592-2.348-2.029-2.42-2.124-.071-.095-.58-0.771-.58-1.469 0-.697.366-1.04.496-1.183.13-.143.284-.179.379-.179.095 0 .19.001.273.006.087.004.204-.033.319.243.12.288.409.998.445 1.07.036.072.06.155.012.25-.048.096-.072.155-.143.239-.072.083-.151.186-.216.25-.072.071-.148.148-.063.292.084.143.374.617.804.999.554.493 1.022.646 1.166.717.144.072.228.06.313-.036.084-.096.36-0.42.456-.563.096-.143.192-.12.324-.072.132.048.837.395.981.467.144.072.24.108.276.168.036.06.036.347-.108.752z"/></svg>
               <span>Instant WhatsApp Order (Pre-filled)</span>
             </button>
@@ -311,15 +345,15 @@
   </div>
 
   <!-- ================= SEARCH MODAL ================= -->
-  <div id="searchModal" class="fixed inset-0 z-50 pointer-events-none opacity-0 bg-black/60 backdrop-blur-sm transition-all duration-300 flex items-start justify-center pt-24 px-4">
-    <div id="searchModalContent" class="bg-brand-alabaster rounded-2xl shadow-2xl w-full max-w-xl p-6 pointer-events-auto transform -translate-y-4 transition-all duration-300 border border-brand-cardBorder">
+  <div id="searchModal" onclick="if(event.target === this) closeSearchModal()" class="fixed inset-0 z-50 hidden opacity-0 bg-black/60 backdrop-blur-sm transition-all duration-300 flex items-start justify-center pt-24 px-4">
+    <div id="searchModalContent" onclick="event.stopPropagation()" class="bg-brand-alabaster rounded-2xl shadow-2xl w-full max-w-xl p-6 pointer-events-auto transform -translate-y-4 transition-all duration-300 border border-brand-cardBorder">
       <div class="flex items-center justify-between pb-4 border-b border-brand-cardBorder">
         <div class="flex items-center space-x-3 w-full pr-4">
-          <i data-lucide="search" class="w-5 h-5 text-brand-bronze"></i>
+          <i data-lucide="search" class="w-5 h-5 text-brand-bronze pointer-events-none"></i>
           <input type="text" id="searchInput" placeholder="Search 55+ coffee, frappes, pizza, maggi, pasta..." class="w-full bg-transparent border-none text-brand-charcoal focus:outline-none placeholder:text-brand-muted text-base">
         </div>
-        <button id="closeSearchBtn" class="text-brand-muted hover:text-brand-charcoal p-1">
-          <i data-lucide="x" class="w-5 h-5"></i>
+        <button onclick="closeSearchModal()" aria-label="Close Search" class="text-brand-muted hover:text-brand-charcoal p-1 cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
         </button>
       </div>
       <div id="searchResults" class="mt-4 max-h-72 overflow-y-auto divide-y divide-brand-cardBorder">
@@ -401,26 +435,26 @@
         </nav>
 
         <!-- Right Action CTAs -->
-        <div class="flex items-center space-x-2.5 sm:space-x-4">
-          <!-- Search Trigger -->
-          <button id="openSearchBtn" aria-label="Search Menu" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all">
-            <i data-lucide="search" class="w-4 h-4"></i>
+        <div class="flex items-center space-x-2 sm:space-x-4">
+          <!-- Search Trigger (Inline onclick guaranteed) -->
+          <button id="openSearchBtn" onclick="openSearchModal()" aria-label="Search Menu" class="w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all cursor-pointer">
+            <i data-lucide="search" class="w-4 h-4 pointer-events-none"></i>
           </button>
 
-          <!-- Cart Trigger with Badge -->
-          <button id="openCartBtn" aria-label="Shopping Cart" class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all">
-            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
-            <span id="cartNavBadge" class="absolute -top-1 -right-1 bg-brand-gold text-brand-dark font-bold text-[9px] sm:text-[10px] w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-md border-2 border-brand-dark">2</span>
+          <!-- Cart Trigger with Badge (Inline onclick guaranteed) -->
+          <button id="openCartBtn" onclick="openCartDrawer()" aria-label="Shopping Cart" class="relative w-8 h-8 sm:w-9 sm:h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all cursor-pointer">
+            <i data-lucide="shopping-cart" class="w-4 h-4 pointer-events-none"></i>
+            <span id="cartNavBadge" class="absolute -top-1 -right-1 bg-brand-gold text-brand-dark font-bold text-[9px] sm:text-[10px] w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-md border-2 border-brand-dark pointer-events-none">2</span>
           </button>
 
           <!-- ORDER NOW Button -> Always Visible on Desktop and Mobile -->
-          <button onclick="openOrderModal()" class="inline-flex items-center justify-center px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all shadow-md transform hover:-translate-y-0.5 active:scale-95 shrink-0">
+          <button id="mainOrderNowBtn" onclick="openOrderModal()" class="inline-flex items-center justify-center px-3.5 sm:px-6 py-2 sm:py-2.5 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-[11px] sm:text-xs tracking-wider uppercase transition-all shadow-md transform hover:-translate-y-0.5 active:scale-95 shrink-0 cursor-pointer">
             Order Now
           </button>
 
           <!-- Mobile Menu Hamburger -->
-          <button id="mobileMenuToggle" aria-label="Toggle Navigation Menu" class="md:hidden p-1.5 text-brand-offwhite hover:text-brand-cream">
-            <i data-lucide="menu" class="w-6 h-6"></i>
+          <button id="mobileMenuToggle" aria-label="Toggle Navigation Menu" class="md:hidden p-1.5 text-brand-offwhite hover:text-brand-cream cursor-pointer">
+            <i data-lucide="menu" class="w-6 h-6 pointer-events-none"></i>
           </button>
         </div>
 
@@ -434,6 +468,10 @@
           <span>Locations & Live Map</span>
           <i data-lucide="map-pin" class="w-4 h-4 text-brand-gold"></i>
         </a>
+        <button onclick="openCartDrawer(); closeMobileMenu();" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5 flex items-center justify-between">
+          <span>View Cart & Order List</span>
+          <span id="mobileCartBadge" class="bg-brand-gold text-brand-dark px-2 py-0.5 rounded-full text-[11px] font-bold">2 items</span>
+        </button>
         <button onclick="navigateToSection('story')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Our Story</button>
         <button onclick="navigateToSection('outlets')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Outlets (6+ Locations)</button>
         <button onclick="navigateToSection('testimonials')" class="block w-full text-left py-2 text-brand-offwhite/90 hover:text-white text-sm border-b border-white/5">Reviews (4.3★)</button>
@@ -2169,38 +2207,185 @@
         addToCart('Cafe Frappe', 200, 'Cold Coffee & Signature Frappes');
       }
 
+      // Reset form view vs confirmation screen
+      const formContent = document.getElementById('orderPlatformFormContent');
+      const confirmScreen = document.getElementById('orderConfirmationScreen');
+      if (formContent) formContent.classList.remove('hidden');
+      if (confirmScreen) {
+        confirmScreen.classList.add('hidden');
+        confirmScreen.innerHTML = '';
+      }
+
       // Populate modal summary
       const totalCount = cart.reduce((acc, curr) => acc + curr.qty, 0);
       const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
 
-      document.getElementById('modalItemCount').textContent = totalCount;
-      document.getElementById('modalSubtotal').textContent = `₹${subtotal.toFixed(2)}`;
+      const countEl = document.getElementById('modalItemCount');
+      const subtotalEl = document.getElementById('modalSubtotal');
+      if (countEl) countEl.textContent = totalCount;
+      if (subtotalEl) subtotalEl.textContent = `₹${subtotal.toFixed(2)}`;
 
       const list = document.getElementById('modalItemsList');
-      list.innerHTML = cart.map(item => `
-        <div class="flex items-center justify-between py-1">
-          <span class="text-brand-charcoal font-medium">${item.qty}x ${item.title}</span>
-          <span class="text-brand-muted">₹${(item.price * item.qty).toFixed(2)}</span>
-        </div>
-      `).join('');
+      if (list) {
+        list.innerHTML = cart.map(item => `
+          <div class="flex items-center justify-between py-1">
+            <span class="text-brand-charcoal font-medium">${item.qty}x ${item.title}</span>
+            <span class="text-brand-muted">₹${(item.price * item.qty).toFixed(2)}</span>
+          </div>
+        `).join('');
+      }
+
+      // Close cart drawer if open
+      closeCartDrawer();
 
       const modal = document.getElementById('orderPlatformModal');
       const content = document.getElementById('orderPlatformContent');
+      modal.classList.remove('hidden');
+      void modal.offsetWidth;
       modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
       content.classList.remove('scale-95');
       content.classList.add('scale-100');
-
-      // Close cart drawer if open
-      document.getElementById('cartDrawer').classList.add('opacity-0', 'pointer-events-none');
-      document.getElementById('cartDrawerContent').classList.add('translate-x-full');
     }
 
     function closeOrderModal() {
       const modal = document.getElementById('orderPlatformModal');
       const content = document.getElementById('orderPlatformContent');
-      modal.classList.add('opacity-0', 'pointer-events-none');
       content.classList.remove('scale-100');
       content.classList.add('scale-95');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        if (modal.classList.contains('opacity-0')) {
+          modal.classList.add('hidden');
+        }
+      }, 300);
+    }
+
+    // Direct In-App Order Placement
+    async function submitDirectOrder() {
+      const nameInput = document.getElementById('directOrderName');
+      const phoneInput = document.getElementById('directOrderPhone');
+      const addrInput = document.getElementById('directOrderAddress');
+
+      const customerName = (nameInput && nameInput.value.trim()) || 'Guest Foodie';
+      const customerPhone = (phoneInput && phoneInput.value.trim()) || '+91 98290 12345';
+      const customerAddr = (addrInput && addrInput.value.trim()) || 'Dine-in / Direct Pickup (Jaipur)';
+
+      const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+      const outletName = selectedOutlet === 'c_scheme' ? 'C-Scheme Flagship' : 'B2 Bypass Hub';
+
+      const orderPayload = {
+        name: customerName,
+        phone: customerPhone,
+        address: customerAddr,
+        outlet: selectedOutlet,
+        platform: 'direct',
+        items: cart,
+        subtotal: subtotal
+      };
+
+      let orderId = 'LOC-' + Math.floor(Date.now() / 1000);
+      let whatsappLink = '';
+
+      try {
+        const res = await fetch('/api/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(orderPayload)
+        });
+        if (res.ok) {
+          const data = await res.json();
+          if (data.order_id) orderId = data.order_id;
+          if (data.whatsapp_link) whatsappLink = data.whatsapp_link;
+        }
+      } catch (err) {
+        console.warn("Direct order saved locally (offline mode):", err);
+      }
+
+      if (!whatsappLink) {
+        const phone = selectedOutlet === 'c_scheme' ? '917976198506' : '919928783999';
+        const itemsText = cart.map(i => `• ${i.qty}x ${i.title} (₹${i.price})`).join('%0A');
+        const msg = `☕ *Order ${orderId} Confirmed - Love Over Coffee (${outletName})*%0A%0A*Items:*%0A${itemsText}%0A%0A*Total: ₹${subtotal.toFixed(2)}*%0A*Customer:* ${customerName} (${customerPhone})%0A*Address:* ${customerAddr}`;
+        whatsappLink = `https://wa.me/${phone}?text=${msg}`;
+      }
+
+      // Hide form and display rich confirmation receipt
+      const formContent = document.getElementById('orderPlatformFormContent');
+      const confirmScreen = document.getElementById('orderConfirmationScreen');
+
+      if (formContent) formContent.classList.add('hidden');
+      if (confirmScreen) {
+        confirmScreen.classList.remove('hidden');
+        confirmScreen.innerHTML = `
+          <div class="space-y-4 text-center py-2">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center mx-auto shadow-md border-2 border-emerald-300">
+              <i data-lucide="check" class="w-8 h-8 stroke-[3]"></i>
+            </div>
+            <div>
+              <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200">
+                Order Confirmed & Sent to Kitchen!
+              </span>
+              <h3 class="font-serif text-2xl font-bold text-brand-charcoal mt-2">
+                Order #${orderId}
+              </h3>
+              <p class="text-xs text-brand-muted mt-1">
+                Handcrafting freshly at <strong>${outletName}</strong>
+              </p>
+            </div>
+
+            <div class="bg-white rounded-2xl p-4 border border-brand-cardBorder text-left text-xs space-y-2 shadow-sm">
+              <div class="flex justify-between border-b border-brand-cardBorder/60 pb-2">
+                <span class="text-brand-muted font-medium">Customer:</span>
+                <span class="font-bold text-brand-charcoal">${customerName} (${customerPhone})</span>
+              </div>
+              <div class="flex justify-between border-b border-brand-cardBorder/60 pb-2">
+                <span class="text-brand-muted font-medium">Table / Address:</span>
+                <span class="font-bold text-brand-charcoal">${customerAddr}</span>
+              </div>
+              <div class="space-y-1 pt-1">
+                <span class="text-brand-muted font-medium block">Items (${cart.reduce((a, c) => a + c.qty, 0)}):</span>
+                ${cart.map(i => `
+                  <div class="flex justify-between text-brand-charcoal pl-2">
+                    <span>${i.qty}x ${i.title}</span>
+                    <span class="font-semibold">₹${(i.price * i.qty).toFixed(2)}</span>
+                  </div>
+                `).join('')}
+              </div>
+              <div class="flex justify-between border-t border-dashed border-brand-cardBorder pt-2 text-sm font-bold text-brand-forest">
+                <span>Total Amount:</span>
+                <span>₹${subtotal.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <div class="space-y-2 pt-2">
+              <a href="${whatsappLink}" target="_blank" class="w-full py-3 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center space-x-2">
+                <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.122-.519-1.428-.592-2.348-2.029-2.42-2.124-.071-.095-.58-0.771-.58-1.469 0-.697.366-1.04.496-1.183.13-.143.284-.179.379-.179.095 0 .19.001.273.006.087.004.204-.033.319.243.12.288.409.998.445 1.07.036.072.06.155.012.25-.048.096-.072.155-.143.239-.072.083-.151.186-.216.25-.072.071-.148.148-.063.292.084.143.374.617.804.999.554.493 1.022.646 1.166.717.144.072.228.06.313-.036.084-.096.36-0.42.456-.563.096-.143.192-.12.324-.072.132.048.837.395.981.467.144.072.24.108.276.168.036.06.036.347-.108.752z"/></svg>
+                <span>Notify Barista on WhatsApp</span>
+              </a>
+              <button onclick="resetAndCloseOrderModal()" type="button" class="w-full py-2.5 rounded-full bg-brand-sand hover:bg-brand-cardBorder text-brand-charcoal font-semibold text-xs uppercase tracking-wider transition-all">
+                Done • Clear Cart
+              </button>
+            </div>
+          </div>
+        `;
+        lucide.createIcons();
+      }
+
+      showToast(`🎉 Order #${orderId} received! Preparing at ${outletName}`);
+    }
+
+    function resetAndCloseOrderModal() {
+      cart = [];
+      updateCartUI();
+      closeOrderModal();
+      const formContent = document.getElementById('orderPlatformFormContent');
+      const confirmScreen = document.getElementById('orderConfirmationScreen');
+      if (formContent) formContent.classList.remove('hidden');
+      if (confirmScreen) {
+        confirmScreen.classList.add('hidden');
+        confirmScreen.innerHTML = '';
+      }
     }
 
     function handleOutletChange() {
@@ -2275,7 +2460,7 @@
         targetUrl = `https://wa.me/${phone}?text=${text}`;
       }
 
-      // Record in local API asynchronously without blocking mobile browser redirection
+      // Record in local API asynchronously
       try {
         fetch('/api/order', {
           method: 'POST',
@@ -2293,13 +2478,11 @@
       showToast(`Redirecting to ${platform.toUpperCase()} for ${selectedOutlet === 'c_scheme' ? 'C-Scheme' : 'B2 Bypass'}...`);
       closeOrderModal();
 
-      // Robust redirection avoiding mobile Safari/Chrome popup blocker
-      setTimeout(() => {
-        const win = window.open(targetUrl, '_blank');
-        if (!win || win.closed || typeof win.closed == 'undefined') {
-          window.location.href = targetUrl;
-        }
-      }, 100);
+      // Open immediately in user-click thread to bypass popup blocker
+      const win = window.open(targetUrl, '_blank');
+      if (!win || win.closed || typeof win.closed == 'undefined') {
+        window.location.href = targetUrl;
+      }
     }
 
     function dispatchDirectWhatsApp() {
@@ -2309,14 +2492,26 @@
       const text = `Hi Love Over Coffee (${selectedOutlet === 'c_scheme' ? 'C-Scheme Flagship' : 'B2 Bypass Hub'}), I would like to order:%0A${itemsText}%0A*Total: ₹${subtotal.toFixed(2)}*`;
       const url = `https://wa.me/${phone}?text=${text}`;
       
+      try {
+        fetch('/api/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: "WhatsApp Guest",
+            outlet: selectedOutlet,
+            platform: "whatsapp",
+            items: cart,
+            subtotal: subtotal
+          })
+        }).catch(err => console.log(err));
+      } catch(e) {}
+
       showToast("Opening WhatsApp with pre-filled order...");
       closeOrderModal();
-      setTimeout(() => {
-        const win = window.open(url, '_blank');
-        if (!win || win.closed || typeof win.closed == 'undefined') {
-          window.location.href = url;
-        }
-      }, 100);
+      const win = window.open(url, '_blank');
+      if (!win || win.closed || typeof win.closed == 'undefined') {
+        window.location.href = url;
+      }
     }
 
     // ================= RENDER HOME MENU SPECIALS =================
@@ -2583,28 +2778,44 @@
       updateCartUI();
     }
 
-    // Cart Drawer Controls
-    const cartDrawer = document.getElementById('cartDrawer');
-    const cartDrawerContent = document.getElementById('cartDrawerContent');
+    // ================= CART DRAWER CONTROLS =================
+    function openCartDrawer() {
+      updateCartUI();
+      const drawer = document.getElementById('cartDrawer');
+      const content = document.getElementById('cartDrawerContent');
+      if (!drawer || !content) return;
+      drawer.classList.remove('hidden');
+      void drawer.offsetWidth;
+      drawer.classList.remove('opacity-0', 'pointer-events-none');
+      drawer.classList.add('opacity-100');
+      content.classList.remove('translate-x-full');
+    }
+
+    function closeCartDrawer() {
+      const drawer = document.getElementById('cartDrawer');
+      const content = document.getElementById('cartDrawerContent');
+      if (!drawer || !content) return;
+      content.classList.add('translate-x-full');
+      drawer.classList.remove('opacity-100');
+      drawer.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        if (drawer.classList.contains('opacity-0')) {
+          drawer.classList.add('hidden');
+        }
+      }, 300);
+    }
+
     const openCartBtn = document.getElementById('openCartBtn');
     const closeCartBtn = document.getElementById('closeCartBtn');
+    if (openCartBtn) openCartBtn.addEventListener('click', openCartDrawer);
+    if (closeCartBtn) closeCartBtn.addEventListener('click', closeCartDrawer);
 
-    openCartBtn.addEventListener('click', () => {
-      cartDrawer.classList.remove('opacity-0', 'pointer-events-none');
-      cartDrawerContent.classList.remove('translate-x-full');
-    });
-
-    closeCartBtn.addEventListener('click', () => {
-      cartDrawer.classList.add('opacity-0', 'pointer-events-none');
-      cartDrawerContent.classList.add('translate-x-full');
-    });
-
-    cartDrawer.addEventListener('click', (e) => {
-      if (e.target === cartDrawer) {
-        cartDrawer.classList.add('opacity-0', 'pointer-events-none');
-        cartDrawerContent.classList.add('translate-x-full');
-      }
-    });
+    const cartDrawer = document.getElementById('cartDrawer');
+    if (cartDrawer) {
+      cartDrawer.addEventListener('click', (e) => {
+        if (e.target === cartDrawer) closeCartDrawer();
+      });
+    }
 
     // Testimonial Controls
     function setTestimonial(index) {
@@ -2628,27 +2839,61 @@
     document.getElementById('prevReviewBtn').addEventListener('click', () => setTestimonial(currentReviewIndex - 1));
     document.getElementById('nextReviewBtn').addEventListener('click', () => setTestimonial(currentReviewIndex + 1));
 
-    // Global Search Modal Logic
-    const searchModal = document.getElementById('searchModal');
+    // ================= GLOBAL SEARCH MODAL CONTROLS =================
+    function openSearchModal() {
+      const modal = document.getElementById('searchModal');
+      const content = document.getElementById('searchModalContent');
+      const input = document.getElementById('searchInput');
+      if (!modal || !content) return;
+      modal.classList.remove('hidden');
+      void modal.offsetWidth;
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100');
+      content.classList.remove('-translate-y-4');
+      setTimeout(() => {
+        if (input) input.focus();
+      }, 80);
+    }
+
+    function closeSearchModal() {
+      const modal = document.getElementById('searchModal');
+      const content = document.getElementById('searchModalContent');
+      if (!modal || !content) return;
+      content.classList.add('-translate-y-4');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        if (modal.classList.contains('opacity-0')) {
+          modal.classList.add('hidden');
+        }
+      }, 300);
+    }
+
     const openSearchBtn = document.getElementById('openSearchBtn');
     const closeSearchBtn = document.getElementById('closeSearchBtn');
-    const searchInput = document.getElementById('searchInput');
-    const searchResults = document.getElementById('searchResults');
+    if (openSearchBtn) openSearchBtn.addEventListener('click', openSearchModal);
+    if (closeSearchBtn) closeSearchBtn.addEventListener('click', closeSearchModal);
 
-    openSearchBtn.addEventListener('click', () => {
-      searchModal.classList.remove('opacity-0', 'pointer-events-none');
-      document.getElementById('searchModalContent').classList.remove('-translate-y-4');
-      setTimeout(() => searchInput.focus(), 100);
-    });
+    const searchModal = document.getElementById('searchModal');
+    if (searchModal) {
+      searchModal.addEventListener('click', (e) => {
+        if (e.target === searchModal) closeSearchModal();
+      });
+    }
 
-    closeSearchBtn.addEventListener('click', () => {
-      searchModal.classList.add('opacity-0', 'pointer-events-none');
-      document.getElementById('searchModalContent').classList.add('-translate-y-4');
-    });
-
-    searchModal.addEventListener('click', (e) => {
-      if (e.target === searchModal) searchModal.classList.add('opacity-0', 'pointer-events-none');
-    });
+    // Attach all handlers to window object for bulletproof global availability
+    window.openCartDrawer = openCartDrawer;
+    window.closeCartDrawer = closeCartDrawer;
+    window.openSearchModal = openSearchModal;
+    window.closeSearchModal = closeSearchModal;
+    window.openOrderModal = openOrderModal;
+    window.closeOrderModal = closeOrderModal;
+    window.submitDirectOrder = submitDirectOrder;
+    window.resetAndCloseOrderModal = resetAndCloseOrderModal;
+    window.dispatchOrder = dispatchOrder;
+    window.dispatchDirectWhatsApp = dispatchDirectWhatsApp;
+    window.addToCart = addToCart;
+    window.changeQty = changeQty;
 
     searchInput.addEventListener('input', (e) => {
       const q = e.target.value.toLowerCase().trim();
