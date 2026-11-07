@@ -1,0 +1,2321 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Over Coffee (LOC) | Jaipur's Iconic Late-Night Cafe & Bistro</title>
+  <meta name="description" content="Love Over Coffee (LOC) - Jaipur's premier specialty coffee & late-night bistro. Signature Hazelnut Lattes, Frappes, Handcrafted Pizzas and Comfort Bites at C-Scheme, JLN Road & B2 Bypass (Open till 4:00 AM).">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#11261F',
+              darkHover: '#0d1f19',
+              forest: '#142B23',
+              forestLight: '#1b3b30',
+              cream: '#F3E5AB',
+              creamHover: '#ebd896',
+              gold: '#D4A359',
+              goldHover: '#c19149',
+              bronze: '#9C7A44',
+              alabaster: '#F9F6F0',
+              sand: '#F3EDE2',
+              cardBorder: '#EBE4D8',
+              charcoal: '#1C2421',
+              muted: '#5C6460',
+              offwhite: '#FAF8F5'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            script: ['"Caveat"', 'cursive'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            'warm': '0 10px 30px -5px rgba(27, 38, 31, 0.08), 0 4px 6px -2px rgba(27, 38, 31, 0.04)',
+            'warm-hover': '0 20px 35px -5px rgba(27, 38, 31, 0.14), 0 10px 10px -5px rgba(27, 38, 31, 0.06)',
+            'polaroid': '0 15px 35px rgba(17, 38, 31, 0.18), 0 5px 15px rgba(0,0,0,0.08)',
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <style>
+    /* Custom styling for editorial perfection */
+    .hero-radial-bg {
+      background: radial-gradient(circle at 65% 45%, #1d3e33 0%, #152d24 45%, #0e1e19 100%);
+    }
+    
+    .story-gradient-bg {
+      background: linear-gradient(135deg, #163228 0%, #10241d 100%);
+    }
+
+    .testimonial-bg {
+      background: linear-gradient(170deg, #132a22 0%, #0d1e18 100%);
+    }
+
+    /* Polaroid masking tape effect */
+    .polaroid-tape {
+      position: absolute;
+      top: -14px;
+      left: 50%;
+      transform: translateX(-50%) rotate(-2deg);
+      width: 110px;
+      height: 28px;
+      background: rgba(243, 237, 226, 0.85);
+      backdrop-filter: blur(2px);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      z-index: 20;
+      border-left: 2px dashed rgba(210, 195, 175, 0.6);
+      border-right: 2px dashed rgba(210, 195, 175, 0.6);
+    }
+
+    /* Custom scrollbars */
+    ::-webkit-scrollbar {
+      width: 8px;
+      height: 8px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #F3EDE2;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #D4A359;
+      border-radius: 9999px;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #9C7A44;
+    }
+
+    /* Toast animation */
+    @keyframes slideDownUp {
+      0% { transform: translate(-50%, -100%); opacity: 0; }
+      15% { transform: translate(-50%, 0); opacity: 1; }
+      85% { transform: translate(-50%, 0); opacity: 1; }
+      100% { transform: translate(-50%, -100%); opacity: 0; }
+    }
+    .animate-toast {
+      animation: slideDownUp 3s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Float leaf subtle animation */
+    @keyframes subtleFloat {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-8px) rotate(2deg); }
+    }
+    .floating-leaf {
+      animation: subtleFloat 7s ease-in-out infinite;
+    }
+
+    /* Print / PDF Mode Optimization */
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printableBrochureArea, #printableBrochureArea * {
+        visibility: visible;
+      }
+      #printableBrochureArea {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        background: white !important;
+        color: #11261F !important;
+        padding: 0 !important;
+      }
+      .no-print {
+        display: none !important;
+      }
+    }
+  </style>
+</head>
+<body class="bg-brand-alabaster text-brand-charcoal font-sans antialiased selection:bg-brand-gold selection:text-white min-h-screen flex flex-col">
+
+  <!-- ================= NOTIFICATION TOAST ================= -->
+  <div id="toastContainer" class="fixed top-5 left-1/2 z-50 pointer-events-none transition-all duration-300"></div>
+
+  <!-- ================= CART DRAWER OVERLAY ================= -->
+  <div id="cartDrawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0 bg-black/60 backdrop-blur-sm">
+    <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 pointer-events-auto">
+      <div class="w-screen max-w-md bg-brand-alabaster shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300 ease-in-out" id="cartDrawerContent">
+        <!-- Drawer Header -->
+        <div class="p-6 bg-brand-forest text-brand-offwhite flex items-center justify-between">
+          <div class="flex items-center space-x-3">
+            <i data-lucide="shopping-bag" class="w-6 h-6 text-brand-cream"></i>
+            <div>
+              <h3 class="font-serif text-xl font-bold">Your LOC Order</h3>
+              <p class="text-xs text-brand-cream/80">Freshly crafted for Jaipur foodies</p>
+            </div>
+          </div>
+          <button id="closeCartBtn" class="p-2 rounded-full hover:bg-white/10 text-white/80 hover:text-white transition-colors">
+            <i data-lucide="x" class="w-5 h-5"></i>
+          </button>
+        </div>
+
+        <!-- Drawer Body: Cart Items -->
+        <div class="flex-1 overflow-y-auto p-6 space-y-4" id="cartItemList">
+          <!-- Dynamic Cart Items Rendered Here -->
+        </div>
+
+        <!-- Drawer Footer: Subtotal & Checkout -->
+        <div class="p-6 bg-white border-t border-brand-cardBorder space-y-4">
+          <div class="space-y-1.5 text-sm">
+            <div class="flex justify-between text-brand-muted">
+              <span>Subtotal</span>
+              <span id="cartSubtotal" class="font-semibold text-brand-charcoal">₹0.00</span>
+            </div>
+            <div class="flex justify-between text-brand-muted text-xs">
+              <span>Taxes & Packaging</span>
+              <span>Included</span>
+            </div>
+            <div class="border-t border-dashed border-brand-cardBorder pt-2 flex justify-between text-base font-bold text-brand-charcoal">
+              <span>Total Amount</span>
+              <span id="cartTotal" class="text-brand-forest text-lg">₹0.00</span>
+            </div>
+          </div>
+
+          <div class="space-y-2 pt-2">
+            <a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="w-full flex items-center justify-center space-x-2 py-3.5 bg-brand-forest hover:bg-brand-darkHover text-brand-cream rounded-full font-semibold transition-all shadow-md">
+              <span>Order via Zomato / District</span>
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </a>
+            <a href="https://wa.me/917976198506?text=Hi%20Love%20Over%20Coffee%20(C-Scheme),%20I%20would%20like%20to%20order%20from%20your%20menu" target="_blank" class="w-full flex items-center justify-center space-x-2 py-3 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full font-medium text-sm transition-all shadow-sm">
+              <i data-lucide="message-circle" class="w-4 h-4"></i>
+              <span>WhatsApp C-Scheme Outlet (+91 79761 98506)</span>
+            </a>
+            <a href="tel:+919928783999" class="w-full flex items-center justify-center space-x-2 py-2.5 bg-brand-sand hover:bg-[#ebd896] text-brand-forest rounded-full font-medium text-xs transition-all">
+              <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
+              <span>Call B2 Bypass Outlet (+91 99287 83999)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= SEARCH MODAL ================= -->
+  <div id="searchModal" class="fixed inset-0 z-50 pointer-events-none opacity-0 bg-black/60 backdrop-blur-sm transition-all duration-300 flex items-start justify-center pt-24 px-4">
+    <div id="searchModalContent" class="bg-brand-alabaster rounded-2xl shadow-2xl w-full max-w-xl p-6 pointer-events-auto transform -translate-y-4 transition-all duration-300 border border-brand-cardBorder">
+      <div class="flex items-center justify-between pb-4 border-b border-brand-cardBorder">
+        <div class="flex items-center space-x-3 w-full pr-4">
+          <i data-lucide="search" class="w-5 h-5 text-brand-bronze"></i>
+          <input type="text" id="searchInput" placeholder="Search 55+ coffee, frappes, pizza, maggi, pasta..." class="w-full bg-transparent border-none text-brand-charcoal focus:outline-none placeholder:text-brand-muted text-base">
+        </div>
+        <button id="closeSearchBtn" class="text-brand-muted hover:text-brand-charcoal p-1">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div id="searchResults" class="mt-4 max-h-72 overflow-y-auto divide-y divide-brand-cardBorder">
+        <p class="text-xs text-brand-muted py-3">Try searching for: "Flat White", "Nirmana", "Tandoori Maggi", "Pink Sauce", "Biscoff"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= VIDEO MODAL ================= -->
+  <div id="videoModal" class="fixed inset-0 z-50 pointer-events-none opacity-0 bg-black/75 backdrop-blur-md transition-all duration-300 flex items-center justify-center p-4">
+    <div class="bg-brand-dark rounded-2xl overflow-hidden max-w-2xl w-full border border-white/10 shadow-2xl relative pointer-events-auto">
+      <div class="p-4 bg-brand-forest flex items-center justify-between text-brand-offwhite">
+        <div class="flex items-center space-x-2">
+          <span class="w-2.5 h-2.5 rounded-full bg-brand-gold animate-pulse"></span>
+          <span class="font-serif text-sm tracking-wide">Love Over Coffee — The New Chapter (JLN Road & C-Scheme)</span>
+        </div>
+        <button id="closeVideoBtn" class="text-white/80 hover:text-white">
+          <i data-lucide="x" class="w-5 h-5"></i>
+        </button>
+      </div>
+      <div class="aspect-video bg-black flex flex-col items-center justify-center p-8 text-center text-brand-offwhite relative">
+        <img src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1200&q=80" alt="Cafe vibe" class="absolute inset-0 w-full h-full object-cover opacity-40">
+        <div class="relative z-10 space-y-4 max-w-md">
+          <div class="w-16 h-16 rounded-full bg-brand-cream text-brand-dark flex items-center justify-center mx-auto shadow-lg">
+            <i data-lucide="play" class="w-8 h-8 fill-brand-dark ml-1"></i>
+          </div>
+          <h4 class="font-serif text-2xl font-bold text-brand-cream">A New Aesthetic Coffee Sanctuary</h4>
+          <p class="text-sm text-brand-offwhite/90 font-light">Experience the newest SELECT outlet at C-16, JLN Road, Jawahar Circle. Late nights, rosetta art, warm acoustics, and authentic conversations.</p>
+          <div class="pt-2">
+            <a href="https://www.instagram.com/reel/DfCP1XItohr/" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 bg-brand-gold hover:bg-brand-goldHover text-brand-dark font-semibold rounded-full text-xs uppercase tracking-wider transition-all">
+              <i data-lucide="instagram" class="w-4 h-4"></i>
+              <span>Watch Reel on Instagram (11.6K+)</span>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ================= VIEW 1: HOME PAGE VIEW ================= -->
+  <div id="viewHome" class="app-view block">
+
+    <!-- Top Navigation Bar -->
+    <header class="absolute top-0 left-0 right-0 z-40 transition-all duration-300">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center justify-between">
+        
+        <!-- Brand Logo Left -->
+        <a href="#/" class="flex items-center space-x-3 group">
+          <div class="w-10 h-10 rounded-full bg-brand-forest/60 border border-brand-gold/40 flex items-center justify-center text-brand-cream group-hover:border-brand-cream transition-all">
+            <i data-lucide="coffee" class="w-5 h-5 text-brand-cream"></i>
+          </div>
+          <div class="flex flex-col">
+            <span class="font-serif text-xl md:text-2xl font-bold tracking-tight text-brand-offwhite flex items-center gap-1.5">
+              Love Over Coffee
+              <span class="text-brand-gold text-xs font-sans px-1.5 py-0.5 rounded-full border border-brand-gold/40 font-normal">LOC</span>
+            </span>
+            <span class="text-[9px] tracking-[0.28em] text-brand-gold uppercase font-medium">JAIPUR • EST. CAFE</span>
+          </div>
+        </a>
+
+        <!-- Center Navigation Links -->
+        <nav class="hidden md:flex items-center space-x-8 text-sm font-medium text-brand-offwhite/90">
+          <a href="#/" class="text-brand-offwhite hover:text-brand-cream transition-colors relative py-1 border-b-2 border-brand-gold font-semibold">Home</a>
+          <a href="#/menu-gateway" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Menu</a>
+          <a href="#story" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Our Story</a>
+          <a href="#outlets" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Outlets</a>
+          <a href="#testimonials" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Reviews</a>
+          <a href="#footer" class="text-brand-offwhite/80 hover:text-brand-cream transition-colors relative py-1 hover:border-b-2 hover:border-brand-cream/60">Contact</a>
+        </nav>
+
+        <!-- Right Action CTAs -->
+        <div class="flex items-center space-x-4">
+          <!-- Search Trigger -->
+          <button id="openSearchBtn" aria-label="Search Menu" class="w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all">
+            <i data-lucide="search" class="w-4 h-4"></i>
+          </button>
+
+          <!-- Cart Trigger with Badge -->
+          <button id="openCartBtn" aria-label="Shopping Cart" class="relative w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 text-brand-offwhite flex items-center justify-center transition-all">
+            <i data-lucide="shopping-cart" class="w-4 h-4"></i>
+            <span id="cartNavBadge" class="absolute -top-1 -right-1 bg-brand-gold text-brand-dark font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-brand-dark">2</span>
+          </button>
+
+          <!-- Order Now Button -->
+          <a href="#/menu-gateway" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-semibold text-xs tracking-wider uppercase transition-all shadow-md transform hover:-translate-y-0.5">
+            Order Now
+          </a>
+
+          <!-- Mobile Menu Hamburger -->
+          <button id="mobileMenuToggle" class="md:hidden p-2 text-brand-offwhite">
+            <i data-lucide="menu" class="w-6 h-6"></i>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- Mobile Nav Dropdown -->
+      <div id="mobileMenu" class="hidden md:hidden bg-brand-dark/95 backdrop-blur-md border-b border-white/10 px-6 py-4 space-y-3">
+        <a href="#/" class="block py-2 text-brand-cream font-medium text-sm">Home</a>
+        <a href="#/menu-gateway" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Menu Brochure & Gateway</a>
+        <a href="#story" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Our Story</a>
+        <a href="#outlets" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Outlets (6+ Locations)</a>
+        <a href="#testimonials" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Reviews (4.3★)</a>
+        <a href="#footer" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Contact & Hours</a>
+        <div class="pt-2">
+          <a href="#/menu-gateway" class="block text-center py-2.5 rounded-full bg-brand-cream text-brand-forest font-semibold text-xs uppercase tracking-wider">
+            Explore Menu Gateway
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <!-- SECTION B: HERO SECTION -->
+    <section id="hero" class="hero-radial-bg min-h-screen pt-32 pb-20 md:pb-28 relative overflow-hidden flex items-center">
+      
+      <!-- Floating Botanical Leaf Accents -->
+      <div class="absolute -top-10 -left-12 opacity-15 pointer-events-none floating-leaf">
+        <svg width="220" height="220" viewBox="0 0 100 100" fill="#F3E5AB">
+          <path d="M50 0 C70 25 90 40 100 70 C70 70 50 90 20 100 C15 70 25 40 50 0 Z"></path>
+        </svg>
+      </div>
+      <div class="absolute bottom-6 right-8 opacity-10 pointer-events-none floating-leaf" style="animation-delay: -3s;">
+        <svg width="260" height="260" viewBox="0 0 100 100" fill="#D4A359">
+          <path d="M20 10 C60 10 90 40 90 80 C50 90 20 60 10 30 C15 20 18 15 20 10 Z"></path>
+        </svg>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6 md:px-12 w-full">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          
+          <!-- Left Column: Typography & CTAs -->
+          <div class="lg:col-span-7 space-y-6 text-left relative z-10 pt-4">
+            
+            <!-- Eyebrow Pill -->
+            <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-brand-gold/30 backdrop-blur-sm">
+              <span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
+              <span class="text-[11px] md:text-xs font-semibold tracking-[0.2em] uppercase text-brand-gold">
+                JAIPUR'S ICONIC LATE-NIGHT SPECIALTY CAFE & BISTRO
+              </span>
+            </div>
+
+            <!-- Main Headline -->
+            <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[68px] leading-[1.08] font-bold text-brand-offwhite tracking-tight">
+              Good Coffee <br>
+              Brings Jaipur <br>
+              <span class="font-script text-5xl sm:text-6xl md:text-7xl lg:text-8xl text-brand-gold font-normal inline-block transform -rotate-1 relative -top-1 ml-1 drop-shadow-md">
+                Together
+              </span>
+            </h1>
+
+            <!-- Professional & Attractive Elevated Description -->
+            <p class="text-base sm:text-lg text-brand-offwhite/85 max-w-xl font-light leading-relaxed">
+              Where specialty roast craft meets Jaipur’s vibrant late-night cafe culture. Handcrafted single-origin espressos, signature iced hazelnut frappes, artisanal sourdough melts, and comforting gourmet bites — thoughtfully prepared with culinary passion and served fresh until <span class="text-brand-cream font-medium underline decoration-brand-gold underline-offset-4">4:00 AM</span>.
+            </p>
+
+            <!-- CTA Button Group -->
+            <div class="pt-4 flex flex-wrap items-center gap-4 sm:gap-6">
+              <!-- Primary Action -> Routes to /menu-gateway -->
+              <a href="#/menu-gateway" class="inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-sm tracking-wide transition-all shadow-lg transform hover:-translate-y-1 hover:shadow-xl group">
+                <span>Explore Our Menu</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
+              </a>
+
+              <!-- Secondary Action: Video Modal Trigger -->
+              <button id="heroVideoTrigger" class="inline-flex items-center space-x-3 text-brand-offwhite hover:text-brand-cream group transition-colors">
+                <span class="w-12 h-12 rounded-full border border-white/20 group-hover:border-brand-cream group-hover:bg-white/10 flex items-center justify-center transition-all shadow-inner">
+                  <i data-lucide="play" class="w-5 h-5 text-brand-cream fill-brand-cream ml-0.5"></i>
+                </span>
+                <div class="text-left">
+                  <span class="text-sm font-semibold tracking-wide block">Watch Our New Chapter</span>
+                  <span class="text-xs text-brand-gold font-normal">JLN Road & C-Scheme</span>
+                </div>
+              </button>
+            </div>
+
+            <!-- Social Proof Tag on Hero -->
+            <div class="pt-6 border-t border-white/10 flex items-center space-x-6">
+              <div class="flex items-center space-x-1 text-brand-gold">
+                <i data-lucide="star" class="w-4 h-4 fill-brand-gold"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-brand-gold"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-brand-gold"></i>
+                <i data-lucide="star" class="w-4 h-4 fill-brand-gold"></i>
+                <i data-lucide="star-half" class="w-4 h-4 fill-brand-gold"></i>
+                <span class="text-sm font-bold text-brand-offwhite ml-1.5">4.3 / 5.0</span>
+              </div>
+              <span class="text-xs text-brand-offwhite/60">Based on 2,413+ Google Reviews</span>
+            </div>
+
+          </div>
+
+          <!-- Right Column: Product Centerpiece -->
+          <div class="lg:col-span-5 relative flex items-center justify-center">
+            
+            <div class="absolute w-80 h-80 rounded-full bg-brand-gold/15 filter blur-3xl pointer-events-none"></div>
+
+            <div class="relative w-full max-w-md mx-auto group">
+              <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/15 bg-gradient-to-b from-white/10 to-transparent p-2">
+                <div class="relative rounded-2xl overflow-hidden aspect-[4/5] bg-brand-forest">
+                  <img 
+                    src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=1000&q=85" 
+                    alt="Love Over Coffee Signature Cafe Frappe on Stone with Roasted Beans" 
+                    class="w-full h-full object-cover object-center transform group-hover:scale-105 transition-transform duration-700 ease-out"
+                  >
+                  <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/80 via-transparent to-transparent flex flex-col justify-end p-6">
+                    <div class="bg-black/40 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-brand-offwhite">
+                      <div class="flex items-center justify-between">
+                        <div>
+                          <span class="text-[10px] tracking-widest uppercase text-brand-gold font-bold">LOC SIGNATURE</span>
+                          <h4 class="font-serif text-lg font-bold">Iced Hazelnut Frappe</h4>
+                          <p class="text-xs text-brand-offwhite/80">Arabica roast, hazelnut swirl, cold cream</p>
+                        </div>
+                        <div class="text-right">
+                          <span class="font-sans font-bold text-xl text-brand-cream">₹470</span>
+                          <button onclick="addToCart('Cafe Frappe', 470, 'Cold Coffee & Signature Frappes')" class="mt-1 w-8 h-8 rounded-full bg-brand-cream text-brand-forest flex items-center justify-center shadow-md hover:bg-brand-gold transition-colors">
+                            <i data-lucide="plus" class="w-4 h-4 stroke-[3]"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Floating Handwritten Script Annotation -->
+              <div class="absolute -top-4 -right-4 sm:-right-8 bg-brand-dark/90 backdrop-blur-md px-5 py-3 rounded-2xl border border-brand-gold/40 shadow-xl transform rotate-3 hidden sm:block">
+                <p class="font-script text-xl sm:text-2xl text-brand-cream font-medium leading-snug">
+                  Real Coffee <br>
+                  Real People <br>
+                  Real Moments ♡
+                </p>
+              </div>
+
+              <!-- Late Night Badge Floating Bottom-Left -->
+              <div class="absolute -bottom-5 -left-4 sm:-left-6 bg-brand-forest border border-brand-gold/50 text-brand-offwhite px-4 py-2.5 rounded-2xl shadow-xl flex items-center space-x-3">
+                <div class="w-8 h-8 rounded-full bg-brand-gold/20 flex items-center justify-center text-brand-gold">
+                  <i data-lucide="moon" class="w-4 h-4"></i>
+                </div>
+                <div class="text-left text-xs">
+                  <span class="font-bold text-brand-cream block">Open Till 4:00 AM</span>
+                  <span class="text-brand-offwhite/70">B2 Bypass Late Night Hub</span>
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION C: 4-COLUMN VALUE STRIP -->
+    <section class="bg-brand-alabaster border-y border-brand-cardBorder relative z-20">
+      <div class="max-w-7xl mx-auto px-6 md:px-12 py-10 md:py-12">
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-0 lg:divide-x divide-[#E2DCD0]">
+          
+          <div class="flex items-center space-x-4 lg:px-6">
+            <div class="w-14 h-14 rounded-2xl bg-brand-sand flex items-center justify-center text-brand-forest shrink-0 border border-brand-cardBorder shadow-sm">
+              <i data-lucide="bean" class="w-7 h-7 text-brand-bronze"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <span class="font-serif font-bold text-lg text-brand-charcoal">100%</span>
+                <span class="font-bold text-sm text-brand-charcoal uppercase tracking-wide">Arabica Beans</span>
+              </div>
+              <p class="text-xs text-brand-muted mt-0.5">Rich flavor, freshly roasted daily</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-4 lg:px-6">
+            <div class="w-14 h-14 rounded-2xl bg-brand-sand flex items-center justify-center text-brand-forest shrink-0 border border-brand-cardBorder shadow-sm">
+              <i data-lucide="coffee" class="w-7 h-7 text-brand-forest"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <span class="font-serif font-bold text-lg text-brand-charcoal">Open Till 4 AM</span>
+              </div>
+              <p class="text-xs text-brand-muted mt-0.5">B2 Bypass & 6+ Jaipur Outlets</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-4 lg:px-6">
+            <div class="w-14 h-14 rounded-2xl bg-brand-sand flex items-center justify-center text-brand-forest shrink-0 border border-brand-cardBorder shadow-sm">
+              <i data-lucide="heart" class="w-7 h-7 text-brand-gold"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <span class="font-serif font-bold text-lg text-brand-charcoal">Cozy Ambience</span>
+              </div>
+              <p class="text-xs text-brand-muted mt-0.5">& Great Vibes. Perfect to unwind</p>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-4 lg:px-6">
+            <div class="w-14 h-14 rounded-2xl bg-brand-sand flex items-center justify-center text-brand-forest shrink-0 border border-brand-cardBorder shadow-sm">
+              <i data-lucide="users" class="w-7 h-7 text-brand-bronze"></i>
+            </div>
+            <div>
+              <div class="flex items-center space-x-1.5">
+                <span class="font-serif font-bold text-lg text-brand-charcoal">4.3★ (2.4K+)</span>
+              </div>
+              <p class="text-xs text-brand-muted mt-0.5">And 11.6K+ Instagram family</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION D: OUR SPECIALS INTERACTIVE HIGHLIGHTS -->
+    <section id="specials" class="bg-brand-sand py-20 md:py-28 relative">
+      <div class="max-w-7xl mx-auto px-6 md:px-12">
+        <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
+          <div>
+            <span class="text-xs font-bold tracking-[0.22em] uppercase text-brand-bronze block mb-2">OUR SPECIALS</span>
+            <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-brand-charcoal">
+              Popular Coffee & Bites
+            </h2>
+          </div>
+          
+          <!-- View Full Menu Button -> routes to /menu-gateway -->
+          <a href="#/menu-gateway" class="inline-flex items-center space-x-2 text-sm font-bold text-brand-forest hover:text-brand-gold transition-colors group">
+            <span class="border-b border-brand-forest group-hover:border-brand-gold pb-0.5">View Full 55+ Item Menu & Brochure</span>
+            <span class="w-9 h-9 rounded-full border border-brand-forest group-hover:border-brand-gold group-hover:bg-brand-forest group-hover:text-brand-cream flex items-center justify-center transition-all">
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </span>
+          </a>
+        </div>
+
+        <!-- Filter Pills for Highlights -->
+        <div class="flex items-center gap-2 sm:gap-3 overflow-x-auto pb-4 scrollbar-none" id="categoryFilterContainer">
+          <button class="filter-btn active whitespace-nowrap px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all shadow-sm bg-brand-forest text-brand-cream" data-category="all">
+            All Highlights
+          </button>
+          <button class="filter-btn whitespace-nowrap px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-white text-brand-charcoal hover:bg-white/80 border border-brand-cardBorder" data-category="Coffee & Frappes">
+            Coffee & Frappes
+          </button>
+          <button class="filter-btn whitespace-nowrap px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-white text-brand-charcoal hover:bg-white/80 border border-brand-cardBorder" data-category="Shakes">
+            Shakes & Chillers
+          </button>
+          <button class="filter-btn whitespace-nowrap px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-white text-brand-charcoal hover:bg-white/80 border border-brand-cardBorder" data-category="Pizzas & Garlic Bread">
+            Pizzas & Garlic Bread
+          </button>
+          <button class="filter-btn whitespace-nowrap px-6 py-2.5 rounded-full text-xs sm:text-sm font-semibold transition-all bg-white text-brand-charcoal hover:bg-white/80 border border-brand-cardBorder" data-category="Maggi & Sandwiches">
+            Maggi, Fries & Sandwiches
+          </button>
+        </div>
+
+        <!-- Highlights Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-8" id="menuGrid">
+          <!-- Populated by JS -->
+        </div>
+
+        <!-- Callout to full brochure -->
+        <div class="mt-12 text-center bg-white/70 p-6 rounded-2xl border border-brand-cardBorder flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div class="text-left">
+            <h4 class="font-serif text-lg font-bold text-brand-charcoal">Looking for our complete C-Scheme & Jaipur Menu?</h4>
+            <p class="text-xs text-brand-muted">Explore all 55+ items across 10 categories or download our print-ready digital brochure.</p>
+          </div>
+          <a href="#/menu-gateway" class="px-7 py-3 rounded-full bg-brand-forest hover:bg-brand-darkHover text-brand-cream font-bold text-xs uppercase tracking-wider transition-all shadow-md shrink-0">
+            Open Menu Gateway →
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION E: OUR STORY SPLIT BANNER -->
+    <section id="story" class="py-16 md:py-24 bg-brand-alabaster relative">
+      <div class="max-w-7xl mx-auto px-6 md:px-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 rounded-3xl overflow-hidden shadow-2xl border border-brand-cardBorder">
+          
+          <div class="lg:col-span-6 story-gradient-bg p-8 sm:p-12 md:p-16 flex flex-col justify-between text-brand-offwhite relative overflow-hidden">
+            <div class="space-y-6 relative z-10">
+              <span class="text-xs font-bold tracking-[0.25em] uppercase text-brand-gold block">OUR STORY</span>
+              <h3 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-brand-offwhite leading-tight">
+                A Cozy Place for Good Coffee & Great People
+              </h3>
+              <p class="text-base text-brand-offwhite/85 font-light leading-relaxed">
+                Love Over Coffee was born from a simple belief — that exceptional coffee has the enduring power to foster community. Today, our cafe spaces across Jaipur provide a warm retreat where morning conversations ignite and late-night thoughts flourish.
+              </p>
+              <p class="text-sm text-brand-offwhite/75 font-light leading-relaxed">
+                From our legendary <strong class="text-brand-cream">B2 Bypass late-night hub operating until 4:00 AM</strong> to our flagship cafe at <strong class="text-brand-cream">C-Scheme</strong> and the newest chapter on <strong class="text-brand-cream">JLN Road</strong>, every corner is designed for dreamers, founders, night owls, and cherished connections.
+              </p>
+            </div>
+            <div class="pt-8 relative z-10 flex items-center space-x-6">
+              <a href="#outlets" class="inline-flex items-center space-x-3 px-7 py-3.5 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-xs uppercase tracking-wider transition-all shadow-md group">
+                <span>Visit An Outlet</span>
+                <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
+              </a>
+              <div class="flex items-center space-x-2 text-brand-gold text-xs font-semibold">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+                <span>6+ Outlets in Jaipur</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-6 relative min-h-[380px] lg:min-h-full bg-brand-dark">
+            <img 
+              src="https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1200&q=85" 
+              alt="Warm sunlit cafe interior with neon mood and plants" 
+              class="w-full h-full object-cover object-center"
+            >
+            <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent"></div>
+            <div class="absolute top-8 right-8 bg-black/60 backdrop-blur-md px-5 py-3 rounded-2xl border border-amber-400/40 shadow-2xl">
+              <p class="font-script text-2xl text-amber-300 font-bold tracking-wide drop-shadow-[0_0_8px_rgba(251,191,36,0.8)]">
+                Coffee Good Mood ♡♡
+              </p>
+            </div>
+            <div class="absolute bottom-6 left-6 right-6 bg-white/10 backdrop-blur-md border border-white/20 p-4 rounded-2xl text-brand-offwhite flex items-center justify-between">
+              <div>
+                <span class="text-[10px] tracking-widest text-brand-gold uppercase font-bold block">NEW CHAPTER</span>
+                <span class="font-serif text-sm font-semibold">C-16, JLN Road, Jawahar Circle, Jaipur</span>
+              </div>
+              <a href="https://maps.google.com/maps?q=Love+over+coffee+Jaipur" target="_blank" class="w-9 h-9 rounded-full bg-brand-cream text-brand-forest flex items-center justify-center hover:bg-brand-gold transition-colors">
+                <i data-lucide="navigation" class="w-4 h-4"></i>
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION F: SPECIAL OFFER POLAROID -->
+    <section class="bg-brand-sand py-20 relative overflow-hidden border-t border-brand-cardBorder">
+      <div class="max-w-6xl mx-auto px-6 md:px-12">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="relative transform -rotate-3 hover:rotate-0 transition-transform duration-500 max-w-sm">
+              <div class="polaroid-tape"></div>
+              <div class="bg-white p-4 pb-8 rounded-lg shadow-polaroid border border-[#E4DDD0]">
+                <div class="aspect-square overflow-hidden rounded bg-brand-sand relative">
+                  <img 
+                    src="https://images.unsplash.com/photo-1541167760496-1628856ab772?auto=format&fit=crop&w=800&q=85" 
+                    alt="Barista pouring rosette latte art" 
+                    class="w-full h-full object-cover"
+                  >
+                </div>
+                <div class="pt-4 flex items-center justify-between">
+                  <div>
+                    <span class="font-serif text-sm font-bold text-brand-charcoal block">Signature Rosetta Pour</span>
+                    <span class="text-[10px] text-brand-muted">Crafted with whole milk & Arabica espresso</span>
+                  </div>
+                  <span class="font-script text-2xl text-brand-bronze font-bold transform -rotate-6">
+                    Better Together ♡
+                  </span>
+                </div>
+              </div>
+              <div class="absolute -bottom-4 -right-4 bg-brand-cream text-brand-dark px-3 py-1.5 rounded-lg shadow-md border border-brand-gold/40 transform rotate-6">
+                <span class="font-script text-base font-bold">20% OFF coupon inside!</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-7 space-y-5">
+            <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-forest/10 border border-brand-forest/20 text-brand-forest text-xs font-bold uppercase tracking-wider">
+              <i data-lucide="sparkles" class="w-3.5 h-3.5 text-brand-gold"></i>
+              <span>SPECIAL OFFER • LOC NEW CHAPTER</span>
+            </div>
+            <h3 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-brand-charcoal leading-tight">
+              Get 20% Off Your First Order
+            </h3>
+            <p class="text-brand-muted text-base font-light leading-relaxed">
+              Plus a complimentary birthday pastry on your dine-in visit! Sign up below and enjoy <strong class="text-brand-charcoal font-semibold">20% off</strong> your first order at our JLN Road, C-Scheme, or B2 Bypass outlets.
+            </p>
+            <form id="leadCaptureForm" class="pt-2">
+              <div class="flex flex-col sm:flex-row items-stretch sm:items-center bg-white p-1.5 rounded-2xl sm:rounded-full border border-brand-cardBorder shadow-sm focus-within:border-brand-gold focus-within:ring-2 focus-within:ring-brand-gold/20 transition-all max-w-lg">
+                <div class="flex items-center px-4 py-2 sm:py-0 flex-1">
+                  <i data-lucide="mail" class="w-4 h-4 text-brand-muted mr-3 shrink-0"></i>
+                  <input 
+                    type="text" 
+                    id="leadInput"
+                    required
+                    placeholder="Your email or WhatsApp number" 
+                    class="w-full bg-transparent border-none text-brand-charcoal text-sm focus:outline-none placeholder:text-brand-muted"
+                  >
+                </div>
+                <button 
+                  type="submit" 
+                  class="px-7 py-3 rounded-xl sm:rounded-full bg-brand-forest hover:bg-brand-dark text-brand-cream font-bold text-xs uppercase tracking-wider transition-all shrink-0 shadow-md"
+                >
+                  Get 20% Off
+                </button>
+              </div>
+              <p class="text-[11px] text-brand-muted mt-2 ml-4">
+                Instant discount code unlocked upon submission.
+              </p>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION G: TESTIMONIALS -->
+    <section id="testimonials" class="testimonial-bg py-20 md:py-28 relative text-brand-offwhite overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6 md:px-12">
+        <div class="text-center max-w-2xl mx-auto mb-14 space-y-2">
+          <span class="text-xs font-bold tracking-[0.24em] uppercase text-brand-gold block">
+            WHAT JAIPUR SAYS (4.3★ • 2,413 GOOGLE REVIEWS)
+          </span>
+          <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-brand-offwhite">
+            Real People. Real Moments.
+          </h2>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+          <div class="lg:col-span-7 relative">
+            <div class="bg-brand-forest/70 backdrop-blur-md border border-white/10 rounded-3xl p-8 sm:p-10 shadow-2xl relative min-h-[290px] flex flex-col justify-between" id="testimonialCard">
+              <div class="text-brand-gold/30 mb-2">
+                <svg width="40" height="30" viewBox="0 0 40 30" fill="currentColor">
+                  <path d="M11.4286 0C5.11429 0 0 5.11429 0 11.4286C0 17.7429 5.11429 22.8571 11.4286 22.8571C11.7143 22.8571 12 22.8286 12.2857 22.7714C11.1429 26.8857 7.42857 30 2.85714 30H0V28.5714C0 20.8571 6.28571 14.5714 14 14.5714H14.2857V0H11.4286ZM37.1429 0C30.8286 0 25.7143 5.11429 25.7143 11.4286C25.7143 17.7429 30.8286 22.8571 37.1429 22.8571C37.4286 22.8571 37.7143 22.8286 38 22.7714C36.8571 26.8857 33.1429 30 28.5714 30H25.7143V28.5714C25.7143 20.8571 32 14.5714 39.7143 14.5714H40V0H37.1429Z"></path>
+                </svg>
+              </div>
+              <div class="space-y-4">
+                <div class="flex items-center space-x-1 text-brand-gold text-xs">
+                  <i data-lucide="star" class="w-4 h-4 fill-brand-gold"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-brand-gold"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-brand-gold"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-brand-gold"></i>
+                  <i data-lucide="star" class="w-4 h-4 fill-brand-gold"></i>
+                </div>
+                <p id="reviewQuote" class="text-base sm:text-lg text-brand-offwhite/90 font-light italic leading-relaxed">
+                  "Love Over Coffee is my happy place in Jaipur! The hazelnut latte and pesto sandwiches are amazing, the vibe is cozy, and the staff is polite, hardworking, and friendly. Highly recommend!"
+                </p>
+              </div>
+              <div class="pt-6 border-t border-white/10 flex items-center justify-between">
+                <div class="flex items-center space-x-3.5">
+                  <img id="reviewAvatar" src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Customer" class="w-12 h-12 rounded-full object-cover border-2 border-brand-gold">
+                  <div>
+                    <h4 id="reviewAuthor" class="font-serif font-bold text-brand-cream text-base">Radhika Agarwal</h4>
+                    <p id="reviewLocation" class="text-xs text-brand-offwhite/70">Regular Customer • C-Scheme Outlet</p>
+                  </div>
+                </div>
+                <span class="inline-flex items-center space-x-1 px-2.5 py-1 rounded-full bg-white/5 border border-white/10 text-[10px] text-brand-gold font-medium">
+                  <i data-lucide="check-circle" class="w-3 h-3"></i>
+                  <span>Google Verified</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="flex items-center justify-between pt-6 px-2">
+              <div class="flex items-center space-x-2" id="testimonialDots">
+                <button onclick="setTestimonial(0)" class="w-8 h-2 rounded-full bg-brand-gold transition-all" aria-label="Slide 1"></button>
+                <button onclick="setTestimonial(1)" class="w-2.5 h-2 rounded-full bg-white/20 transition-all" aria-label="Slide 2"></button>
+                <button onclick="setTestimonial(2)" class="w-2.5 h-2 rounded-full bg-white/20 transition-all" aria-label="Slide 3"></button>
+              </div>
+              <div class="flex items-center space-x-3">
+                <button id="prevReviewBtn" aria-label="Previous Review" class="w-11 h-11 rounded-full border border-white/20 hover:border-brand-cream hover:bg-white/10 text-brand-offwhite flex items-center justify-center transition-all">
+                  <i data-lucide="chevron-left" class="w-5 h-5"></i>
+                </button>
+                <button id="nextReviewBtn" aria-label="Next Review" class="w-11 h-11 rounded-full border border-white/20 hover:border-brand-cream hover:bg-white/10 text-brand-offwhite flex items-center justify-center transition-all">
+                  <i data-lucide="chevron-right" class="w-5 h-5"></i>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="lg:col-span-5 flex justify-center">
+            <div class="relative rounded-3xl overflow-hidden shadow-2xl border border-white/10 w-full max-w-md group aspect-[4/4.5]">
+              <img 
+                src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1000&q=85" 
+                alt="Latte art cup next to notebook on wooden cafe table" 
+                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+              >
+              <div class="absolute inset-0 bg-gradient-to-t from-brand-dark/85 via-transparent to-transparent"></div>
+              <div class="absolute bottom-6 left-6 right-6 bg-brand-dark/80 backdrop-blur-md p-4 rounded-2xl border border-brand-gold/30">
+                <p class="font-script text-xl text-brand-cream font-medium">"Good Coffee Better Days"</p>
+                <p class="text-xs text-brand-offwhite/70 mt-0.5">Capturing everyday conversations at Love Over Coffee</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION: OUTLETS DIRECTORY -->
+    <section id="outlets" class="bg-brand-alabaster py-20 border-b border-brand-cardBorder">
+      <div class="max-w-7xl mx-auto px-6 md:px-12">
+        <div class="text-center max-w-2xl mx-auto mb-14 space-y-2">
+          <span class="text-xs font-bold tracking-[0.25em] uppercase text-brand-bronze block">FIND YOUR NEAREST LOC</span>
+          <h2 class="font-serif text-3xl sm:text-4xl font-bold text-brand-charcoal">
+            Our Jaipur Outlets & Timings
+          </h2>
+          <p class="text-sm text-brand-muted">Serving Jaipur across 6+ bustling neighborhood locations with late-night dine-in, takeaway, and delivery.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          
+          <!-- Outlet 1: C-Scheme Flagship -->
+          <div class="bg-white p-6 rounded-2xl border-2 border-brand-gold/60 shadow-warm flex flex-col justify-between relative overflow-hidden">
+            <div class="absolute -right-10 top-5 bg-brand-gold text-brand-dark text-[9px] font-bold uppercase tracking-wider py-1 px-10 rotate-45">
+              4.6★ TOP RATED
+            </div>
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-sand text-brand-charcoal text-[10px] font-bold uppercase tracking-wider">
+                  Flagship Bistro
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">4.6★ (264+ Reviews)</span>
+              </div>
+              <h3 class="font-serif text-xl font-bold text-brand-charcoal mb-1">C-Scheme Flagship</h3>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>F-5, Jamnalal Bajaj Marg, Ashok Nagar, C-Scheme, Jaipur</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 11:00 AM – 11:00 PM</p>
+                <p><strong>WhatsApp Orders:</strong> +91 79761 98506</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <a href="#/menu-brochure" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <span>View Full Menu</span>
+                <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
+              </a>
+              <a href="https://wa.me/917976198506?text=Hi%20LOC%20C-Scheme,%20I%20want%20to%20order" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#25D366] text-white hover:bg-[#20ba59] transition-colors flex items-center gap-1">
+                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+                <span>WhatsApp Order</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Outlet 2: B2 Bypass Late Night -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-forest text-brand-cream text-[10px] font-bold uppercase tracking-wider">
+                  Open Till 4:00 AM
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">4.3★ (2.4K+ Reviews)</span>
+              </div>
+              <h3 class="font-serif text-xl font-bold text-brand-charcoal mb-1">B2 Bypass Late-Night Hub</h3>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>Tonk Rd, opp. Bella Casa, Surplus House, Jaipur, Rajasthan 302018</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Open daily till 4:00 AM</p>
+                <p><strong>Phone:</strong> 072320 99909 / +91 99287 83999</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <a href="https://maps.google.com/maps?q=Love+over+coffee+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <span>Google Maps</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </a>
+              <a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+                Order Online
+              </a>
+            </div>
+          </div>
+
+          <!-- Outlet 3: JLN Road New Chapter -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-gold/20 text-brand-bronze text-[10px] font-bold uppercase tracking-wider">
+                  Newest Chapter
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">Aesthetic Select</span>
+              </div>
+              <h3 class="font-serif text-xl font-bold text-brand-charcoal mb-1">JLN Road, Jawahar Circle</h3>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>C-16, JLN Road, Jawahar Circle, Keshav Vihar, Near Airport Terminal 2</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 9:00 AM – 11:30 PM</p>
+                <p><strong>Highlights:</strong> Specialty Pour-overs & Rosetta Art</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <a href="https://maps.google.com/maps?q=Love+over+coffee+JLN+Road+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <span>Google Maps</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </a>
+              <button onclick="document.getElementById('videoModal').classList.remove('opacity-0', 'pointer-events-none')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors">
+                Watch Tour
+              </button>
+            </div>
+          </div>
+
+          <!-- Outlet 4: Durgapura HQ -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-sand text-brand-charcoal text-[10px] font-bold uppercase tracking-wider">
+                  Original Branch
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">Cozy Vibes</span>
+              </div>
+              <h3 class="font-serif text-xl font-bold text-brand-charcoal mb-1">Durgapura Branch</h3>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>S-7 Lakhanpuri, Durgapura, Jaipur, Rajasthan 302018</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 9:00 AM – 11:00 PM</p>
+                <p><strong>Phone:</strong> +91 99287 83999</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <a href="https://maps.google.com/maps?q=Love+over+coffee+Durgapura+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <span>Google Maps</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </a>
+              <a href="tel:+919928783999" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+                Call Outlet
+              </a>
+            </div>
+          </div>
+
+          <!-- Outlet 5: Vidhyadhar Nagar -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-sand text-brand-charcoal text-[10px] font-bold uppercase tracking-wider">
+                  North Jaipur
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">Birthday Friendly</span>
+              </div>
+              <h3 class="font-serif text-xl font-bold text-brand-charcoal mb-1">Vidhyadhar Nagar (VDN)</h3>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>Central Spine, Vidhyadhar Nagar, Jaipur</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 10:00 AM – 11:00 PM</p>
+                <p><strong>District Special:</strong> Complimentary Birthday Pastry</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <a href="https://maps.google.com/maps?q=Love+over+coffee+Vidhyadhar+Nagar+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <span>Google Maps</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </a>
+              <a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+                Order Online
+              </a>
+            </div>
+          </div>
+
+          <!-- Outlet 6: Vaishali & Jagatpura -->
+          <div class="bg-white p-6 rounded-2xl border border-brand-cardBorder shadow-sm hover:shadow-warm transition-all flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between mb-3">
+                <span class="px-2.5 py-1 rounded-full bg-brand-sand text-brand-charcoal text-[10px] font-bold uppercase tracking-wider">
+                  Neighborhood Spots
+                </span>
+                <span class="text-xs font-semibold text-brand-gold">5.0★ Community</span>
+              </div>
+              <h3 class="font-serif text-xl font-bold text-brand-charcoal mb-1">Vaishali Nagar & Jagatpura</h3>
+              <p class="text-xs text-brand-muted mb-4 flex items-start gap-1.5">
+                <i data-lucide="map-pin" class="w-4 h-4 text-brand-bronze shrink-0 mt-0.5"></i>
+                <span>Amrapali Marg, Vaishali & Mahal Road, Jagatpura, Jaipur</span>
+              </p>
+              <div class="text-xs space-y-1 text-brand-muted border-t border-brand-cardBorder pt-3">
+                <p><strong>Hours:</strong> Daily 9:30 AM – 11:00 PM</p>
+                <p><strong>Atmosphere:</strong> Work-friendly, quiet nooks & high speed Wi-Fi</p>
+              </div>
+            </div>
+            <div class="mt-6 pt-3 border-t border-brand-cardBorder flex items-center justify-between">
+              <a href="https://maps.google.com/maps?q=Love+over+coffee+Vaishali+Nagar+Jaipur" target="_blank" class="text-xs font-bold text-brand-forest hover:text-brand-gold flex items-center gap-1">
+                <span>Google Maps</span>
+                <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+              </a>
+              <a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+                Order Online
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- SECTION H: FOOTER -->
+    <footer id="footer" class="bg-brand-alabaster pt-16 pb-12 border-t border-brand-cardBorder relative overflow-hidden">
+      <div class="max-w-7xl mx-auto px-6 md:px-12">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-brand-cardBorder">
+          
+          <div class="lg:col-span-4 space-y-4">
+            <div class="flex items-center space-x-3">
+              <div class="w-10 h-10 rounded-full bg-brand-forest flex items-center justify-center text-brand-cream">
+                <i data-lucide="coffee" class="w-5 h-5"></i>
+              </div>
+              <div>
+                <span class="font-serif text-2xl font-bold tracking-tight text-brand-charcoal block">Love Over Coffee</span>
+                <span class="text-[9px] tracking-[0.25em] text-brand-bronze uppercase font-semibold">JAIPUR • EST. CAFE</span>
+              </div>
+            </div>
+            <p class="text-xs text-brand-muted leading-relaxed pr-6">
+              Jaipur’s iconic specialty cafe and late-night bistro. Thoughtfully crafted brews, comforting gourmet food, and warm connections across Pink City.
+            </p>
+            <div class="space-y-2 text-xs text-brand-charcoal pt-2">
+              <p class="flex items-center gap-2">
+                <i data-lucide="phone" class="w-3.5 h-3.5 text-brand-bronze"></i>
+                <span>+91 99287 83999 / 072320 99909</span>
+              </p>
+              <p class="flex items-center gap-2">
+                <i data-lucide="mail" class="w-3.5 h-3.5 text-brand-bronze"></i>
+                <a href="mailto:locloveovercoffee@gmail.com" class="hover:text-brand-gold transition-colors">locloveovercoffee@gmail.com</a>
+              </p>
+              <p class="flex items-center gap-2">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-bronze"></i>
+                <span>Daily 9:00 AM – 11:00 PM <span class="font-semibold text-brand-forest">(B2 Bypass open till 4:00 AM)</span></span>
+              </p>
+            </div>
+          </div>
+
+          <div class="lg:col-span-2 space-y-4">
+            <h4 class="font-serif text-base font-bold text-brand-charcoal">Menu & Brochure</h4>
+            <ul class="space-y-2 text-xs text-brand-muted font-medium">
+              <li><a href="#/menu-gateway" class="text-brand-forest font-semibold hover:text-brand-gold flex items-center gap-1">Menu Gateway <i data-lucide="arrow-right" class="w-3 h-3"></i></a></li>
+              <li><a href="#/menu-brochure" class="hover:text-brand-forest transition-colors">Full 55+ Item Menu</a></li>
+              <li><a href="javascript:void(0)" onclick="openAndPrintBrochure()" class="hover:text-brand-forest transition-colors flex items-center gap-1"><span>📥 Download PDF</span></a></li>
+              <li><a href="https://wa.me/917976198506?text=Hi%20LOC%20C-Scheme" target="_blank" class="hover:text-brand-forest transition-colors">C-Scheme WhatsApp</a></li>
+              <li><a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="text-brand-forest font-semibold hover:text-brand-gold flex items-center gap-1">Order on Zomato <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
+            </ul>
+          </div>
+
+          <div class="lg:col-span-4 space-y-4">
+            <h4 class="font-serif text-base font-bold text-brand-charcoal">Jaipur Locations</h4>
+            <ul class="space-y-2 text-xs text-brand-muted">
+              <li class="flex items-start gap-2">
+                <span class="text-brand-bronze shrink-0">📍</span>
+                <span><strong>C-Scheme:</strong> F-5, Jamnalal Bajaj Marg, Ashok Nagar (4.6★)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-bronze shrink-0">📍</span>
+                <span><strong>B2 Bypass, Tonk Rd:</strong> Opp. Bella Casa (Open till 4 AM)</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-bronze shrink-0">📍</span>
+                <span><strong>JLN Road:</strong> C-16, Jawahar Circle, Near Airport Terminal 2</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-bronze shrink-0">📍</span>
+                <span><strong>Durgapura:</strong> S-7 Lakhanpuri</span>
+              </li>
+              <li class="flex items-start gap-2">
+                <span class="text-brand-bronze shrink-0">📍</span>
+                <span><strong>Vaishali Nagar, Vidhyadhar Nagar & Jagatpura</strong></span>
+              </li>
+            </ul>
+          </div>
+
+          <div class="lg:col-span-2 space-y-4">
+            <h4 class="font-serif text-base font-bold text-brand-charcoal">Follow Us</h4>
+            <div class="flex items-center space-x-2">
+              <a href="https://www.instagram.com/loveovercoffee_/" target="_blank" aria-label="Instagram" class="w-9 h-9 rounded-full bg-brand-sand hover:bg-brand-forest hover:text-brand-cream text-brand-charcoal flex items-center justify-center transition-all">
+                <i data-lucide="instagram" class="w-4 h-4"></i>
+              </a>
+              <a href="https://www.facebook.com/loveovercoffeejaipur/" target="_blank" aria-label="Facebook" class="w-9 h-9 rounded-full bg-brand-sand hover:bg-brand-forest hover:text-brand-cream text-brand-charcoal flex items-center justify-center transition-all">
+                <i data-lucide="facebook" class="w-4 h-4"></i>
+              </a>
+              <a href="https://maps.google.com/maps?q=Love+over+coffee+Jaipur" target="_blank" aria-label="Google Maps" class="w-9 h-9 rounded-full bg-brand-sand hover:bg-brand-forest hover:text-brand-cream text-brand-charcoal flex items-center justify-center transition-all">
+                <i data-lucide="map-pin" class="w-4 h-4"></i>
+              </a>
+            </div>
+            <div class="pt-2">
+              <div class="bg-brand-sand p-3 rounded-xl border border-brand-cardBorder">
+                <span class="text-[10px] text-brand-bronze font-bold uppercase tracking-wider block">COMMUNITY</span>
+                <span class="font-serif text-lg font-bold text-brand-forest block">11.6K+</span>
+                <span class="text-[11px] text-brand-muted">Instagram Followers</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-brand-muted gap-4">
+          <p>© 2026 Love Over Coffee Jaipur. All rights reserved. Handcrafted with passion.</p>
+          <div class="flex items-center space-x-6">
+            <a href="#/menu-gateway" class="hover:text-brand-charcoal transition-colors">Menu Gateway</a>
+            <a href="#/menu-brochure" class="hover:text-brand-charcoal transition-colors">Digital Brochure</a>
+            <a href="#" class="hover:text-brand-charcoal transition-colors">Privacy Policy</a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+
+  <!-- ================= VIEW 2: THE MENU GATEWAY VIEW (/menu-gateway) ================= -->
+  <div id="viewGateway" class="app-view hidden min-h-screen hero-radial-bg text-brand-offwhite relative overflow-hidden flex flex-col justify-between py-10 px-6 md:px-12">
+    
+    <!-- Botanical leaf background accents -->
+    <div class="absolute -top-16 -left-12 opacity-15 pointer-events-none floating-leaf">
+      <svg width="300" height="300" viewBox="0 0 100 100" fill="#F3E5AB">
+        <path d="M50 0 C70 25 90 40 100 70 C70 70 50 90 20 100 C15 70 25 40 50 0 Z"></path>
+      </svg>
+    </div>
+    <div class="absolute bottom-6 -right-10 opacity-10 pointer-events-none floating-leaf" style="animation-delay: -2s;">
+      <svg width="320" height="320" viewBox="0 0 100 100" fill="#D4A359">
+        <path d="M20 10 C60 10 90 40 90 80 C50 90 20 60 10 30 C15 20 18 15 20 10 Z"></path>
+      </svg>
+    </div>
+
+    <!-- Gateway Navigation Top Bar -->
+    <div class="max-w-6xl mx-auto w-full flex items-center justify-between relative z-20 pb-8">
+      <a href="#/" class="inline-flex items-center space-x-2 text-brand-cream hover:text-white px-4 py-2 rounded-full bg-white/10 hover:bg-white/15 border border-white/15 text-xs font-semibold uppercase tracking-wider transition-all">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <span>Back to Home</span>
+      </a>
+
+      <div class="flex items-center space-x-2">
+        <span class="w-2.5 h-2.5 rounded-full bg-brand-gold animate-pulse"></span>
+        <span class="text-xs text-brand-gold font-bold tracking-widest uppercase">C-SCHEME & JAIPUR CAFE</span>
+      </div>
+    </div>
+
+    <!-- Gateway Center Body: Header + 2 Choice Cards -->
+    <div class="max-w-5xl mx-auto w-full my-auto relative z-20 py-8">
+      
+      <!-- Gateway Header -->
+      <div class="text-center space-y-3 mb-12 max-w-2xl mx-auto">
+        <span class="text-xs font-bold tracking-[0.25em] uppercase text-brand-gold block">
+          LOVE OVER COFFEE • C-SCHEME & JAIPUR OUTLETS
+        </span>
+        <h2 class="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-brand-offwhite leading-tight">
+          How Would You Like to Explore Our Menu?
+        </h2>
+        <p class="text-brand-offwhite/80 text-sm sm:text-base font-light leading-relaxed">
+          Choose whether you want to download our complete multi-page cafe brochure for offline viewing or browse our interactive menu with live prices right here.
+        </p>
+      </div>
+
+      <!-- Two Side-by-Side Interactive Choice Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        
+        <!-- CARD 1: DOWNLOAD COMPLETE BROCHURE -->
+        <div class="bg-brand-forest/90 backdrop-blur-md rounded-3xl p-8 sm:p-10 border border-brand-gold/40 shadow-2xl flex flex-col justify-between group hover:border-brand-cream hover:bg-brand-forest transition-all transform hover:-translate-y-1.5 duration-300">
+          <div class="space-y-5">
+            <div class="w-16 h-16 rounded-2xl bg-brand-cream/10 border border-brand-cream/30 text-brand-cream flex items-center justify-center text-2xl group-hover:bg-brand-cream group-hover:text-brand-forest transition-all shadow-md">
+              <i data-lucide="download" class="w-8 h-8"></i>
+            </div>
+            <div>
+              <span class="text-[10px] tracking-widest text-brand-gold uppercase font-bold block mb-1">OFFLINE READY • PRINT / PDF</span>
+              <h3 class="font-serif text-2xl font-bold text-brand-offwhite group-hover:text-brand-cream transition-colors">
+                Download Complete Brochure
+              </h3>
+            </div>
+            <p class="text-brand-offwhite/80 text-xs sm:text-sm font-light leading-relaxed">
+              Get everything in one clean, print-ready trifold / multi-page brochure layout containing all 55+ items, detailed descriptions, live ₹ prices, and full outlet contacts.
+            </p>
+            <div class="pt-2 flex items-center space-x-3 text-xs text-brand-gold">
+              <span class="flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i> All 10 Categories</span>
+              <span class="flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i> High-Res PDF Print</span>
+            </div>
+          </div>
+
+          <div class="pt-8">
+            <button onclick="openAndPrintBrochure()" class="w-full py-4 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-xs uppercase tracking-wider transition-all shadow-lg flex items-center justify-center space-x-2 group-hover:shadow-xl">
+              <i data-lucide="file-text" class="w-4 h-4"></i>
+              <span>Download / Print Brochure (PDF)</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CARD 2: VISIT INTERACTIVE MENU ONLINE -->
+        <div class="bg-brand-forest/90 backdrop-blur-md rounded-3xl p-8 sm:p-10 border border-white/20 shadow-2xl flex flex-col justify-between group hover:border-brand-gold hover:bg-brand-forest transition-all transform hover:-translate-y-1.5 duration-300">
+          <div class="space-y-5">
+            <div class="w-16 h-16 rounded-2xl bg-brand-gold/20 border border-brand-gold/40 text-brand-gold flex items-center justify-center text-2xl group-hover:bg-brand-gold group-hover:text-brand-dark transition-all shadow-md">
+              <i data-lucide="coffee" class="w-8 h-8"></i>
+            </div>
+            <div>
+              <span class="text-[10px] tracking-widest text-brand-gold uppercase font-bold block mb-1">INTERACTIVE EXPERIENCE</span>
+              <h3 class="font-serif text-2xl font-bold text-brand-offwhite group-hover:text-brand-gold transition-colors">
+                Visit Live Menu with Prices
+              </h3>
+            </div>
+            <p class="text-brand-offwhite/80 text-xs sm:text-sm font-light leading-relaxed">
+              Explore our full C-Scheme & Jaipur menu online with category filters, instant keyword search, culinary dietary badges, detailed flavor notes, and live ₹ pricing.
+            </p>
+            <div class="pt-2 flex items-center space-x-3 text-xs text-brand-cream">
+              <span class="flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i> Instant Search</span>
+              <span class="flex items-center gap-1"><i data-lucide="check" class="w-3.5 h-3.5"></i> Add to Cart & WhatsApp</span>
+            </div>
+          </div>
+
+          <div class="pt-8">
+            <a href="#/menu-brochure" class="w-full py-4 rounded-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark font-bold text-xs uppercase tracking-wider transition-all shadow-lg flex items-center justify-center space-x-2 group-hover:shadow-xl">
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+              <span>Browse Live Menu Online</span>
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Gateway Bottom Footer -->
+    <div class="max-w-6xl mx-auto w-full pt-8 text-center text-xs text-brand-offwhite/50 border-t border-white/10 relative z-20">
+      <span>Love Over Coffee • C-Scheme (F-5 Jamnalal Bajaj Marg) & Tonk Road B2 Bypass (Open till 4 AM)</span>
+    </div>
+
+  </div>
+
+
+  <!-- ================= VIEW 3: FULL INTERACTIVE MENU & EDITORIAL BROCHURE (/menu-brochure) ================= -->
+  <div id="viewBrochure" class="app-view hidden bg-brand-alabaster text-brand-charcoal min-h-screen flex flex-col">
+    
+    <!-- Sticky Top Editorial Header Bar (no-print) -->
+    <header class="sticky top-0 z-40 bg-brand-forest text-brand-offwhite shadow-lg no-print">
+      <div class="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex flex-col md:flex-row md:items-center justify-between gap-3">
+        
+        <!-- Left: Back button & Title -->
+        <div class="flex items-center space-x-4">
+          <a href="#/menu-gateway" class="flex items-center space-x-1.5 text-brand-cream hover:text-white px-3 py-1.5 rounded-full bg-white/10 text-xs font-semibold uppercase tracking-wider transition-all">
+            <i data-lucide="arrow-left" class="w-3.5 h-3.5"></i>
+            <span>Gateway</span>
+          </a>
+          <a href="#/" class="text-xs text-brand-offwhite/70 hover:text-white transition-colors">
+            Home
+          </a>
+          <span class="text-white/30">•</span>
+          <div class="flex items-center space-x-2">
+            <i data-lucide="coffee" class="w-4 h-4 text-brand-gold"></i>
+            <span class="font-serif font-bold text-sm sm:text-base text-brand-offwhite">Love Over Coffee — Full Menu Brochure</span>
+          </div>
+        </div>
+
+        <!-- Center: Search Input -->
+        <div class="relative flex-1 max-w-xs md:max-w-sm">
+          <i data-lucide="search" class="w-4 h-4 text-brand-cream/60 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input 
+            type="text" 
+            id="brochureSearchInput"
+            placeholder="Search 55+ dishes, coffees, pizzas..." 
+            class="w-full bg-white/10 border border-white/15 focus:border-brand-gold rounded-full pl-9 pr-4 py-1.5 text-xs text-brand-offwhite placeholder:text-brand-offwhite/50 focus:outline-none"
+          >
+        </div>
+
+        <!-- Right: Download PDF & WhatsApp Buttons -->
+        <div class="flex items-center space-x-2.5 shrink-0">
+          <button onclick="window.print()" class="inline-flex items-center space-x-1.5 px-4 py-2 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest text-xs font-bold uppercase tracking-wider transition-all shadow-md">
+            <i data-lucide="download" class="w-3.5 h-3.5"></i>
+            <span>Download PDF</span>
+          </button>
+          <a href="https://wa.me/917976198506?text=Hi%20Love%20Over%20Coffee%20(C-Scheme),%20I%20am%20browsing%20your%20digital%20menu%20and%20would%20like%20to%20order" target="_blank" class="inline-flex items-center space-x-1.5 px-4 py-2 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md">
+            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
+            <span class="hidden sm:inline">WhatsApp Order</span>
+          </a>
+        </div>
+
+      </div>
+
+      <!-- Category Filter Pills Bar (no-print) -->
+      <div class="bg-brand-dark/95 border-t border-white/10 px-4 sm:px-8 py-2.5 overflow-x-auto scrollbar-none flex items-center space-x-2" id="brochureCategoryBar">
+        <!-- Rendered dynamically -->
+      </div>
+    </header>
+
+
+    <!-- ================= PRINTABLE BROCHURE DOCUMENT CONTAINER ================= -->
+    <main id="printableBrochureArea" class="flex-1 max-w-7xl mx-auto w-full px-4 sm:px-8 py-10 md:py-14 space-y-12 bg-white md:my-6 md:rounded-3xl md:shadow-warm border border-brand-cardBorder">
+      
+      <!-- Editorial Lookbook Header -->
+      <div class="border-b-2 border-brand-charcoal pb-8 text-center space-y-3 relative">
+        <div class="flex items-center justify-center space-x-2 text-brand-bronze text-xs font-bold uppercase tracking-[0.28em]">
+          <span>JAIPUR, RAJASTHAN</span>
+          <span>•</span>
+          <span>SPECIALTY COFFEE & LATE-NIGHT BISTRO</span>
+          <span>•</span>
+          <span>EST. CAFE</span>
+        </div>
+        <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-charcoal tracking-tight">
+          Love Over Coffee
+        </h1>
+        <p class="font-script text-2xl sm:text-3xl text-brand-gold font-normal">
+          The Complete C-Scheme & Jaipur Menu Lookbook
+        </p>
+        <p class="max-w-2xl mx-auto text-xs text-brand-muted leading-relaxed font-light">
+          Crafted with 100% freshly roasted Arabica beans, artisanal sourdoughs, Italian hand-tossed doughs, and authentic spices. Available for dine-in, takeaway, and direct delivery till 4:00 AM.
+        </p>
+
+        <!-- Quick Outlet Strip for Brochure Header -->
+        <div class="pt-4 flex flex-wrap items-center justify-center gap-4 text-[11px] text-brand-charcoal font-medium border-t border-brand-cardBorder mt-4">
+          <span class="flex items-center gap-1">📍 <strong>C-Scheme:</strong> Jamnalal Bajaj Marg (+91 79761 98506)</span>
+          <span class="text-brand-muted">•</span>
+          <span class="flex items-center gap-1">📍 <strong>B2 Bypass:</strong> Tonk Rd (Open till 4 AM)</span>
+          <span class="text-brand-muted">•</span>
+          <span class="flex items-center gap-1">📍 <strong>JLN Road:</strong> Jawahar Circle, Terminal 2</span>
+        </div>
+      </div>
+
+      <!-- Search results alert (only when searching) -->
+      <div id="brochureSearchStatus" class="hidden text-xs text-brand-muted py-2 px-4 rounded-xl bg-brand-sand border border-brand-cardBorder flex items-center justify-between no-print">
+        <span id="brochureSearchQueryText">Showing matching results</span>
+        <button onclick="clearBrochureSearch()" class="text-brand-forest font-bold underline">Clear Search</button>
+      </div>
+
+      <!-- Complete 10 Categories Container (Multi-column luxury editorial layout) -->
+      <div id="brochureCategoriesContainer" class="space-y-12">
+        <!-- Generated Dynamically -->
+      </div>
+
+      <!-- Editorial Brochure Footer & Outlet Directory -->
+      <div class="border-t-2 border-brand-charcoal pt-8 space-y-6">
+        <div class="text-center space-y-1">
+          <h4 class="font-serif text-xl font-bold text-brand-charcoal">Love Over Coffee Jaipur Outlets</h4>
+          <p class="text-xs text-brand-muted">Serving happiness one cup at a time across Pink City</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 text-xs text-brand-charcoal">
+          <div class="bg-brand-sand/60 p-4 rounded-xl border border-brand-cardBorder">
+            <span class="font-serif font-bold text-sm block mb-1">C-Scheme Flagship (4.6★)</span>
+            <p class="text-brand-muted">F-5, Jamnalal Bajaj Marg, Ashok Nagar, C-Scheme, Jaipur</p>
+            <p class="mt-2 font-semibold text-brand-forest">📞 +91 79761 98506</p>
+          </div>
+          <div class="bg-brand-sand/60 p-4 rounded-xl border border-brand-cardBorder">
+            <span class="font-serif font-bold text-sm block mb-1">Tonk Road (Open till 4 AM)</span>
+            <p class="text-brand-muted">B2 Bypass, Opp. Bella Casa, Surplus House, Jaipur</p>
+            <p class="mt-2 font-semibold text-brand-forest">📞 072320 99909 / +91 99287 83999</p>
+          </div>
+          <div class="bg-brand-sand/60 p-4 rounded-xl border border-brand-cardBorder">
+            <span class="font-serif font-bold text-sm block mb-1">JLN Road (New Chapter)</span>
+            <p class="text-brand-muted">C-16, JLN Road, Jawahar Circle, Near Airport Terminal 2</p>
+            <p class="mt-2 font-semibold text-brand-forest">📞 Instagram @loveovercoffee_</p>
+          </div>
+          <div class="bg-brand-sand/60 p-4 rounded-xl border border-brand-cardBorder">
+            <span class="font-serif font-bold text-sm block mb-1">Durgapura HQ</span>
+            <p class="text-brand-muted">S-7 Lakhanpuri, Durgapura, Jaipur, Rajasthan 302018</p>
+            <p class="mt-2 font-semibold text-brand-forest">📞 +91 99287 83999</p>
+          </div>
+        </div>
+
+        <div class="text-center text-[11px] text-brand-muted pt-4 border-t border-brand-cardBorder">
+          <p>Taxes & packaging applicable as per regulations. All dishes prepared fresh to order. For catering & private bookings, contact locloveovercoffee@gmail.com.</p>
+        </div>
+      </div>
+
+    </main>
+
+  </div>
+
+
+  <!-- ================= JAVASCRIPT LOGIC & COMPLETE C-SCHEME DATASET ================= -->
+  <script>
+    // Initialize Lucide Icons
+    lucide.createIcons();
+
+    // COMPLETE 10-CATEGORY C-SCHEME JAIPUR DATASET (55+ ITEMS)
+    const COMPLETE_MENU_DATASET = [
+      {
+        categoryName: "Hot Coffee (Without Milk)",
+        categoryDesc: "Single-origin Arabica extractions with intense body, caramel crema, and clean notes.",
+        items: [
+          {
+            name: "Espresso",
+            price: 320,
+            badge: "",
+            desc: "60ml full-flavored concentrated shot of signature Arabica coffee with rich crema."
+          },
+          {
+            name: "Americano",
+            price: 390,
+            badge: "",
+            desc: "Rich espresso shot brewed with hot water for a smooth, bold finish."
+          },
+          {
+            name: "Irish Americano",
+            price: 460,
+            badge: "Specialty",
+            desc: "Double espresso shot combined with hot water and infused with premium Irish syrup."
+          }
+        ]
+      },
+      {
+        categoryName: "Hot Coffee (With Milk) & Hot Chocolate",
+        categoryDesc: "Velvety steamed dairy paired with roasted espresso and rich Belgian cocoa.",
+        items: [
+          {
+            name: "Cappuccino",
+            price: 390,
+            badge: "Classic",
+            desc: "A classic shot of espresso topped with steamed milk and deep velvety foam."
+          },
+          {
+            name: "Cafe Latte",
+            price: 420,
+            badge: "",
+            desc: "A smooth shot of espresso with steamed milk and a light layer of foam."
+          },
+          {
+            name: "Cafe Mocha",
+            price: 460,
+            badge: "Popular",
+            desc: "Rich espresso blended with dark chocolate sauce and steamed milk."
+          },
+          {
+            name: "Hot Chocolate",
+            price: 480,
+            badge: "",
+            desc: "Sinful brew blending rich dark chocolate with velvety hot milk."
+          },
+          {
+            name: "Flat White",
+            price: 500,
+            badge: "Bestseller",
+            desc: "Double espresso shot layered with steamed milk and ultra-thin microfoam."
+          },
+          {
+            name: "Biscoff Cappuccino",
+            price: 510,
+            badge: "New Hit",
+            desc: "Signature cappuccino infused with the caramelized crunch and flavor of Lotus Biscoff."
+          },
+          {
+            name: "Signature Hot Chocolate",
+            price: 520,
+            badge: "Must Try",
+            desc: "Rich dark hot chocolate elevated with roasted hazelnut flavor."
+          }
+        ]
+      },
+      {
+        categoryName: "Cold Coffee & Signature Frappes",
+        categoryDesc: "Signature chilled Arabica creations whipped with cream and gourmet flavors.",
+        items: [
+          {
+            name: "Cafe Frappe",
+            price: 470,
+            badge: "Bestseller",
+            desc: "Rich, creamy, and irresistible signature blended cold coffee."
+          },
+          {
+            name: "Dark Chocolate Frappe",
+            price: 540,
+            badge: "",
+            desc: "Intense dark chocolate blended with chilled espresso and cream."
+          },
+          {
+            name: "Irish Mocha Creamy Frappe",
+            price: 580,
+            badge: "Signature",
+            desc: "Signature Cafe Frappe mixed with Irish cream notes and rich chocolate."
+          },
+          {
+            name: "Mocha Hazelnut Frappe",
+            price: 580,
+            badge: "Customer Favorite",
+            desc: "Chilled coffee blended with chocolate fudge and roasted hazelnut."
+          },
+          {
+            name: "Tiramisu Frappe",
+            price: 580,
+            badge: "Indulgent",
+            desc: "Brownie chunks blended with authentic Italian tiramisu flavor in cold coffee."
+          }
+        ]
+      },
+      {
+        categoryName: "Thick Shakes",
+        categoryDesc: "Ultra-thick dessert shakes made with rich ice cream, cookies, and chocolate fudge.",
+        items: [
+          {
+            name: "Dark Chocolate Shake",
+            price: 480,
+            badge: "Rich Cocoa",
+            desc: "Decadent Belgian dark chocolate blended into a thick, creamy shake."
+          },
+          {
+            name: "Oreo Shake",
+            price: 530,
+            badge: "Popular",
+            desc: "Crunchy Oreo cookies blended with vanilla ice cream and chocolate drizzle."
+          },
+          {
+            name: "Kit-Kat Shake",
+            price: 530,
+            badge: "",
+            desc: "Crispy Kit-Kat wafers blended into a rich chocolate malt shake."
+          },
+          {
+            name: "Choco Brownie Shake",
+            price: 550,
+            badge: "Bestseller",
+            desc: "Warm fudge brownie chunks blended into a thick chocolate shake."
+          },
+          {
+            name: "Lotus Biscoff Shake",
+            price: 580,
+            badge: "Chef Special",
+            desc: "Creamy shake blended with Lotus Biscoff spread and topped with crumbled biscuit."
+          }
+        ]
+      },
+      {
+        categoryName: "Iced Teas, Coolers & Mocktails",
+        categoryDesc: "Crisp sparkling botanical coolers and slow-steeped refreshing tea infusions.",
+        items: [
+          {
+            name: "Fresh Lime Soda (Sweet / Salted / Mix)",
+            price: 357,
+            badge: "Refreshing",
+            desc: "Refreshing sparkling citrus cooler with mint."
+          },
+          {
+            name: "Lemon Mint Ice Tea",
+            price: 378,
+            badge: "Classic",
+            desc: "Slow-brewed iced tea infused with zesty lemon and fresh garden mint."
+          },
+          {
+            name: "Virgin Mojito",
+            price: 378,
+            badge: "Cooler",
+            desc: "Chilled mint mojito crafted with muddled lemons, fresh mint leaves, and crushed ice."
+          },
+          {
+            name: "Peach Ice Tea",
+            price: 399,
+            badge: "",
+            desc: "Fragrant peach-infused chilled artisanal tea."
+          },
+          {
+            name: "Strawberry Ice Tea",
+            price: 399,
+            badge: "",
+            desc: "Sweet berry-infused refreshing iced tea."
+          },
+          {
+            name: "Watermelon Ice Tea",
+            price: 399,
+            badge: "",
+            desc: "Crisp watermelon notes blended with chilled brewed tea."
+          },
+          {
+            name: "Blueberry Ice Tea",
+            price: 462,
+            badge: "Antioxidant",
+            desc: "Antioxidant-rich blueberry infusion over chilled tea."
+          },
+          {
+            name: "Spicy Guava Infusion",
+            price: 504,
+            badge: "Zesty Kick",
+            desc: "Sweetness of pink guava with crisp cucumber and a spicy kick of chili."
+          },
+          {
+            name: "Coco Hibiscus Bliss",
+            price: 504,
+            badge: "Botanical",
+            desc: "Botanical blend of hibiscus petals and smooth white chocolate notes."
+          },
+          {
+            name: "Red Bull Ice Tea",
+            price: 546,
+            badge: "High Energy",
+            desc: "High-energy house iced tea charged with a full can of Red Bull."
+          }
+        ]
+      },
+      {
+        categoryName: "Late-Night Maggi, Fries & Nachos",
+        categoryDesc: "Jaipur’s beloved 4 AM comfort food — tossed, seasoned, and layered with cheese.",
+        items: [
+          {
+            name: "French Fries (Classic Salted)",
+            price: 390,
+            badge: "Crispy",
+            desc: "Golden crispy shoestring fries served with house dip."
+          },
+          {
+            name: "Potato Wedges",
+            price: 420,
+            badge: "",
+            desc: "Skin-on potato wedges coated with special café herb seasoning."
+          },
+          {
+            name: "Peri Peri Fries",
+            price: 440,
+            badge: "Spicy",
+            desc: "Crispy fries tossed in fiery African peri-peri spice blend."
+          },
+          {
+            name: "Masala Maggi",
+            price: 440,
+            badge: "Late-Night Icon",
+            desc: "Spicy masaledar Maggi tossed with mixed garden vegetables."
+          },
+          {
+            name: "Tandoori Maggi",
+            price: 510,
+            badge: "Smoky",
+            desc: "Signature fusion of smoky tandoori sauces tossed with classic Maggi."
+          },
+          {
+            name: "Cheese Maggi",
+            price: 530,
+            badge: "Must Try",
+            desc: "Steaming Masala Maggi loaded with molten cheese all over."
+          },
+          {
+            name: "Chilli Mayo Fries",
+            price: 530,
+            badge: "Popular",
+            desc: "Crispy fries drizzled generously with spicy chilli mayo."
+          },
+          {
+            name: "Jalapeno Cheese Fries",
+            price: 560,
+            badge: "Loaded",
+            desc: "Loaded fries topped with tangy jalapenos and warm cheese sauce."
+          },
+          {
+            name: "Cheese Nachos / Baked Nachos",
+            price: 640,
+            badge: "Crunchy",
+            desc: "Crispy tortilla chips baked with liquid cheese, salsa, and jalapenos."
+          },
+          {
+            name: "Tex-Mex Nachos",
+            price: 660,
+            badge: "Chef Pick",
+            desc: "Loaded nachos topped with Mexican beans, salsa, sour cream, and cheese."
+          }
+        ]
+      },
+      {
+        categoryName: "Artisanal Sandwiches, Wraps & Bites",
+        categoryDesc: "Triple-layered toasted breads and whole-wheat tortillas filled with fresh gourmet stuffings.",
+        items: [
+          {
+            name: "Veg Grill Sandwich",
+            price: 510,
+            badge: "Classic",
+            desc: "Seasoned garden vegetables grilled between jumbo brown bread slices."
+          },
+          {
+            name: "Veg Cheese Grill Sandwich",
+            price: 560,
+            badge: "",
+            desc: "Loaded vegetable sandwich grilled with a generous layer of cheese."
+          },
+          {
+            name: "Cheese Corn Sandwich",
+            price: 580,
+            badge: "Comforting",
+            desc: "Sweet golden corn kernels folded in creamy molten cheese and herbs."
+          },
+          {
+            name: "Mushroom Grilled Sandwich",
+            price: 610,
+            badge: "",
+            desc: "Sautéed garlic button mushrooms and cheese in toasted artisan bread."
+          },
+          {
+            name: "Pesto Grilled Veg Sandwich",
+            price: 630,
+            badge: "Gourmet",
+            desc: "Exotic vegetables tossed in fresh basil pesto and mozzarella."
+          },
+          {
+            name: "Falafel Wrap",
+            price: 620,
+            badge: "Mediterranean",
+            desc: "Crispy Mediterranean chickpea falafel, hummus, and pickled veggies in a warm tortilla."
+          },
+          {
+            name: "Mexican Paneer Wrap",
+            price: 650,
+            badge: "Zesty",
+            desc: "Spiced cottage cheese, bell peppers, and salsa wrapped in a grilled tortilla."
+          },
+          {
+            name: "Tandoori Paneer Sandwich",
+            price: 670,
+            badge: "Bestseller",
+            desc: "Smoky marinated paneer cubes, mint mayo, and crisp veggies in triple-layer bread."
+          },
+          {
+            name: "Veg Club Sandwich",
+            price: 690,
+            badge: "Triple Decker",
+            desc: "Triple-decker cafe classic with coleslaw, grilled veggies, and cheese."
+          },
+          {
+            name: "Triple Cheese Sandwich",
+            price: 760,
+            badge: "Must Try",
+            desc: "Onion, tomato, capsicum, and crisp lettuce loaded with a 3-cheese blend between three slices of brown bread."
+          }
+        ]
+      },
+      {
+        categoryName: "Handcrafted Pizzas & Garlic Breads",
+        categoryDesc: "Crisp stone-baked doughs, herb butter baguettes, and bubbling Italian mozzarella.",
+        items: [
+          {
+            name: "Cheese Garlic Bread",
+            price: 530,
+            badge: "Classic",
+            desc: "Toasted baguette slices topped with garlic herb butter and mozzarella blend."
+          },
+          {
+            name: "Masala Pull-Apart Garlic Bread",
+            price: 590,
+            badge: "Fusion",
+            desc: "Warm pull-apart loaf stuffed with spicy masala veggies and melted cheese."
+          },
+          {
+            name: "Pesto Pull-Apart Garlic Bread",
+            price: 620,
+            badge: "Basil Fresh",
+            desc: "Pull-apart artisan bread infused with basil pesto and stretchy mozzarella."
+          },
+          {
+            name: "OTC Garlic Bread",
+            price: 650,
+            badge: "C-Scheme Favorite",
+            desc: "Signature cheese blend topped with crisp Onion, Tomato, Capsicum, and Italian spices."
+          },
+          {
+            name: "Classic Margherita Pizza",
+            price: 720,
+            badge: "Italian",
+            desc: "San Marzano style tomato sauce, fresh mozzarella, and basil leaves."
+          },
+          {
+            name: "Olive Garden Pizza",
+            price: 780,
+            badge: "",
+            desc: "Loaded with black & green olives, bell peppers, herbs, and mozzarella."
+          },
+          {
+            name: "Farm Fresh Pizza",
+            price: 820,
+            badge: "Bestseller",
+            desc: "Crunchy bell peppers, onions, sweet corn, mushrooms, and olives over rich cheese."
+          },
+          {
+            name: "Tandoori Paneer / BBQ Paneer Pizza",
+            price: 860,
+            badge: "Smoky Crust",
+            desc: "Spiced smoky paneer chunks, red paprika, onions, and mozzarella."
+          },
+          {
+            name: "Multi Cheese Nirmana Pizza",
+            price: 920,
+            badge: "Chef Special",
+            desc: "Indulgent 4-cheese pizza crafted for ultimate cheese lovers."
+          }
+        ]
+      },
+      {
+        categoryName: "Italian Pastas & Lasagne",
+        categoryDesc: "Slow-simmered sauces, imported durum wheat pasta, and bubbling oven-baked gratins.",
+        items: [
+          {
+            name: "Penne Arrabiata (Red Sauce)",
+            price: 640,
+            badge: "Spicy Tangy",
+            desc: "Penne tossed in spicy, tangy slow-cooked Italian tomato and garlic sauce."
+          },
+          {
+            name: "Penne Alfredo (White Sauce)",
+            price: 680,
+            badge: "Creamy",
+            desc: "Rich, velvety parmesan and cream sauce tossed with exotic vegetables and penne."
+          },
+          {
+            name: "Penne Pink Sauce (Mix Sauce)",
+            price: 710,
+            badge: "Bestseller",
+            desc: "The best of both worlds—creamy Alfredo blended with tangy Arrabiata."
+          },
+          {
+            name: "Penne Creamy Pesto",
+            price: 740,
+            badge: "Gourmet",
+            desc: "Freshly pounded basil & pine-nut pesto swirled with cream and parmesan."
+          },
+          {
+            name: "Spaghetti Calabrese",
+            price: 750,
+            badge: "Artisanal",
+            desc: "Classic spaghetti tossed with olive oil, chili flakes, garlic, olives, and herbs."
+          },
+          {
+            name: "Exotic Grilled Veg Lasagne",
+            price: 820,
+            badge: "Oven Baked",
+            desc: "Layered pasta sheets baked with grilled vegetables, béchamel, marinara, and bubbling mozzarella."
+          },
+          {
+            name: "Homemade Italian Ravioli",
+            price: 840,
+            badge: "Chef Special",
+            desc: "Stuffed pasta pillows served in rich creamy herb rose sauce."
+          }
+        ]
+      },
+      {
+        categoryName: "Desserts & Bakery",
+        categoryDesc: "Warm baked confectionery, velvety frostings, and rich sundae creations.",
+        items: [
+          {
+            name: "Red Velvet Muffin",
+            price: 280,
+            badge: "Bakery",
+            desc: "Moist, velvety cocoa crumb muffin with cream cheese frosting notes."
+          },
+          {
+            name: "New York Cheesecake Slice",
+            price: 420,
+            badge: "Classic",
+            desc: "Classic rich baked cheesecake with a buttery biscuit crust."
+          },
+          {
+            name: "Oreo Brownie Sundae",
+            price: 490,
+            badge: "Must Try",
+            desc: "Warm chocolate walnut brownie topped with vanilla ice cream, crushed Oreos, and hot fudge."
+          }
+        ]
+      }
+    ];
+
+    // Home Page Highlights Dataset (for Section D)
+    const HOME_SPECIALS = [
+      { id: 'c1', title: 'Flat White', category: 'Coffee & Frappes', price: 500, badge: '28 photos', badgeColor: 'bg-brand-sand text-brand-bronze', desc: 'Velvety micro-foam espresso blend with deep crema', image: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=600&q=80' },
+      { id: 'c2', title: 'Cafe Frappe', category: 'Coffee & Frappes', price: 470, badge: 'Bestseller', badgeColor: 'bg-brand-cream text-brand-forest font-bold', desc: 'Blended chilled Arabica, cold milk & rich foam', image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=600&q=80' },
+      { id: 'c3', title: 'Cafe Mocha', category: 'Coffee & Frappes', price: 460, badge: 'Popular', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Rich dark Belgian cocoa swirled with espresso shot', image: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=600&q=80' },
+      { id: 's1', title: 'Choco Brownie Shake', category: 'Shakes', price: 550, badge: 'Signature', badgeColor: 'bg-brand-cream text-brand-forest', desc: 'Loaded with dense chocolate fudge brownie chunks', image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80' },
+      { id: 's2', title: 'Oreo Shake', category: 'Shakes', price: 530, badge: 'Favorite', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Crushed Oreo cookies whipped with thick vanilla cream', image: 'https://images.unsplash.com/photo-1579954115563-e72bf1381629?auto=format&fit=crop&w=600&q=80' },
+      { id: 's3', title: 'Dark Chocolate Shake', category: 'Shakes', price: 480, badge: '14 photos', badgeColor: 'bg-brand-sand text-brand-bronze', desc: 'Intense 70% dark cocoa blend with chocolate drizzle', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=600&q=80' },
+      { id: 'p1', title: 'Multi Cheese Nirmana Pizza', category: 'Pizzas & Garlic Bread', price: 920, badge: 'Chef Special', badgeColor: 'bg-brand-gold text-brand-dark font-bold', desc: 'Quad-cheese blend with mozzarella, cheddar & herbs', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80' },
+      { id: 'p2', title: 'Farm Fresh Pizza', category: 'Pizzas & Garlic Bread', price: 820, badge: 'Crisp Crust', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Bell peppers, sweet corn, mushrooms, olives & fresh basil', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=600&q=80' },
+      { id: 'p3', title: 'Olive Garden Pizza', category: 'Pizzas & Garlic Bread', price: 780, badge: 'Italian Herb', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Black & green olives, sun-dried tomatoes and herbs', image: 'https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=600&q=80' },
+      { id: 'p4', title: 'OTC Garlic Bread', category: 'Pizzas & Garlic Bread', price: 650, badge: 'Hot Pick', badgeColor: 'bg-brand-cream text-brand-forest', desc: 'Onion, tomato, capsicum & bubbling melted cheese', image: 'https://images.unsplash.com/photo-1619895092538-128341789043?auto=format&fit=crop&w=600&q=80' },
+      { id: 'p5', title: 'Cheese Garlic Bread', category: 'Pizzas & Garlic Bread', price: 530, badge: 'Classic', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Crisp toasted artisanal baguette with garlic herb butter', image: 'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm1', title: 'Triple Cheese Sandwich', category: 'Maggi & Sandwiches', price: 760, badge: 'Must Try', badgeColor: 'bg-brand-gold text-brand-dark font-bold', desc: 'Three layers of molten cheese grilled between sourdough', image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm2', title: 'Cheese Nachos', category: 'Maggi & Sandwiches', price: 640, badge: 'Crunchy', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Loaded tortilla chips with salsa, jalapenos & cheese dip', image: 'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm3', title: 'Cheese Maggi', category: 'Maggi & Sandwiches', price: 530, badge: 'Late Night Hit', badgeColor: 'bg-brand-cream text-brand-forest', desc: 'Comforting 2 AM noodles draped in rich melted cheese', image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm4', title: 'Chilli Mayo Fries', category: 'Maggi & Sandwiches', price: 530, badge: 'Spicy Dip', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Golden crisp fries tossed in paprika with garlic mayo', image: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm5', title: 'Veg Grill Sandwich', category: 'Maggi & Sandwiches', price: 510, badge: 'Healthy Bite', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Mint chutney, cucumbers, tomatoes, potatoes & seasoning', image: 'https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm6', title: 'Masala Maggi', category: 'Maggi & Sandwiches', price: 440, badge: 'Iconic LOC', badgeColor: 'bg-brand-forest text-brand-cream', desc: 'Jaipur favorite secret spices with chopped veggies', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=600&q=80' },
+      { id: 'm7', title: 'French Fries', category: 'Maggi & Sandwiches', price: 390, badge: 'Crispy Snack', badgeColor: 'bg-brand-sand text-brand-charcoal', desc: 'Double-fried golden potato fingers with peri-peri dust', image: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=600&q=80' }
+    ];
+
+    // Initial Cart State
+    let cart = [
+      { id: 'c2', title: 'Cafe Frappe', price: 470, qty: 1, image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=200&q=80' },
+      { id: 'm6', title: 'Masala Maggi', price: 440, qty: 1, image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=200&q=80' }
+    ];
+
+    // Testimonials
+    const REVIEWS = [
+      { quote: `"Love Over Coffee is my happy place in Jaipur! The hazelnut latte and pesto sandwiches are amazing, the vibe is cozy, and the staff is polite, hardworking, and friendly. Highly recommend!"`, author: "Radhika Agarwal", location: "Regular Customer • C-Scheme Outlet", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" },
+      { quote: `"Best late-night spot on Tonk Road! Open till 4 AM, super comfortable for small groups to sit, chill, and enjoy freshly prepared Masala Maggi and Cafe Mocha after long work hours."`, author: "Nidhi Kucheria", location: "Night Owl & Foodie • B2 Bypass Hub", avatar: "https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=150&q=80" },
+      { quote: `"Must-visit cafe in Vidhyadhar Nagar and JLN Road. Excellent service and pretty good ambience—the new SELECT outlet at Jawahar Circle feels truly premium and aesthetic!"`, author: "Emon Saxena", location: "Local Guide • JLN Road & VDN", avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=150&q=80" }
+    ];
+    let currentReviewIndex = 0;
+
+    // ================= ROUTING SYSTEM =================
+    function handleRouting() {
+      const hash = window.location.hash || '#/';
+      const viewHome = document.getElementById('viewHome');
+      const viewGateway = document.getElementById('viewGateway');
+      const viewBrochure = document.getElementById('viewBrochure');
+
+      // Hide all views first
+      viewHome.classList.add('hidden');
+      viewGateway.classList.add('hidden');
+      viewBrochure.classList.add('hidden');
+
+      if (hash === '#/menu-gateway') {
+        viewGateway.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else if (hash === '#/menu-brochure') {
+        viewBrochure.classList.remove('hidden');
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else {
+        viewHome.classList.remove('hidden');
+      }
+      lucide.createIcons();
+    }
+
+    window.addEventListener('hashchange', handleRouting);
+    window.addEventListener('load', handleRouting);
+
+    // Open & Print Brochure action (triggers printable view and print dialog)
+    function openAndPrintBrochure() {
+      window.location.hash = '#/menu-brochure';
+      setTimeout(() => {
+        window.print();
+      }, 500);
+    }
+
+    // ================= RENDER HOME MENU SPECIALS =================
+    function renderHomeMenu(category = 'all') {
+      const container = document.getElementById('menuGrid');
+      const filtered = category === 'all' ? HOME_SPECIALS : HOME_SPECIALS.filter(item => item.category === category);
+
+      container.innerHTML = filtered.map(item => `
+        <div class="bg-white rounded-2xl border border-brand-cardBorder overflow-hidden shadow-sm hover:shadow-warm transition-all duration-300 flex flex-col justify-between group transform hover:-translate-y-1">
+          <div>
+            <div class="aspect-square w-full overflow-hidden relative bg-brand-sand">
+              <img src="${item.image}" alt="${item.title}" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
+              <span class="absolute top-3 left-3 text-[10px] font-semibold px-2.5 py-1 rounded-full ${item.badgeColor} shadow-sm">
+                ${item.badge}
+              </span>
+            </div>
+            <div class="p-4 space-y-1">
+              <h3 class="font-serif font-bold text-brand-charcoal text-base group-hover:text-brand-forest transition-colors line-clamp-1">
+                ${item.title}
+              </h3>
+              <p class="text-xs text-brand-muted line-clamp-2 leading-relaxed">
+                ${item.desc}
+              </p>
+            </div>
+          </div>
+          <div class="p-4 pt-1 flex items-center justify-between border-t border-brand-cardBorder/60 mt-1">
+            <span class="font-sans font-bold text-base text-brand-charcoal">
+              ₹${item.price.toFixed(2)}
+            </span>
+            <button onclick="addToCart('${item.title}', ${item.price}, '${item.category}', '${item.image}', '${item.id}')" aria-label="Add ${item.title} to Cart" class="w-9 h-9 rounded-full bg-brand-sand group-hover:bg-brand-forest text-brand-forest group-hover:text-brand-cream border border-brand-cardBorder flex items-center justify-center transition-all shadow-sm hover:scale-110 active:scale-95">
+              <i data-lucide="plus" class="w-4 h-4 stroke-[2.5]"></i>
+            </button>
+          </div>
+        </div>
+      `).join('');
+      lucide.createIcons();
+    }
+
+    // Home Filter pills
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.filter-btn').forEach(b => {
+          b.classList.remove('bg-brand-forest', 'text-brand-cream', 'active');
+          b.classList.add('bg-white', 'text-brand-charcoal');
+        });
+        btn.classList.add('bg-brand-forest', 'text-brand-cream', 'active');
+        btn.classList.remove('bg-white', 'text-brand-charcoal');
+        renderHomeMenu(btn.getAttribute('data-category'));
+      });
+    });
+
+    // ================= RENDER COMPLETE BROCHURE VIEW =================
+    function renderBrochureView(searchQuery = '', selectedCategory = 'all') {
+      const container = document.getElementById('brochureCategoriesContainer');
+      const searchStatus = document.getElementById('brochureSearchStatus');
+      const q = searchQuery.toLowerCase().trim();
+
+      if (q) {
+        searchStatus.classList.remove('hidden');
+        document.getElementById('brochureSearchQueryText').textContent = `Showing results matching "${searchQuery}"`;
+      } else {
+        searchStatus.classList.add('hidden');
+      }
+
+      let html = '';
+
+      COMPLETE_MENU_DATASET.forEach((cat, catIdx) => {
+        if (selectedCategory !== 'all' && cat.categoryName !== selectedCategory) {
+          return;
+        }
+
+        const filteredItems = cat.items.filter(item => {
+          if (!q) return true;
+          return item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q) || cat.categoryName.toLowerCase().includes(q);
+        });
+
+        if (filteredItems.length === 0) return;
+
+        html += `
+          <section id="cat-${catIdx}" class="space-y-4 break-inside-avoid">
+            <div class="border-b border-brand-cardBorder pb-2 flex flex-col sm:flex-row sm:items-baseline justify-between gap-1">
+              <div>
+                <h3 class="font-serif text-2xl sm:text-3xl font-bold text-brand-forest flex items-center gap-2">
+                  <span>${cat.categoryName}</span>
+                </h3>
+                <p class="text-xs text-brand-muted font-light mt-0.5">${cat.categoryDesc}</p>
+              </div>
+              <span class="text-[11px] font-semibold text-brand-bronze uppercase tracking-wider shrink-0">
+                ${filteredItems.length} items
+              </span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-4 pt-2">
+              ${filteredItems.map(item => `
+                <div class="flex items-start justify-between py-2 border-b border-brand-cardBorder/50 group hover:border-brand-gold/60 transition-colors">
+                  <div class="pr-4 space-y-1">
+                    <div class="flex items-center space-x-2">
+                      <h4 class="font-serif font-bold text-base text-brand-charcoal group-hover:text-brand-forest transition-colors">
+                        ${item.name}
+                      </h4>
+                      ${item.badge ? `
+                        <span class="text-[9px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-brand-cream/80 text-brand-forest border border-brand-gold/30">
+                          ${item.badge}
+                        </span>
+                      ` : ''}
+                    </div>
+                    <p class="text-xs text-brand-muted leading-relaxed font-light">
+                      ${item.desc}
+                    </p>
+                  </div>
+                  <div class="text-right shrink-0 flex flex-col items-end space-y-1">
+                    <span class="font-sans font-bold text-base text-brand-charcoal">
+                      ₹${item.price}
+                    </span>
+                    <button onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price}, '${cat.categoryName}')" class="no-print text-[11px] font-semibold px-2.5 py-1 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-forest hover:text-brand-cream transition-colors flex items-center space-x-1">
+                      <i data-lucide="plus" class="w-3 h-3"></i>
+                      <span>Add</span>
+                    </button>
+                  </div>
+                </div>
+              `).join('')}
+            </div>
+          </section>
+        `;
+      });
+
+      if (!html) {
+        html = `
+          <div class="text-center py-16 space-y-3">
+            <i data-lucide="search-x" class="w-12 h-12 mx-auto text-brand-bronze/40"></i>
+            <h4 class="font-serif text-xl font-bold text-brand-charcoal">No Dishes Found</h4>
+            <p class="text-xs text-brand-muted">Try searching with a different term like "Latte", "Maggi", "Pizza", or "Shake".</p>
+            <button onclick="clearBrochureSearch()" class="mt-2 px-5 py-2 rounded-full bg-brand-forest text-brand-cream text-xs font-semibold">View All Items</button>
+          </div>
+        `;
+      }
+
+      container.innerHTML = html;
+      lucide.createIcons();
+    }
+
+    // Render Brochure Category Bar Pills
+    function renderBrochureCategoryPills() {
+      const bar = document.getElementById('brochureCategoryBar');
+      let pillsHtml = `
+        <button onclick="filterBrochureCategory('all', this)" class="brochure-pill active whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-brand-cream text-brand-forest shrink-0">
+          All Categories
+        </button>
+      `;
+
+      COMPLETE_MENU_DATASET.forEach(cat => {
+        pillsHtml += `
+          <button onclick="filterBrochureCategory('${cat.categoryName}', this)" class="brochure-pill whitespace-nowrap px-4 py-1.5 rounded-full text-xs font-semibold transition-all bg-white/10 hover:bg-white/20 text-brand-offwhite shrink-0">
+            ${cat.categoryName}
+          </button>
+        `;
+      });
+      bar.innerHTML = pillsHtml;
+    }
+
+    let activeBrochureCategory = 'all';
+
+    function filterBrochureCategory(catName, btnElement) {
+      activeBrochureCategory = catName;
+      document.querySelectorAll('.brochure-pill').forEach(b => {
+        b.classList.remove('bg-brand-cream', 'text-brand-forest', 'active');
+        b.classList.add('bg-white/10', 'text-brand-offwhite');
+      });
+      btnElement.classList.add('bg-brand-cream', 'text-brand-forest', 'active');
+      btnElement.classList.remove('bg-white/10', 'text-brand-offwhite');
+
+      const searchVal = document.getElementById('brochureSearchInput').value;
+      renderBrochureView(searchVal, catName);
+    }
+
+    function clearBrochureSearch() {
+      document.getElementById('brochureSearchInput').value = '';
+      activeBrochureCategory = 'all';
+      renderBrochureCategoryPills();
+      renderBrochureView('', 'all');
+    }
+
+    document.getElementById('brochureSearchInput').addEventListener('input', (e) => {
+      renderBrochureView(e.target.value, activeBrochureCategory);
+    });
+
+    // ================= TOAST NOTIFICATION =================
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'animate-toast bg-brand-forest text-brand-cream px-5 py-3 rounded-full shadow-2xl flex items-center space-x-2.5 text-xs font-semibold border border-brand-gold/40';
+      toast.innerHTML = `
+        <i data-lucide="check" class="w-4 h-4 text-brand-gold"></i>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+      lucide.createIcons();
+      setTimeout(() => toast.remove(), 3100);
+    }
+
+    // ================= CART SYSTEM =================
+    function addToCart(title, price, category = '', image = '', id = '') {
+      const existing = cart.find(i => i.title === title);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({
+          id: id || 'item_' + Date.now(),
+          title,
+          price,
+          qty: 1,
+          image: image || 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=200&q=80'
+        });
+      }
+      updateCartUI();
+      showToast(`Added "${title}" to your order!`);
+    }
+
+    function updateCartUI() {
+      const totalCount = cart.reduce((acc, curr) => acc + curr.qty, 0);
+      const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+
+      document.getElementById('cartNavBadge').textContent = totalCount;
+      document.getElementById('cartSubtotal').textContent = `₹${subtotal.toFixed(2)}`;
+      document.getElementById('cartTotal').textContent = `₹${subtotal.toFixed(2)}`;
+
+      const listContainer = document.getElementById('cartItemList');
+      if (cart.length === 0) {
+        listContainer.innerHTML = `
+          <div class="text-center py-12 text-brand-muted">
+            <i data-lucide="shopping-bag" class="w-12 h-12 mx-auto stroke-1 text-brand-cardBorder mb-3"></i>
+            <p class="font-serif text-lg text-brand-charcoal">Your order is empty</p>
+            <p class="text-xs mt-1">Explore our specials or brochure to add handcrafted treats!</p>
+          </div>
+        `;
+      } else {
+        listContainer.innerHTML = cart.map(item => `
+          <div class="flex items-center justify-between bg-white p-3.5 rounded-2xl border border-brand-cardBorder shadow-sm">
+            <div class="flex items-center space-x-3">
+              <img src="${item.image}" alt="${item.title}" class="w-12 h-12 rounded-xl object-cover bg-brand-sand">
+              <div>
+                <h4 class="font-serif font-bold text-sm text-brand-charcoal">${item.title}</h4>
+                <p class="text-xs text-brand-muted">₹${item.price.toFixed(2)}</p>
+              </div>
+            </div>
+            <div class="flex items-center space-x-2">
+              <button onclick="changeQty('${item.title}', -1)" class="w-7 h-7 rounded-full bg-brand-sand hover:bg-brand-cardBorder text-brand-charcoal flex items-center justify-center text-xs font-bold transition-colors">-</button>
+              <span class="text-xs font-bold text-brand-charcoal w-5 text-center">${item.qty}</span>
+              <button onclick="changeQty('${item.title}', 1)" class="w-7 h-7 rounded-full bg-brand-sand hover:bg-brand-cardBorder text-brand-charcoal flex items-center justify-center text-xs font-bold transition-colors">+</button>
+            </div>
+          </div>
+        `).join('');
+      }
+      lucide.createIcons();
+    }
+
+    function changeQty(title, delta) {
+      const item = cart.find(i => i.title === title);
+      if (!item) return;
+      item.qty += delta;
+      if (item.qty <= 0) {
+        cart = cart.filter(i => i.title !== title);
+      }
+      updateCartUI();
+    }
+
+    // Cart Drawer Controls
+    const cartDrawer = document.getElementById('cartDrawer');
+    const cartDrawerContent = document.getElementById('cartDrawerContent');
+    const openCartBtn = document.getElementById('openCartBtn');
+    const closeCartBtn = document.getElementById('closeCartBtn');
+
+    openCartBtn.addEventListener('click', () => {
+      cartDrawer.classList.remove('opacity-0', 'pointer-events-none');
+      cartDrawerContent.classList.remove('translate-x-full');
+    });
+
+    closeCartBtn.addEventListener('click', () => {
+      cartDrawer.classList.add('opacity-0', 'pointer-events-none');
+      cartDrawerContent.classList.add('translate-x-full');
+    });
+
+    cartDrawer.addEventListener('click', (e) => {
+      if (e.target === cartDrawer) {
+        cartDrawer.classList.add('opacity-0', 'pointer-events-none');
+        cartDrawerContent.classList.add('translate-x-full');
+      }
+    });
+
+    // Testimonial Controls
+    function setTestimonial(index) {
+      currentReviewIndex = (index + REVIEWS.length) % REVIEWS.length;
+      const review = REVIEWS[currentReviewIndex];
+      document.getElementById('reviewQuote').textContent = review.quote;
+      document.getElementById('reviewAuthor').textContent = review.author;
+      document.getElementById('reviewLocation').textContent = review.location;
+      document.getElementById('reviewAvatar').src = review.avatar;
+
+      const dots = document.querySelectorAll('#testimonialDots button');
+      dots.forEach((dot, idx) => {
+        if (idx === currentReviewIndex) {
+          dot.className = 'w-8 h-2 rounded-full bg-brand-gold transition-all';
+        } else {
+          dot.className = 'w-2.5 h-2 rounded-full bg-white/20 transition-all';
+        }
+      });
+    }
+
+    document.getElementById('prevReviewBtn').addEventListener('click', () => setTestimonial(currentReviewIndex - 1));
+    document.getElementById('nextReviewBtn').addEventListener('click', () => setTestimonial(currentReviewIndex + 1));
+
+    // Global Search Modal Logic
+    const searchModal = document.getElementById('searchModal');
+    const openSearchBtn = document.getElementById('openSearchBtn');
+    const closeSearchBtn = document.getElementById('closeSearchBtn');
+    const searchInput = document.getElementById('searchInput');
+    const searchResults = document.getElementById('searchResults');
+
+    openSearchBtn.addEventListener('click', () => {
+      searchModal.classList.remove('opacity-0', 'pointer-events-none');
+      document.getElementById('searchModalContent').classList.remove('-translate-y-4');
+      setTimeout(() => searchInput.focus(), 100);
+    });
+
+    closeSearchBtn.addEventListener('click', () => {
+      searchModal.classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById('searchModalContent').classList.add('-translate-y-4');
+    });
+
+    searchModal.addEventListener('click', (e) => {
+      if (e.target === searchModal) searchModal.classList.add('opacity-0', 'pointer-events-none');
+    });
+
+    searchInput.addEventListener('input', (e) => {
+      const q = e.target.value.toLowerCase().trim();
+      if (!q) {
+        searchResults.innerHTML = '<p class="text-xs text-brand-muted py-3">Try searching for: "Flat White", "Nirmana", "Tandoori Maggi", "Pink Sauce", "Biscoff"</p>';
+        return;
+      }
+      
+      // Search across complete dataset
+      const matches = [];
+      COMPLETE_MENU_DATASET.forEach(cat => {
+        cat.items.forEach(item => {
+          if (item.name.toLowerCase().includes(q) || item.desc.toLowerCase().includes(q) || cat.categoryName.toLowerCase().includes(q)) {
+            matches.push({ ...item, category: cat.categoryName });
+          }
+        });
+      });
+
+      if (matches.length === 0) {
+        searchResults.innerHTML = '<p class="text-xs text-brand-muted py-3">No matching items found. Try searching for "Coffee", "Pasta", or "Pizza".</p>';
+      } else {
+        searchResults.innerHTML = matches.slice(0, 8).map(item => `
+          <div class="flex items-center justify-between py-2.5">
+            <div>
+              <p class="font-serif font-bold text-sm text-brand-charcoal">${item.name}</p>
+              <p class="text-[11px] text-brand-muted">₹${item.price} • ${item.category}</p>
+            </div>
+            <button onclick="addToCart('${item.name.replace(/'/g, "\\'")}', ${item.price}, '${item.category}'); searchModal.classList.add('opacity-0', 'pointer-events-none');" class="text-xs font-semibold px-3 py-1 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark">
+              + Add
+            </button>
+          </div>
+        `).join('');
+      }
+    });
+
+    // Lead Capture Form
+    document.getElementById('leadCaptureForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const val = document.getElementById('leadInput').value;
+      if (val) {
+        showToast("🎉 20% OFF Voucher unlocked! Code: LOCLOVE20");
+        document.getElementById('leadInput').value = '';
+      }
+    });
+
+    // Video Modal
+    const videoModal = document.getElementById('videoModal');
+    document.getElementById('heroVideoTrigger').addEventListener('click', () => videoModal.classList.remove('opacity-0', 'pointer-events-none'));
+    document.getElementById('closeVideoBtn').addEventListener('click', () => videoModal.classList.add('opacity-0', 'pointer-events-none'));
+    videoModal.addEventListener('click', (e) => {
+      if (e.target === videoModal) videoModal.classList.add('opacity-0', 'pointer-events-none');
+    });
+
+    // Mobile Menu Toggle
+    document.getElementById('mobileMenuToggle').addEventListener('click', () => {
+      document.getElementById('mobileMenu').classList.toggle('hidden');
+    });
+
+    // Keyboard Shortcuts (Esc to close modals)
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        cartDrawer.classList.add('opacity-0', 'pointer-events-none');
+        cartDrawerContent.classList.add('translate-x-full');
+        searchModal.classList.add('opacity-0', 'pointer-events-none');
+        videoModal.classList.add('opacity-0', 'pointer-events-none');
+      }
+    });
+
+    // Initialize Page
+    renderHomeMenu('all');
+    renderBrochureCategoryPills();
+    renderBrochureView('', 'all');
+    updateCartUI();
+  </script>
+</body>
+</html>
