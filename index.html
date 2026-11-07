@@ -148,6 +148,110 @@
   <!-- ================= NOTIFICATION TOAST ================= -->
   <div id="toastContainer" class="fixed top-5 left-1/2 z-50 pointer-events-none transition-all duration-300"></div>
 
+  <!-- ================= ORDER DESTINATION MODAL (ZOMATO / SWIGGY / WHATSAPP) ================= -->
+  <div id="orderPlatformModal" class="fixed inset-0 z-50 pointer-events-none opacity-0 bg-black/75 backdrop-blur-md transition-all duration-300 flex items-center justify-center p-4">
+    <div id="orderPlatformContent" class="bg-brand-alabaster rounded-3xl shadow-2xl w-full max-w-xl p-6 sm:p-8 pointer-events-auto transform scale-95 transition-all duration-300 border border-brand-cardBorder relative">
+      
+      <!-- Modal Close Button -->
+      <button onclick="closeOrderModal()" class="absolute top-6 right-6 p-2 rounded-full hover:bg-brand-sand text-brand-muted hover:text-brand-charcoal transition-colors">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <!-- Header -->
+      <div class="text-left space-y-2 pb-5 border-b border-brand-cardBorder">
+        <div class="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-brand-forest/10 border border-brand-forest/20 text-brand-forest text-[11px] font-bold uppercase tracking-wider">
+          <i data-lucide="shopping-bag" class="w-3.5 h-3.5 text-brand-gold"></i>
+          <span>Complete Your Order</span>
+        </div>
+        <h3 class="font-serif text-2xl sm:text-3xl font-bold text-brand-charcoal">
+          Where Would You Like to Order?
+        </h3>
+        <p class="text-xs text-brand-muted">
+          Select your nearest Jaipur outlet and choose whether to order via Zomato, Swiggy, or directly on WhatsApp.
+        </p>
+      </div>
+
+      <!-- Selected Items Overview -->
+      <div class="py-4">
+        <div class="flex items-center justify-between text-xs text-brand-charcoal font-semibold mb-2">
+          <span>Items in Your Order (<span id="modalItemCount">2</span>):</span>
+          <span id="modalSubtotal" class="font-bold text-brand-forest text-sm">₹910.00</span>
+        </div>
+        <div id="modalItemsList" class="max-h-36 overflow-y-auto space-y-1.5 p-3 rounded-2xl bg-white border border-brand-cardBorder text-xs divide-y divide-brand-cardBorder/50">
+          <!-- Dynamic Items Injected Here -->
+        </div>
+      </div>
+
+      <!-- Outlet Selector -->
+      <div class="space-y-2 mb-5">
+        <label class="block text-xs font-bold text-brand-charcoal uppercase tracking-wider">
+          1. Choose Jaipur Outlet:
+        </label>
+        <div class="grid grid-cols-2 gap-3">
+          <label class="flex items-center space-x-2.5 p-3 rounded-2xl border-2 border-brand-forest bg-white cursor-pointer transition-all outlet-radio-label" id="label_outlet_cscheme">
+            <input type="radio" name="orderOutlet" value="c_scheme" checked onchange="handleOutletChange()" class="accent-brand-forest">
+            <div class="text-left">
+              <span class="font-serif font-bold text-xs block text-brand-charcoal">C-Scheme Flagship</span>
+              <span class="text-[10px] text-brand-muted">Jamnalal Bajaj Marg (4.6★)</span>
+            </div>
+          </label>
+          <label class="flex items-center space-x-2.5 p-3 rounded-2xl border-2 border-brand-cardBorder bg-white cursor-pointer transition-all outlet-radio-label" id="label_outlet_b2bypass">
+            <input type="radio" name="orderOutlet" value="b2_bypass" onchange="handleOutletChange()" class="accent-brand-forest">
+            <div class="text-left">
+              <span class="font-serif font-bold text-xs block text-brand-charcoal">B2 Bypass Hub</span>
+              <span class="text-[10px] text-brand-muted">Tonk Rd (Open till 4 AM)</span>
+            </div>
+          </label>
+        </div>
+      </div>
+
+      <!-- Platform Selection Buttons -->
+      <div class="space-y-3">
+        <label class="block text-xs font-bold text-brand-charcoal uppercase tracking-wider">
+          2. Select Order Platform:
+        </label>
+        
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <!-- Zomato Option -->
+          <button onclick="dispatchOrder('zomato')" class="flex flex-col items-center justify-center p-3.5 rounded-2xl border border-red-200 bg-red-50/50 hover:bg-red-100 hover:border-red-400 text-red-700 transition-all group">
+            <span class="font-serif font-bold text-sm block">Zomato</span>
+            <span class="text-[10px] text-red-600/80 mt-0.5">Order on App/Web</span>
+            <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-red-600 text-white flex items-center gap-1 group-hover:scale-105 transition-transform">
+              <span>Open Zomato</span>
+              <i data-lucide="external-link" class="w-3 h-3"></i>
+            </span>
+          </button>
+
+          <!-- Swiggy Option -->
+          <button onclick="dispatchOrder('swiggy')" class="flex flex-col items-center justify-center p-3.5 rounded-2xl border border-orange-200 bg-orange-50/50 hover:bg-orange-100 hover:border-orange-400 text-orange-700 transition-all group">
+            <span class="font-serif font-bold text-sm block">Swiggy</span>
+            <span class="text-[10px] text-orange-600/80 mt-0.5">Fast Local Delivery</span>
+            <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-orange-500 text-white flex items-center gap-1 group-hover:scale-105 transition-transform">
+              <span>Open Swiggy</span>
+              <i data-lucide="external-link" class="w-3 h-3"></i>
+            </span>
+          </button>
+
+          <!-- WhatsApp Direct Order (Recommended) -->
+          <button onclick="dispatchOrder('whatsapp')" class="flex flex-col items-center justify-center p-3.5 rounded-2xl border-2 border-[#25D366] bg-green-50/60 hover:bg-green-100 text-[#128C7E] transition-all group shadow-sm">
+            <span class="font-serif font-bold text-sm block">WhatsApp</span>
+            <span class="text-[10px] text-green-700/80 mt-0.5">Direct Outlet Chat</span>
+            <span class="mt-2 text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#25D366] text-white flex items-center gap-1 group-hover:scale-105 transition-transform shadow-sm">
+              <span>Send Cart List</span>
+              <i data-lucide="send" class="w-3 h-3"></i>
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Quick Note -->
+      <p class="text-[11px] text-brand-muted text-center pt-4">
+        ✨ Clicking <strong>WhatsApp</strong> automatically formats your selected items & total so the barista prepares them right away!
+      </p>
+
+    </div>
+  </div>
+
   <!-- ================= CART DRAWER OVERLAY ================= -->
   <div id="cartDrawer" class="fixed inset-0 z-50 pointer-events-none transition-opacity duration-300 opacity-0 bg-black/60 backdrop-blur-sm">
     <div class="fixed inset-y-0 right-0 max-w-full flex pl-10 pointer-events-auto">
@@ -155,7 +259,7 @@
         <!-- Drawer Header -->
         <div class="p-6 bg-brand-forest text-brand-offwhite flex items-center justify-between">
           <div class="flex items-center space-x-3">
-            <i data-lucide="shopping-bag" class="w-6 h-6 text-brand-cream"></i>
+            <img src="assets/logo.jpg" alt="Love Over Coffee" class="w-9 h-9 rounded-full object-cover border border-brand-gold">
             <div>
               <h3 class="font-serif text-xl font-bold">Your LOC Order</h3>
               <p class="text-xs text-brand-cream/80">Freshly crafted for Jaipur foodies</p>
@@ -171,7 +275,7 @@
           <!-- Dynamic Cart Items Rendered Here -->
         </div>
 
-        <!-- Drawer Footer: Subtotal & Checkout -->
+        <!-- Drawer Footer: Subtotal & Actions -->
         <div class="p-6 bg-white border-t border-brand-cardBorder space-y-4">
           <div class="space-y-1.5 text-sm">
             <div class="flex justify-between text-brand-muted">
@@ -189,18 +293,17 @@
           </div>
 
           <div class="space-y-2 pt-2">
-            <a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="w-full flex items-center justify-center space-x-2 py-3.5 bg-brand-forest hover:bg-brand-darkHover text-brand-cream rounded-full font-semibold transition-all shadow-md">
-              <span>Order via Zomato / District</span>
-              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-            </a>
-            <a href="https://wa.me/917976198506?text=Hi%20Love%20Over%20Coffee%20(C-Scheme),%20I%20would%20like%20to%20order%20from%20your%20menu" target="_blank" class="w-full flex items-center justify-center space-x-2 py-3 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full font-medium text-sm transition-all shadow-sm">
-              <i data-lucide="message-circle" class="w-4 h-4"></i>
-              <span>WhatsApp C-Scheme Outlet (+91 79761 98506)</span>
-            </a>
-            <a href="tel:+919928783999" class="w-full flex items-center justify-center space-x-2 py-2.5 bg-brand-sand hover:bg-[#ebd896] text-brand-forest rounded-full font-medium text-xs transition-all">
-              <i data-lucide="phone-call" class="w-3.5 h-3.5"></i>
-              <span>Call B2 Bypass Outlet (+91 99287 83999)</span>
-            </a>
+            <!-- Order Now Primary Action -> Prompts Order Platform Selection Modal -->
+            <button onclick="openOrderModal()" class="w-full flex items-center justify-center space-x-2 py-3.5 bg-brand-forest hover:bg-brand-darkHover text-brand-cream rounded-full font-bold text-sm transition-all shadow-md">
+              <i data-lucide="shopping-bag" class="w-4 h-4 text-brand-gold"></i>
+              <span>Proceed to Order (Zomato / Swiggy / WhatsApp)</span>
+            </button>
+
+            <!-- Quick WhatsApp Direct Order Button -->
+            <button onclick="dispatchDirectWhatsApp()" class="w-full flex items-center justify-center space-x-2 py-3 bg-[#25D366] hover:bg-[#20ba59] text-white rounded-full font-semibold text-xs uppercase tracking-wider transition-all shadow-sm">
+              <svg class="w-4 h-4 fill-white" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.122-.519-1.428-.592-2.348-2.029-2.42-2.124-.071-.095-.58-0.771-.58-1.469 0-.697.366-1.04.496-1.183.13-.143.284-.179.379-.179.095 0 .19.001.273.006.087.004.204-.033.319.243.12.288.409.998.445 1.07.036.072.06.155.012.25-.048.096-.072.155-.143.239-.072.083-.151.186-.216.25-.072.071-.148.148-.063.292.084.143.374.617.804.999.554.493 1.022.646 1.166.717.144.072.228.06.313-.036.084-.096.36-0.42.456-.563.096-.143.192-.12.324-.072.132.048.837.395.981.467.144.072.24.108.276.168.036.06.036.347-.108.752z"/></svg>
+              <span>Instant WhatsApp Order (Pre-filled)</span>
+            </button>
           </div>
         </div>
       </div>
@@ -246,7 +349,7 @@
           <h4 class="font-serif text-2xl font-bold text-brand-cream">A New Aesthetic Coffee Sanctuary</h4>
           <p class="text-sm text-brand-offwhite/90 font-light">Experience the newest SELECT outlet at C-16, JLN Road, Jawahar Circle. Late nights, rosetta art, warm acoustics, and authentic conversations.</p>
           <div class="pt-2">
-            <a href="https://www.instagram.com/reel/DfCP1XItohr/" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 bg-brand-gold hover:bg-brand-goldHover text-brand-dark font-semibold rounded-full text-xs uppercase tracking-wider transition-all">
+            <a href="https://www.instagram.com/loveovercoffee_?utm_source=ig_web_button_share_sheet&dlrf=ZDNlZDc0MzIxNw==" target="_blank" class="inline-flex items-center space-x-2 px-5 py-2.5 bg-brand-gold hover:bg-brand-goldHover text-brand-dark font-semibold rounded-full text-xs uppercase tracking-wider transition-all">
               <i data-lucide="instagram" class="w-4 h-4"></i>
               <span>Watch Reel on Instagram (11.6K+)</span>
             </a>
@@ -264,10 +367,10 @@
     <header class="absolute top-0 left-0 right-0 z-40 transition-all duration-300">
       <div class="max-w-7xl mx-auto px-6 md:px-12 py-6 flex items-center justify-between">
         
-        <!-- Brand Logo Left -->
-        <a href="#/" class="flex items-center space-x-3 group">
-          <div class="w-10 h-10 rounded-full bg-brand-forest/60 border border-brand-gold/40 flex items-center justify-center text-brand-cream group-hover:border-brand-cream transition-all">
-            <i data-lucide="coffee" class="w-5 h-5 text-brand-cream"></i>
+        <!-- Brand Logo Left with User Provided Golden Cup Emblem -->
+        <a href="#/" class="flex items-center space-x-3.5 group">
+          <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-brand-gold/80 shadow-md flex items-center justify-center bg-brand-sand group-hover:scale-105 transition-transform duration-300">
+            <img src="assets/logo.jpg" alt="Love Over Coffee Jaipur Emblem" class="w-full h-full object-cover">
           </div>
           <div class="flex flex-col">
             <span class="font-serif text-xl md:text-2xl font-bold tracking-tight text-brand-offwhite flex items-center gap-1.5">
@@ -301,10 +404,10 @@
             <span id="cartNavBadge" class="absolute -top-1 -right-1 bg-brand-gold text-brand-dark font-bold text-[10px] w-5 h-5 rounded-full flex items-center justify-center shadow-md border-2 border-brand-dark">2</span>
           </button>
 
-          <!-- Order Now Button -->
-          <a href="#/menu-gateway" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-semibold text-xs tracking-wider uppercase transition-all shadow-md transform hover:-translate-y-0.5">
+          <!-- ORDER NOW Button -> Directly triggers Order Modal -->
+          <button onclick="openOrderModal()" class="hidden sm:inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-xs tracking-wider uppercase transition-all shadow-md transform hover:-translate-y-0.5 active:scale-95">
             Order Now
-          </a>
+          </button>
 
           <!-- Mobile Menu Hamburger -->
           <button id="mobileMenuToggle" class="md:hidden p-2 text-brand-offwhite">
@@ -323,9 +426,9 @@
         <a href="#testimonials" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Reviews (4.3★)</a>
         <a href="#footer" class="block py-2 text-brand-offwhite/80 hover:text-white text-sm">Contact & Hours</a>
         <div class="pt-2">
-          <a href="#/menu-gateway" class="block text-center py-2.5 rounded-full bg-brand-cream text-brand-forest font-semibold text-xs uppercase tracking-wider">
-            Explore Menu Gateway
-          </a>
+          <button onclick="openOrderModal()" class="w-full text-center py-2.5 rounded-full bg-brand-cream text-brand-forest font-semibold text-xs uppercase tracking-wider">
+            Order Now (Zomato / Swiggy / WhatsApp)
+          </button>
         </div>
       </div>
     </header>
@@ -351,7 +454,6 @@
           <!-- Left Column: Typography & CTAs -->
           <div class="lg:col-span-7 space-y-6 text-left relative z-10 pt-4">
             
-            <!-- Eyebrow Pill -->
             <div class="inline-flex items-center space-x-2 px-3.5 py-1.5 rounded-full bg-white/5 border border-brand-gold/30 backdrop-blur-sm">
               <span class="w-1.5 h-1.5 rounded-full bg-brand-gold"></span>
               <span class="text-[11px] md:text-xs font-semibold tracking-[0.2em] uppercase text-brand-gold">
@@ -359,7 +461,6 @@
               </span>
             </div>
 
-            <!-- Main Headline -->
             <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl lg:text-[68px] leading-[1.08] font-bold text-brand-offwhite tracking-tight">
               Good Coffee <br>
               Brings Jaipur <br>
@@ -368,26 +469,28 @@
               </span>
             </h1>
 
-            <!-- Professional & Attractive Elevated Description -->
             <p class="text-base sm:text-lg text-brand-offwhite/85 max-w-xl font-light leading-relaxed">
               Where specialty roast craft meets Jaipur’s vibrant late-night cafe culture. Handcrafted single-origin espressos, signature iced hazelnut frappes, artisanal sourdough melts, and comforting gourmet bites — thoughtfully prepared with culinary passion and served fresh until <span class="text-brand-cream font-medium underline decoration-brand-gold underline-offset-4">4:00 AM</span>.
             </p>
 
             <!-- CTA Button Group -->
             <div class="pt-4 flex flex-wrap items-center gap-4 sm:gap-6">
-              <!-- Primary Action -> Routes to /menu-gateway -->
               <a href="#/menu-gateway" class="inline-flex items-center space-x-3 px-8 py-4 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest font-bold text-sm tracking-wide transition-all shadow-lg transform hover:-translate-y-1 hover:shadow-xl group">
                 <span>Explore Our Menu</span>
                 <i data-lucide="arrow-right" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform"></i>
               </a>
 
-              <!-- Secondary Action: Video Modal Trigger -->
+              <button onclick="openOrderModal()" class="inline-flex items-center space-x-2 px-6 py-4 rounded-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark font-bold text-sm tracking-wide transition-all shadow-lg transform hover:-translate-y-1">
+                <i data-lucide="shopping-bag" class="w-4 h-4"></i>
+                <span>Order Online Now</span>
+              </button>
+
               <button id="heroVideoTrigger" class="inline-flex items-center space-x-3 text-brand-offwhite hover:text-brand-cream group transition-colors">
                 <span class="w-12 h-12 rounded-full border border-white/20 group-hover:border-brand-cream group-hover:bg-white/10 flex items-center justify-center transition-all shadow-inner">
                   <i data-lucide="play" class="w-5 h-5 text-brand-cream fill-brand-cream ml-0.5"></i>
                 </span>
                 <div class="text-left">
-                  <span class="text-sm font-semibold tracking-wide block">Watch Our New Chapter</span>
+                  <span class="text-sm font-semibold tracking-wide block">Watch New Chapter</span>
                   <span class="text-xs text-brand-gold font-normal">JLN Road & C-Scheme</span>
                 </div>
               </button>
@@ -410,7 +513,6 @@
 
           <!-- Right Column: Product Centerpiece -->
           <div class="lg:col-span-5 relative flex items-center justify-center">
-            
             <div class="absolute w-80 h-80 rounded-full bg-brand-gold/15 filter blur-3xl pointer-events-none"></div>
 
             <div class="relative w-full max-w-md mx-auto group">
@@ -462,7 +564,6 @@
               </div>
 
             </div>
-
           </div>
 
         </div>
@@ -527,7 +628,7 @@
       </div>
     </section>
 
-    <!-- SECTION D: OUR SPECIALS INTERACTIVE HIGHLIGHTS -->
+    <!-- SECTION D: POPULAR SPECIALS -->
     <section id="specials" class="bg-brand-sand py-20 md:py-28 relative">
       <div class="max-w-7xl mx-auto px-6 md:px-12">
         <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-4">
@@ -538,7 +639,6 @@
             </h2>
           </div>
           
-          <!-- View Full Menu Button -> routes to /menu-gateway -->
           <a href="#/menu-gateway" class="inline-flex items-center space-x-2 text-sm font-bold text-brand-forest hover:text-brand-gold transition-colors group">
             <span class="border-b border-brand-forest group-hover:border-brand-gold pb-0.5">View Full 55+ Item Menu & Brochure</span>
             <span class="w-9 h-9 rounded-full border border-brand-forest group-hover:border-brand-gold group-hover:bg-brand-forest group-hover:text-brand-cream flex items-center justify-center transition-all">
@@ -566,20 +666,23 @@
           </button>
         </div>
 
-        <!-- Highlights Grid -->
         <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 mt-8" id="menuGrid">
           <!-- Populated by JS -->
         </div>
 
-        <!-- Callout to full brochure -->
         <div class="mt-12 text-center bg-white/70 p-6 rounded-2xl border border-brand-cardBorder flex flex-col sm:flex-row items-center justify-between gap-4">
           <div class="text-left">
             <h4 class="font-serif text-lg font-bold text-brand-charcoal">Looking for our complete C-Scheme & Jaipur Menu?</h4>
             <p class="text-xs text-brand-muted">Explore all 55+ items across 10 categories or download our print-ready digital brochure.</p>
           </div>
-          <a href="#/menu-gateway" class="px-7 py-3 rounded-full bg-brand-forest hover:bg-brand-darkHover text-brand-cream font-bold text-xs uppercase tracking-wider transition-all shadow-md shrink-0">
-            Open Menu Gateway →
-          </a>
+          <div class="flex items-center space-x-3 shrink-0">
+            <button onclick="openOrderModal()" class="px-6 py-3 rounded-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark font-bold text-xs uppercase tracking-wider transition-all shadow-md">
+              Order Online Now
+            </button>
+            <a href="#/menu-gateway" class="px-6 py-3 rounded-full bg-brand-forest hover:bg-brand-darkHover text-brand-cream font-bold text-xs uppercase tracking-wider transition-all shadow-md">
+              Open Menu Gateway →
+            </a>
+          </div>
         </div>
 
       </div>
@@ -834,10 +937,10 @@
                 <span>View Full Menu</span>
                 <i data-lucide="arrow-right" class="w-3.5 h-3.5"></i>
               </a>
-              <a href="https://wa.me/917976198506?text=Hi%20LOC%20C-Scheme,%20I%20want%20to%20order" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-[#25D366] text-white hover:bg-[#20ba59] transition-colors flex items-center gap-1">
-                <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
-                <span>WhatsApp Order</span>
-              </a>
+              <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream hover:bg-brand-dark transition-colors flex items-center gap-1">
+                <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+                <span>Order Now</span>
+              </button>
             </div>
           </div>
 
@@ -865,9 +968,9 @@
                 <span>Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
               </a>
-              <a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+              <button onclick="openOrderModal('b2_bypass')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
                 Order Online
-              </a>
+              </button>
             </div>
           </div>
 
@@ -955,9 +1058,9 @@
                 <span>Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
               </a>
-              <a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+              <button onclick="openOrderModal('c_scheme')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
                 Order Online
-              </a>
+              </button>
             </div>
           </div>
 
@@ -985,9 +1088,9 @@
                 <span>Google Maps</span>
                 <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
               </a>
-              <a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
+              <button onclick="openOrderModal('b2_bypass')" class="text-xs font-semibold px-3 py-1.5 rounded-full bg-brand-sand text-brand-forest hover:bg-brand-cream transition-colors">
                 Order Online
-              </a>
+              </button>
             </div>
           </div>
 
@@ -1000,10 +1103,11 @@
       <div class="max-w-7xl mx-auto px-6 md:px-12">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-brand-cardBorder">
           
+          <!-- Column 1: Brand Logo & Details -->
           <div class="lg:col-span-4 space-y-4">
-            <div class="flex items-center space-x-3">
-              <div class="w-10 h-10 rounded-full bg-brand-forest flex items-center justify-center text-brand-cream">
-                <i data-lucide="coffee" class="w-5 h-5"></i>
+            <div class="flex items-center space-x-3.5">
+              <div class="w-12 h-12 rounded-full overflow-hidden border-2 border-brand-forest/30 shadow-sm flex items-center justify-center bg-brand-sand shrink-0">
+                <img src="assets/logo.jpg" alt="Love Over Coffee Logo" class="w-full h-full object-cover">
               </div>
               <div>
                 <span class="font-serif text-2xl font-bold tracking-tight text-brand-charcoal block">Love Over Coffee</span>
@@ -1029,6 +1133,7 @@
             </div>
           </div>
 
+          <!-- Column 2: Quick Links -->
           <div class="lg:col-span-2 space-y-4">
             <h4 class="font-serif text-base font-bold text-brand-charcoal">Menu & Brochure</h4>
             <ul class="space-y-2 text-xs text-brand-muted font-medium">
@@ -1036,54 +1141,98 @@
               <li><a href="#/menu-brochure" class="hover:text-brand-forest transition-colors">Full 55+ Item Menu</a></li>
               <li><a href="javascript:void(0)" onclick="openAndPrintBrochure()" class="hover:text-brand-forest transition-colors flex items-center gap-1"><span>📥 Download PDF</span></a></li>
               <li><a href="https://wa.me/917976198506?text=Hi%20LOC%20C-Scheme" target="_blank" class="hover:text-brand-forest transition-colors">C-Scheme WhatsApp</a></li>
-              <li><a href="https://link.zomato.com/xqzv/rshare?id=5673658930563eba" target="_blank" class="text-brand-forest font-semibold hover:text-brand-gold flex items-center gap-1">Order on Zomato <i data-lucide="external-link" class="w-3 h-3"></i></a></li>
+              <li><button onclick="openOrderModal()" class="text-brand-forest font-semibold hover:text-brand-gold flex items-center gap-1">Order on Zomato / Swiggy <i data-lucide="external-link" class="w-3 h-3"></i></button></li>
             </ul>
           </div>
 
-          <div class="lg:col-span-4 space-y-4">
+          <!-- Column 3: Outlets -->
+          <div class="lg:col-span-3 space-y-4">
             <h4 class="font-serif text-base font-bold text-brand-charcoal">Jaipur Locations</h4>
             <ul class="space-y-2 text-xs text-brand-muted">
               <li class="flex items-start gap-2">
                 <span class="text-brand-bronze shrink-0">📍</span>
-                <span><strong>C-Scheme:</strong> F-5, Jamnalal Bajaj Marg, Ashok Nagar (4.6★)</span>
+                <span><strong>C-Scheme:</strong> F-5, Jamnalal Bajaj Marg (4.6★)</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-brand-bronze shrink-0">📍</span>
-                <span><strong>B2 Bypass, Tonk Rd:</strong> Opp. Bella Casa (Open till 4 AM)</span>
+                <span><strong>B2 Bypass, Tonk Rd:</strong> (Open till 4 AM)</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-brand-bronze shrink-0">📍</span>
-                <span><strong>JLN Road:</strong> C-16, Jawahar Circle, Near Airport Terminal 2</span>
+                <span><strong>JLN Road:</strong> C-16, Jawahar Circle, Terminal 2</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-brand-bronze shrink-0">📍</span>
-                <span><strong>Durgapura:</strong> S-7 Lakhanpuri</span>
+                <span><strong>Durgapura HQ:</strong> S-7 Lakhanpuri</span>
               </li>
               <li class="flex items-start gap-2">
                 <span class="text-brand-bronze shrink-0">📍</span>
-                <span><strong>Vaishali Nagar, Vidhyadhar Nagar & Jagatpura</strong></span>
+                <span><strong>Vaishali, Vidhyadhar Nagar & Jagatpura</strong></span>
               </li>
             </ul>
           </div>
 
-          <div class="lg:col-span-2 space-y-4">
+          <!-- Column 4: FOLLOW US (1st Circle WhatsApp, 2nd Circle Instagram) -->
+          <div class="lg:col-span-3 space-y-4">
             <h4 class="font-serif text-base font-bold text-brand-charcoal">Follow Us</h4>
-            <div class="flex items-center space-x-2">
-              <a href="https://www.instagram.com/loveovercoffee_/" target="_blank" aria-label="Instagram" class="w-9 h-9 rounded-full bg-brand-sand hover:bg-brand-forest hover:text-brand-cream text-brand-charcoal flex items-center justify-center transition-all">
-                <i data-lucide="instagram" class="w-4 h-4"></i>
+            
+            <!-- Guaranteed Visible High-Quality SVG Icons -->
+            <div class="flex items-center space-x-3">
+              
+              <!-- 1st Circle: WHATSAPP (As Requested) -->
+              <a 
+                href="https://wa.me/917976198506?text=Hi%20Love%20Over%20Coffee%20(Jaipur),%20I%20would%20like%20to%20order" 
+                target="_blank" 
+                title="Chat & Order on WhatsApp" 
+                aria-label="WhatsApp" 
+                class="w-11 h-11 rounded-full bg-[#25D366] hover:bg-[#1faa4b] text-white flex items-center justify-center transition-all shadow-md transform hover:scale-110"
+              >
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.122-.519-1.428-.592-2.348-2.029-2.42-2.124-.071-.095-.58-0.771-.58-1.469 0-.697.366-1.04.496-1.183.13-.143.284-.179.379-.179.095 0 .19.001.273.006.087.004.204-.033.319.243.12.288.409.998.445 1.07.036.072.06.155.012.25-.048.096-.072.155-.143.239-.072.083-.151.186-.216.25-.072.071-.148.148-.063.292.084.143.374.617.804.999.554.493 1.022.646 1.166.717.144.072.228.06.313-.036.084-.096.36-0.42.456-.563.096-.143.192-.12.324-.072.132.048.837.395.981.467.144.072.24.108.276.168.036.06.036.347-.108.752z"/>
+                </svg>
               </a>
-              <a href="https://www.facebook.com/loveovercoffeejaipur/" target="_blank" aria-label="Facebook" class="w-9 h-9 rounded-full bg-brand-sand hover:bg-brand-forest hover:text-brand-cream text-brand-charcoal flex items-center justify-center transition-all">
-                <i data-lucide="facebook" class="w-4 h-4"></i>
+
+              <!-- 2nd Circle: INSTAGRAM (Exact User Provided URL) -->
+              <a 
+                href="https://www.instagram.com/loveovercoffee_?utm_source=ig_web_button_share_sheet&dlrf=ZDNlZDc0MzIxNw==" 
+                target="_blank" 
+                title="Follow on Instagram" 
+                aria-label="Instagram" 
+                class="w-11 h-11 rounded-full bg-gradient-to-tr from-[#f09433] via-[#dc2743] to-[#bc1888] text-white flex items-center justify-center transition-all shadow-md transform hover:scale-110"
+              >
+                <svg class="w-5 h-5 fill-current" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
               </a>
-              <a href="https://maps.google.com/maps?q=Love+over+coffee+Jaipur" target="_blank" aria-label="Google Maps" class="w-9 h-9 rounded-full bg-brand-sand hover:bg-brand-forest hover:text-brand-cream text-brand-charcoal flex items-center justify-center transition-all">
-                <i data-lucide="map-pin" class="w-4 h-4"></i>
+
+              <!-- 3rd Circle: GOOGLE MAPS -->
+              <a 
+                href="https://maps.google.com/maps?q=Love+over+coffee+Jaipur" 
+                target="_blank" 
+                title="View on Google Maps" 
+                aria-label="Google Maps" 
+                class="w-11 h-11 rounded-full bg-brand-forest hover:bg-brand-darkHover text-brand-cream flex items-center justify-center transition-all shadow-md transform hover:scale-110"
+              >
+                <i data-lucide="map-pin" class="w-5 h-5 text-brand-gold"></i>
               </a>
+
+              <!-- 4th Circle: ORDER ON ZOMATO / SWIGGY -->
+              <button 
+                onclick="openOrderModal()" 
+                title="Order on Zomato / Swiggy" 
+                aria-label="Order Delivery" 
+                class="w-11 h-11 rounded-full bg-brand-sand hover:bg-brand-cream text-brand-charcoal border border-brand-cardBorder flex items-center justify-center transition-all shadow-md transform hover:scale-110"
+              >
+                <i data-lucide="utensils" class="w-5 h-5 text-brand-forest"></i>
+              </button>
+
             </div>
+
             <div class="pt-2">
-              <div class="bg-brand-sand p-3 rounded-xl border border-brand-cardBorder">
+              <div class="bg-brand-sand p-3 rounded-2xl border border-brand-cardBorder">
                 <span class="text-[10px] text-brand-bronze font-bold uppercase tracking-wider block">COMMUNITY</span>
                 <span class="font-serif text-lg font-bold text-brand-forest block">11.6K+</span>
-                <span class="text-[11px] text-brand-muted">Instagram Followers</span>
+                <span class="text-[11px] text-brand-muted">Instagram Family (@loveovercoffee_)</span>
               </div>
             </div>
           </div>
@@ -1095,7 +1244,7 @@
           <div class="flex items-center space-x-6">
             <a href="#/menu-gateway" class="hover:text-brand-charcoal transition-colors">Menu Gateway</a>
             <a href="#/menu-brochure" class="hover:text-brand-charcoal transition-colors">Digital Brochure</a>
-            <a href="#" class="hover:text-brand-charcoal transition-colors">Privacy Policy</a>
+            <button onclick="openOrderModal()" class="hover:text-brand-charcoal transition-colors">Order Online</button>
           </div>
         </div>
       </div>
@@ -1126,8 +1275,9 @@
         <span>Back to Home</span>
       </a>
 
-      <div class="flex items-center space-x-2">
-        <span class="w-2.5 h-2.5 rounded-full bg-brand-gold animate-pulse"></span>
+      <!-- Brand in Gateway with Logo -->
+      <div class="flex items-center space-x-2.5">
+        <img src="assets/logo.jpg" alt="Love Over Coffee Logo" class="w-8 h-8 rounded-full object-cover border border-brand-gold">
         <span class="text-xs text-brand-gold font-bold tracking-widest uppercase">C-SCHEME & JAIPUR CAFE</span>
       </div>
     </div>
@@ -1135,7 +1285,6 @@
     <!-- Gateway Center Body: Header + 2 Choice Cards -->
     <div class="max-w-5xl mx-auto w-full my-auto relative z-20 py-8">
       
-      <!-- Gateway Header -->
       <div class="text-center space-y-3 mb-12 max-w-2xl mx-auto">
         <span class="text-xs font-bold tracking-[0.25em] uppercase text-brand-gold block">
           LOVE OVER COFFEE • C-SCHEME & JAIPUR OUTLETS
@@ -1239,7 +1388,7 @@
           </a>
           <span class="text-white/30">•</span>
           <div class="flex items-center space-x-2">
-            <i data-lucide="coffee" class="w-4 h-4 text-brand-gold"></i>
+            <img src="assets/logo.jpg" alt="Love Over Coffee Logo" class="w-7 h-7 rounded-full object-cover border border-brand-gold">
             <span class="font-serif font-bold text-sm sm:text-base text-brand-offwhite">Love Over Coffee — Full Menu Brochure</span>
           </div>
         </div>
@@ -1255,16 +1404,20 @@
           >
         </div>
 
-        <!-- Right: Download PDF & WhatsApp Buttons -->
+        <!-- Right: Actions -->
         <div class="flex items-center space-x-2.5 shrink-0">
           <button onclick="window.print()" class="inline-flex items-center space-x-1.5 px-4 py-2 rounded-full bg-brand-cream hover:bg-brand-creamHover text-brand-forest text-xs font-bold uppercase tracking-wider transition-all shadow-md">
             <i data-lucide="download" class="w-3.5 h-3.5"></i>
             <span>Download PDF</span>
           </button>
-          <a href="https://wa.me/917976198506?text=Hi%20Love%20Over%20Coffee%20(C-Scheme),%20I%20am%20browsing%20your%20digital%20menu%20and%20would%20like%20to%20order" target="_blank" class="inline-flex items-center space-x-1.5 px-4 py-2 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md">
-            <i data-lucide="message-circle" class="w-3.5 h-3.5"></i>
-            <span class="hidden sm:inline">WhatsApp Order</span>
-          </a>
+          <button onclick="openOrderModal()" class="inline-flex items-center space-x-1.5 px-4 py-2 rounded-full bg-brand-gold hover:bg-brand-goldHover text-brand-dark text-xs font-bold uppercase tracking-wider transition-all shadow-md">
+            <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+            <span>Order Online</span>
+          </button>
+          <button onclick="dispatchDirectWhatsApp()" class="inline-flex items-center space-x-1.5 px-3.5 py-2 rounded-full bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold uppercase tracking-wider transition-all shadow-md">
+            <svg class="w-3.5 h-3.5 fill-white" viewBox="0 0 24 24"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.312.045-.694.072-2.122-.519-1.428-.592-2.348-2.029-2.42-2.124-.071-.095-.58-0.771-.58-1.469 0-.697.366-1.04.496-1.183.13-.143.284-.179.379-.179.095 0 .19.001.273.006.087.004.204-.033.319.243.12.288.409.998.445 1.07.036.072.06.155.012.25-.048.096-.072.155-.143.239-.072.083-.151.186-.216.25-.072.071-.148.148-.063.292.084.143.374.617.804.999.554.493 1.022.646 1.166.717.144.072.228.06.313-.036.084-.096.36-0.42.456-.563.096-.143.192-.12.324-.072.132.048.837.395.981.467.144.072.24.108.276.168.036.06.036.347-.108.752z"/></svg>
+            <span class="hidden sm:inline">WhatsApp</span>
+          </button>
         </div>
 
       </div>
@@ -1288,9 +1441,12 @@
           <span>•</span>
           <span>EST. CAFE</span>
         </div>
-        <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-charcoal tracking-tight">
-          Love Over Coffee
-        </h1>
+        <div class="flex items-center justify-center space-x-3.5 pt-1">
+          <img src="assets/logo.jpg" alt="Love Over Coffee Logo" class="w-12 h-12 rounded-full object-cover border-2 border-brand-gold shadow-md">
+          <h1 class="font-serif text-4xl sm:text-5xl md:text-6xl font-extrabold text-brand-charcoal tracking-tight">
+            Love Over Coffee
+          </h1>
+        </div>
         <p class="font-script text-2xl sm:text-3xl text-brand-gold font-normal">
           The Complete C-Scheme & Jaipur Menu Lookbook
         </p>
@@ -1370,479 +1526,134 @@
         categoryName: "Hot Coffee (Without Milk)",
         categoryDesc: "Single-origin Arabica extractions with intense body, caramel crema, and clean notes.",
         items: [
-          {
-            name: "Espresso",
-            price: 320,
-            badge: "",
-            desc: "60ml full-flavored concentrated shot of signature Arabica coffee with rich crema."
-          },
-          {
-            name: "Americano",
-            price: 390,
-            badge: "",
-            desc: "Rich espresso shot brewed with hot water for a smooth, bold finish."
-          },
-          {
-            name: "Irish Americano",
-            price: 460,
-            badge: "Specialty",
-            desc: "Double espresso shot combined with hot water and infused with premium Irish syrup."
-          }
+          { name: "Espresso", price: 320, badge: "", desc: "60ml full-flavored concentrated shot of signature Arabica coffee with rich crema." },
+          { name: "Americano", price: 390, badge: "", desc: "Rich espresso shot brewed with hot water for a smooth, bold finish." },
+          { name: "Irish Americano", price: 460, badge: "Specialty", desc: "Double espresso shot combined with hot water and infused with premium Irish syrup." }
         ]
       },
       {
         categoryName: "Hot Coffee (With Milk) & Hot Chocolate",
         categoryDesc: "Velvety steamed dairy paired with roasted espresso and rich Belgian cocoa.",
         items: [
-          {
-            name: "Cappuccino",
-            price: 390,
-            badge: "Classic",
-            desc: "A classic shot of espresso topped with steamed milk and deep velvety foam."
-          },
-          {
-            name: "Cafe Latte",
-            price: 420,
-            badge: "",
-            desc: "A smooth shot of espresso with steamed milk and a light layer of foam."
-          },
-          {
-            name: "Cafe Mocha",
-            price: 460,
-            badge: "Popular",
-            desc: "Rich espresso blended with dark chocolate sauce and steamed milk."
-          },
-          {
-            name: "Hot Chocolate",
-            price: 480,
-            badge: "",
-            desc: "Sinful brew blending rich dark chocolate with velvety hot milk."
-          },
-          {
-            name: "Flat White",
-            price: 500,
-            badge: "Bestseller",
-            desc: "Double espresso shot layered with steamed milk and ultra-thin microfoam."
-          },
-          {
-            name: "Biscoff Cappuccino",
-            price: 510,
-            badge: "New Hit",
-            desc: "Signature cappuccino infused with the caramelized crunch and flavor of Lotus Biscoff."
-          },
-          {
-            name: "Signature Hot Chocolate",
-            price: 520,
-            badge: "Must Try",
-            desc: "Rich dark hot chocolate elevated with roasted hazelnut flavor."
-          }
+          { name: "Cappuccino", price: 390, badge: "Classic", desc: "A classic shot of espresso topped with steamed milk and deep velvety foam." },
+          { name: "Cafe Latte", price: 420, badge: "", desc: "A smooth shot of espresso with steamed milk and a light layer of foam." },
+          { name: "Cafe Mocha", price: 460, badge: "Popular", desc: "Rich espresso blended with dark chocolate sauce and steamed milk." },
+          { name: "Hot Chocolate", price: 480, badge: "", desc: "Sinful brew blending rich dark chocolate with velvety hot milk." },
+          { name: "Flat White", price: 500, badge: "Bestseller", desc: "Double espresso shot layered with steamed milk and ultra-thin microfoam." },
+          { name: "Biscoff Cappuccino", price: 510, badge: "New Hit", desc: "Signature cappuccino infused with the caramelized crunch and flavor of Lotus Biscoff." },
+          { name: "Signature Hot Chocolate", price: 520, badge: "Must Try", desc: "Rich dark hot chocolate elevated with roasted hazelnut flavor." }
         ]
       },
       {
         categoryName: "Cold Coffee & Signature Frappes",
         categoryDesc: "Signature chilled Arabica creations whipped with cream and gourmet flavors.",
         items: [
-          {
-            name: "Cafe Frappe",
-            price: 470,
-            badge: "Bestseller",
-            desc: "Rich, creamy, and irresistible signature blended cold coffee."
-          },
-          {
-            name: "Dark Chocolate Frappe",
-            price: 540,
-            badge: "",
-            desc: "Intense dark chocolate blended with chilled espresso and cream."
-          },
-          {
-            name: "Irish Mocha Creamy Frappe",
-            price: 580,
-            badge: "Signature",
-            desc: "Signature Cafe Frappe mixed with Irish cream notes and rich chocolate."
-          },
-          {
-            name: "Mocha Hazelnut Frappe",
-            price: 580,
-            badge: "Customer Favorite",
-            desc: "Chilled coffee blended with chocolate fudge and roasted hazelnut."
-          },
-          {
-            name: "Tiramisu Frappe",
-            price: 580,
-            badge: "Indulgent",
-            desc: "Brownie chunks blended with authentic Italian tiramisu flavor in cold coffee."
-          }
+          { name: "Cafe Frappe", price: 470, badge: "Bestseller", desc: "Rich, creamy, and irresistible signature blended cold coffee." },
+          { name: "Dark Chocolate Frappe", price: 540, badge: "", desc: "Intense dark chocolate blended with chilled espresso and cream." },
+          { name: "Irish Mocha Creamy Frappe", price: 580, badge: "Signature", desc: "Signature Cafe Frappe mixed with Irish cream notes and rich chocolate." },
+          { name: "Mocha Hazelnut Frappe", price: 580, badge: "Customer Favorite", desc: "Chilled coffee blended with chocolate fudge and roasted hazelnut." },
+          { name: "Tiramisu Frappe", price: 580, badge: "Indulgent", desc: "Brownie chunks blended with authentic Italian tiramisu flavor in cold coffee." }
         ]
       },
       {
         categoryName: "Thick Shakes",
         categoryDesc: "Ultra-thick dessert shakes made with rich ice cream, cookies, and chocolate fudge.",
         items: [
-          {
-            name: "Dark Chocolate Shake",
-            price: 480,
-            badge: "Rich Cocoa",
-            desc: "Decadent Belgian dark chocolate blended into a thick, creamy shake."
-          },
-          {
-            name: "Oreo Shake",
-            price: 530,
-            badge: "Popular",
-            desc: "Crunchy Oreo cookies blended with vanilla ice cream and chocolate drizzle."
-          },
-          {
-            name: "Kit-Kat Shake",
-            price: 530,
-            badge: "",
-            desc: "Crispy Kit-Kat wafers blended into a rich chocolate malt shake."
-          },
-          {
-            name: "Choco Brownie Shake",
-            price: 550,
-            badge: "Bestseller",
-            desc: "Warm fudge brownie chunks blended into a thick chocolate shake."
-          },
-          {
-            name: "Lotus Biscoff Shake",
-            price: 580,
-            badge: "Chef Special",
-            desc: "Creamy shake blended with Lotus Biscoff spread and topped with crumbled biscuit."
-          }
+          { name: "Dark Chocolate Shake", price: 480, badge: "Rich Cocoa", desc: "Decadent Belgian dark chocolate blended into a thick, creamy shake." },
+          { name: "Oreo Shake", price: 530, badge: "Popular", desc: "Crunchy Oreo cookies blended with vanilla ice cream and chocolate drizzle." },
+          { name: "Kit-Kat Shake", price: 530, badge: "", desc: "Crispy Kit-Kat wafers blended into a rich chocolate malt shake." },
+          { name: "Choco Brownie Shake", price: 550, badge: "Bestseller", desc: "Warm fudge brownie chunks blended into a thick chocolate shake." },
+          { name: "Lotus Biscoff Shake", price: 580, badge: "Chef Special", desc: "Creamy shake blended with Lotus Biscoff spread and topped with crumbled biscuit." }
         ]
       },
       {
         categoryName: "Iced Teas, Coolers & Mocktails",
         categoryDesc: "Crisp sparkling botanical coolers and slow-steeped refreshing tea infusions.",
         items: [
-          {
-            name: "Fresh Lime Soda (Sweet / Salted / Mix)",
-            price: 357,
-            badge: "Refreshing",
-            desc: "Refreshing sparkling citrus cooler with mint."
-          },
-          {
-            name: "Lemon Mint Ice Tea",
-            price: 378,
-            badge: "Classic",
-            desc: "Slow-brewed iced tea infused with zesty lemon and fresh garden mint."
-          },
-          {
-            name: "Virgin Mojito",
-            price: 378,
-            badge: "Cooler",
-            desc: "Chilled mint mojito crafted with muddled lemons, fresh mint leaves, and crushed ice."
-          },
-          {
-            name: "Peach Ice Tea",
-            price: 399,
-            badge: "",
-            desc: "Fragrant peach-infused chilled artisanal tea."
-          },
-          {
-            name: "Strawberry Ice Tea",
-            price: 399,
-            badge: "",
-            desc: "Sweet berry-infused refreshing iced tea."
-          },
-          {
-            name: "Watermelon Ice Tea",
-            price: 399,
-            badge: "",
-            desc: "Crisp watermelon notes blended with chilled brewed tea."
-          },
-          {
-            name: "Blueberry Ice Tea",
-            price: 462,
-            badge: "Antioxidant",
-            desc: "Antioxidant-rich blueberry infusion over chilled tea."
-          },
-          {
-            name: "Spicy Guava Infusion",
-            price: 504,
-            badge: "Zesty Kick",
-            desc: "Sweetness of pink guava with crisp cucumber and a spicy kick of chili."
-          },
-          {
-            name: "Coco Hibiscus Bliss",
-            price: 504,
-            badge: "Botanical",
-            desc: "Botanical blend of hibiscus petals and smooth white chocolate notes."
-          },
-          {
-            name: "Red Bull Ice Tea",
-            price: 546,
-            badge: "High Energy",
-            desc: "High-energy house iced tea charged with a full can of Red Bull."
-          }
+          { name: "Fresh Lime Soda (Sweet / Salted / Mix)", price: 357, badge: "Refreshing", desc: "Refreshing sparkling citrus cooler with mint." },
+          { name: "Lemon Mint Ice Tea", price: 378, badge: "Classic", desc: "Slow-brewed iced tea infused with zesty lemon and fresh garden mint." },
+          { name: "Virgin Mojito", price: 378, badge: "Cooler", desc: "Chilled mint mojito crafted with muddled lemons, fresh mint leaves, and crushed ice." },
+          { name: "Peach Ice Tea", price: 399, badge: "", desc: "Fragrant peach-infused chilled artisanal tea." },
+          { name: "Strawberry Ice Tea", price: 399, badge: "", desc: "Sweet berry-infused refreshing iced tea." },
+          { name: "Watermelon Ice Tea", price: 399, badge: "", desc: "Crisp watermelon notes blended with chilled brewed tea." },
+          { name: "Blueberry Ice Tea", price: 462, badge: "Antioxidant", desc: "Antioxidant-rich blueberry infusion over chilled tea." },
+          { name: "Spicy Guava Infusion", price: 504, badge: "Zesty Kick", desc: "Sweetness of pink guava with crisp cucumber and a spicy kick of chili." },
+          { name: "Coco Hibiscus Bliss", price: 504, badge: "Botanical", desc: "Botanical blend of hibiscus petals and smooth white chocolate notes." },
+          { name: "Red Bull Ice Tea", price: 546, badge: "High Energy", desc: "High-energy house iced tea charged with a full can of Red Bull." }
         ]
       },
       {
         categoryName: "Late-Night Maggi, Fries & Nachos",
         categoryDesc: "Jaipur’s beloved 4 AM comfort food — tossed, seasoned, and layered with cheese.",
         items: [
-          {
-            name: "French Fries (Classic Salted)",
-            price: 390,
-            badge: "Crispy",
-            desc: "Golden crispy shoestring fries served with house dip."
-          },
-          {
-            name: "Potato Wedges",
-            price: 420,
-            badge: "",
-            desc: "Skin-on potato wedges coated with special café herb seasoning."
-          },
-          {
-            name: "Peri Peri Fries",
-            price: 440,
-            badge: "Spicy",
-            desc: "Crispy fries tossed in fiery African peri-peri spice blend."
-          },
-          {
-            name: "Masala Maggi",
-            price: 440,
-            badge: "Late-Night Icon",
-            desc: "Spicy masaledar Maggi tossed with mixed garden vegetables."
-          },
-          {
-            name: "Tandoori Maggi",
-            price: 510,
-            badge: "Smoky",
-            desc: "Signature fusion of smoky tandoori sauces tossed with classic Maggi."
-          },
-          {
-            name: "Cheese Maggi",
-            price: 530,
-            badge: "Must Try",
-            desc: "Steaming Masala Maggi loaded with molten cheese all over."
-          },
-          {
-            name: "Chilli Mayo Fries",
-            price: 530,
-            badge: "Popular",
-            desc: "Crispy fries drizzled generously with spicy chilli mayo."
-          },
-          {
-            name: "Jalapeno Cheese Fries",
-            price: 560,
-            badge: "Loaded",
-            desc: "Loaded fries topped with tangy jalapenos and warm cheese sauce."
-          },
-          {
-            name: "Cheese Nachos / Baked Nachos",
-            price: 640,
-            badge: "Crunchy",
-            desc: "Crispy tortilla chips baked with liquid cheese, salsa, and jalapenos."
-          },
-          {
-            name: "Tex-Mex Nachos",
-            price: 660,
-            badge: "Chef Pick",
-            desc: "Loaded nachos topped with Mexican beans, salsa, sour cream, and cheese."
-          }
+          { name: "French Fries (Classic Salted)", price: 390, badge: "Crispy", desc: "Golden crispy shoestring fries served with house dip." },
+          { name: "Potato Wedges", price: 420, badge: "", desc: "Skin-on potato wedges coated with special café herb seasoning." },
+          { name: "Peri Peri Fries", price: 440, badge: "Spicy", desc: "Crispy fries tossed in fiery African peri-peri spice blend." },
+          { name: "Masala Maggi", price: 440, badge: "Late-Night Icon", desc: "Spicy masaledar Maggi tossed with mixed garden vegetables." },
+          { name: "Tandoori Maggi", price: 510, badge: "Smoky", desc: "Signature fusion of smoky tandoori sauces tossed with classic Maggi." },
+          { name: "Cheese Maggi", price: 530, badge: "Must Try", desc: "Steaming Masala Maggi loaded with molten cheese all over." },
+          { name: "Chilli Mayo Fries", price: 530, badge: "Popular", desc: "Crispy fries drizzled generously with spicy chilli mayo." },
+          { name: "Jalapeno Cheese Fries", price: 560, badge: "Loaded", desc: "Loaded fries topped with tangy jalapenos and warm cheese sauce." },
+          { name: "Cheese Nachos / Baked Nachos", price: 640, badge: "Crunchy", desc: "Crispy tortilla chips baked with liquid cheese, salsa, and jalapenos." },
+          { name: "Tex-Mex Nachos", price: 660, badge: "Chef Pick", desc: "Loaded nachos topped with Mexican beans, salsa, sour cream, and cheese." }
         ]
       },
       {
         categoryName: "Artisanal Sandwiches, Wraps & Bites",
         categoryDesc: "Triple-layered toasted breads and whole-wheat tortillas filled with fresh gourmet stuffings.",
         items: [
-          {
-            name: "Veg Grill Sandwich",
-            price: 510,
-            badge: "Classic",
-            desc: "Seasoned garden vegetables grilled between jumbo brown bread slices."
-          },
-          {
-            name: "Veg Cheese Grill Sandwich",
-            price: 560,
-            badge: "",
-            desc: "Loaded vegetable sandwich grilled with a generous layer of cheese."
-          },
-          {
-            name: "Cheese Corn Sandwich",
-            price: 580,
-            badge: "Comforting",
-            desc: "Sweet golden corn kernels folded in creamy molten cheese and herbs."
-          },
-          {
-            name: "Mushroom Grilled Sandwich",
-            price: 610,
-            badge: "",
-            desc: "Sautéed garlic button mushrooms and cheese in toasted artisan bread."
-          },
-          {
-            name: "Pesto Grilled Veg Sandwich",
-            price: 630,
-            badge: "Gourmet",
-            desc: "Exotic vegetables tossed in fresh basil pesto and mozzarella."
-          },
-          {
-            name: "Falafel Wrap",
-            price: 620,
-            badge: "Mediterranean",
-            desc: "Crispy Mediterranean chickpea falafel, hummus, and pickled veggies in a warm tortilla."
-          },
-          {
-            name: "Mexican Paneer Wrap",
-            price: 650,
-            badge: "Zesty",
-            desc: "Spiced cottage cheese, bell peppers, and salsa wrapped in a grilled tortilla."
-          },
-          {
-            name: "Tandoori Paneer Sandwich",
-            price: 670,
-            badge: "Bestseller",
-            desc: "Smoky marinated paneer cubes, mint mayo, and crisp veggies in triple-layer bread."
-          },
-          {
-            name: "Veg Club Sandwich",
-            price: 690,
-            badge: "Triple Decker",
-            desc: "Triple-decker cafe classic with coleslaw, grilled veggies, and cheese."
-          },
-          {
-            name: "Triple Cheese Sandwich",
-            price: 760,
-            badge: "Must Try",
-            desc: "Onion, tomato, capsicum, and crisp lettuce loaded with a 3-cheese blend between three slices of brown bread."
-          }
+          { name: "Veg Grill Sandwich", price: 510, badge: "Classic", desc: "Seasoned garden vegetables grilled between jumbo brown bread slices." },
+          { name: "Veg Cheese Grill Sandwich", price: 560, badge: "", desc: "Loaded vegetable sandwich grilled with a generous layer of cheese." },
+          { name: "Cheese Corn Sandwich", price: 580, badge: "Comforting", desc: "Sweet golden corn kernels folded in creamy molten cheese and herbs." },
+          { name: "Mushroom Grilled Sandwich", price: 610, badge: "", desc: "Sautéed garlic button mushrooms and cheese in toasted artisan bread." },
+          { name: "Pesto Grilled Veg Sandwich", price: 630, badge: "Gourmet", desc: "Exotic vegetables tossed in fresh basil pesto and mozzarella." },
+          { name: "Falafel Wrap", price: 620, badge: "Mediterranean", desc: "Crispy Mediterranean chickpea falafel, hummus, and pickled veggies in a warm tortilla." },
+          { name: "Mexican Paneer Wrap", price: 650, badge: "Zesty", desc: "Spiced cottage cheese, bell peppers, and salsa wrapped in a grilled tortilla." },
+          { name: "Tandoori Paneer Sandwich", price: 670, badge: "Bestseller", desc: "Smoky marinated paneer cubes, mint mayo, and crisp veggies in triple-layer bread." },
+          { name: "Veg Club Sandwich", price: 690, badge: "Triple Decker", desc: "Triple-decker cafe classic with coleslaw, grilled veggies, and cheese." },
+          { name: "Triple Cheese Sandwich", price: 760, badge: "Must Try", desc: "Onion, tomato, capsicum, and crisp lettuce loaded with a 3-cheese blend between three slices of brown bread." }
         ]
       },
       {
         categoryName: "Handcrafted Pizzas & Garlic Breads",
         categoryDesc: "Crisp stone-baked doughs, herb butter baguettes, and bubbling Italian mozzarella.",
         items: [
-          {
-            name: "Cheese Garlic Bread",
-            price: 530,
-            badge: "Classic",
-            desc: "Toasted baguette slices topped with garlic herb butter and mozzarella blend."
-          },
-          {
-            name: "Masala Pull-Apart Garlic Bread",
-            price: 590,
-            badge: "Fusion",
-            desc: "Warm pull-apart loaf stuffed with spicy masala veggies and melted cheese."
-          },
-          {
-            name: "Pesto Pull-Apart Garlic Bread",
-            price: 620,
-            badge: "Basil Fresh",
-            desc: "Pull-apart artisan bread infused with basil pesto and stretchy mozzarella."
-          },
-          {
-            name: "OTC Garlic Bread",
-            price: 650,
-            badge: "C-Scheme Favorite",
-            desc: "Signature cheese blend topped with crisp Onion, Tomato, Capsicum, and Italian spices."
-          },
-          {
-            name: "Classic Margherita Pizza",
-            price: 720,
-            badge: "Italian",
-            desc: "San Marzano style tomato sauce, fresh mozzarella, and basil leaves."
-          },
-          {
-            name: "Olive Garden Pizza",
-            price: 780,
-            badge: "",
-            desc: "Loaded with black & green olives, bell peppers, herbs, and mozzarella."
-          },
-          {
-            name: "Farm Fresh Pizza",
-            price: 820,
-            badge: "Bestseller",
-            desc: "Crunchy bell peppers, onions, sweet corn, mushrooms, and olives over rich cheese."
-          },
-          {
-            name: "Tandoori Paneer / BBQ Paneer Pizza",
-            price: 860,
-            badge: "Smoky Crust",
-            desc: "Spiced smoky paneer chunks, red paprika, onions, and mozzarella."
-          },
-          {
-            name: "Multi Cheese Nirmana Pizza",
-            price: 920,
-            badge: "Chef Special",
-            desc: "Indulgent 4-cheese pizza crafted for ultimate cheese lovers."
-          }
+          { name: "Cheese Garlic Bread", price: 530, badge: "Classic", desc: "Toasted baguette slices topped with garlic herb butter and mozzarella blend." },
+          { name: "Masala Pull-Apart Garlic Bread", price: 590, badge: "Fusion", desc: "Warm pull-apart loaf stuffed with spicy masala veggies and melted cheese." },
+          { name: "Pesto Pull-Apart Garlic Bread", price: 620, badge: "Basil Fresh", desc: "Pull-apart artisan bread infused with basil pesto and stretchy mozzarella." },
+          { name: "OTC Garlic Bread", price: 650, badge: "C-Scheme Favorite", desc: "Signature cheese blend topped with crisp Onion, Tomato, Capsicum, and Italian spices." },
+          { name: "Classic Margherita Pizza", price: 720, badge: "Italian", desc: "San Marzano style tomato sauce, fresh mozzarella, and basil leaves." },
+          { name: "Olive Garden Pizza", price: 780, badge: "", desc: "Loaded with black & green olives, bell peppers, herbs, and mozzarella." },
+          { name: "Farm Fresh Pizza", price: 820, badge: "Bestseller", desc: "Crunchy bell peppers, onions, sweet corn, mushrooms, and olives over rich cheese." },
+          { name: "Tandoori Paneer / BBQ Paneer Pizza", price: 860, badge: "Smoky Crust", desc: "Spiced smoky paneer chunks, red paprika, onions, and mozzarella." },
+          { name: "Multi Cheese Nirmana Pizza", price: 920, badge: "Chef Special", desc: "Indulgent 4-cheese pizza crafted for ultimate cheese lovers." }
         ]
       },
       {
         categoryName: "Italian Pastas & Lasagne",
         categoryDesc: "Slow-simmered sauces, imported durum wheat pasta, and bubbling oven-baked gratins.",
         items: [
-          {
-            name: "Penne Arrabiata (Red Sauce)",
-            price: 640,
-            badge: "Spicy Tangy",
-            desc: "Penne tossed in spicy, tangy slow-cooked Italian tomato and garlic sauce."
-          },
-          {
-            name: "Penne Alfredo (White Sauce)",
-            price: 680,
-            badge: "Creamy",
-            desc: "Rich, velvety parmesan and cream sauce tossed with exotic vegetables and penne."
-          },
-          {
-            name: "Penne Pink Sauce (Mix Sauce)",
-            price: 710,
-            badge: "Bestseller",
-            desc: "The best of both worlds—creamy Alfredo blended with tangy Arrabiata."
-          },
-          {
-            name: "Penne Creamy Pesto",
-            price: 740,
-            badge: "Gourmet",
-            desc: "Freshly pounded basil & pine-nut pesto swirled with cream and parmesan."
-          },
-          {
-            name: "Spaghetti Calabrese",
-            price: 750,
-            badge: "Artisanal",
-            desc: "Classic spaghetti tossed with olive oil, chili flakes, garlic, olives, and herbs."
-          },
-          {
-            name: "Exotic Grilled Veg Lasagne",
-            price: 820,
-            badge: "Oven Baked",
-            desc: "Layered pasta sheets baked with grilled vegetables, béchamel, marinara, and bubbling mozzarella."
-          },
-          {
-            name: "Homemade Italian Ravioli",
-            price: 840,
-            badge: "Chef Special",
-            desc: "Stuffed pasta pillows served in rich creamy herb rose sauce."
-          }
+          { name: "Penne Arrabiata (Red Sauce)", price: 640, badge: "Spicy Tangy", desc: "Penne tossed in spicy, tangy slow-cooked Italian tomato and garlic sauce." },
+          { name: "Penne Alfredo (White Sauce)", price: 680, badge: "Creamy", desc: "Rich, velvety parmesan and cream sauce tossed with exotic vegetables and penne." },
+          { name: "Penne Pink Sauce (Mix Sauce)", price: 710, badge: "Bestseller", desc: "The best of both worlds—creamy Alfredo blended with tangy Arrabiata." },
+          { name: "Penne Creamy Pesto", price: 740, badge: "Gourmet", desc: "Freshly pounded basil & pine-nut pesto swirled with cream and parmesan." },
+          { name: "Spaghetti Calabrese", price: 750, badge: "Artisanal", desc: "Classic spaghetti tossed with olive oil, chili flakes, garlic, olives, and herbs." },
+          { name: "Exotic Grilled Veg Lasagne", price: 820, badge: "Oven Baked", desc: "Layered pasta sheets baked with grilled vegetables, béchamel, marinara, and bubbling mozzarella." },
+          { name: "Homemade Italian Ravioli", price: 840, badge: "Chef Special", desc: "Stuffed pasta pillows served in rich creamy herb rose sauce." }
         ]
       },
       {
         categoryName: "Desserts & Bakery",
         categoryDesc: "Warm baked confectionery, velvety frostings, and rich sundae creations.",
         items: [
-          {
-            name: "Red Velvet Muffin",
-            price: 280,
-            badge: "Bakery",
-            desc: "Moist, velvety cocoa crumb muffin with cream cheese frosting notes."
-          },
-          {
-            name: "New York Cheesecake Slice",
-            price: 420,
-            badge: "Classic",
-            desc: "Classic rich baked cheesecake with a buttery biscuit crust."
-          },
-          {
-            name: "Oreo Brownie Sundae",
-            price: 490,
-            badge: "Must Try",
-            desc: "Warm chocolate walnut brownie topped with vanilla ice cream, crushed Oreos, and hot fudge."
-          }
+          { name: "Red Velvet Muffin", price: 280, badge: "Bakery", desc: "Moist, velvety cocoa crumb muffin with cream cheese frosting notes." },
+          { name: "New York Cheesecake Slice", price: 420, badge: "Classic", desc: "Classic rich baked cheesecake with a buttery biscuit crust." },
+          { name: "Oreo Brownie Sundae", price: 490, badge: "Must Try", desc: "Warm chocolate walnut brownie topped with vanilla ice cream, crushed Oreos, and hot fudge." }
         ]
       }
     ];
 
-    // Home Page Highlights Dataset (for Section D)
+    // Home Page Highlights Dataset
     const HOME_SPECIALS = [
       { id: 'c1', title: 'Flat White', category: 'Coffee & Frappes', price: 500, badge: '28 photos', badgeColor: 'bg-brand-sand text-brand-bronze', desc: 'Velvety micro-foam espresso blend with deep crema', image: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=600&q=80' },
       { id: 'c2', title: 'Cafe Frappe', category: 'Coffee & Frappes', price: 470, badge: 'Bestseller', badgeColor: 'bg-brand-cream text-brand-forest font-bold', desc: 'Blended chilled Arabica, cold milk & rich foam', image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=600&q=80' },
@@ -1870,6 +1681,9 @@
       { id: 'm6', title: 'Masala Maggi', price: 440, qty: 1, image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=200&q=80' }
     ];
 
+    // Selected Outlet State
+    let selectedOutlet = 'c_scheme';
+
     // Testimonials
     const REVIEWS = [
       { quote: `"Love Over Coffee is my happy place in Jaipur! The hazelnut latte and pesto sandwiches are amazing, the vibe is cozy, and the staff is polite, hardworking, and friendly. Highly recommend!"`, author: "Radhika Agarwal", location: "Regular Customer • C-Scheme Outlet", avatar: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" },
@@ -1885,7 +1699,6 @@
       const viewGateway = document.getElementById('viewGateway');
       const viewBrochure = document.getElementById('viewBrochure');
 
-      // Hide all views first
       viewHome.classList.add('hidden');
       viewGateway.classList.add('hidden');
       viewBrochure.classList.add('hidden');
@@ -1905,12 +1718,139 @@
     window.addEventListener('hashchange', handleRouting);
     window.addEventListener('load', handleRouting);
 
-    // Open & Print Brochure action (triggers printable view and print dialog)
+    // Open & Print Brochure action
     function openAndPrintBrochure() {
       window.location.hash = '#/menu-brochure';
       setTimeout(() => {
         window.print();
       }, 500);
+    }
+
+    // ================= ORDER PLATFORM MODAL LOGIC =================
+    function openOrderModal(preferredOutlet = null) {
+      if (preferredOutlet) {
+        selectedOutlet = preferredOutlet;
+        const r = document.querySelector(`input[name="orderOutlet"][value="${preferredOutlet}"]`);
+        if (r) r.checked = true;
+        handleOutletChange();
+      }
+
+      // If cart is completely empty, offer to add signature bestseller
+      if (cart.length === 0) {
+        addToCart('Cafe Frappe', 470, 'Cold Coffee & Signature Frappes');
+      }
+
+      // Populate modal summary
+      const totalCount = cart.reduce((acc, curr) => acc + curr.qty, 0);
+      const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+
+      document.getElementById('modalItemCount').textContent = totalCount;
+      document.getElementById('modalSubtotal').textContent = `₹${subtotal.toFixed(2)}`;
+
+      const list = document.getElementById('modalItemsList');
+      list.innerHTML = cart.map(item => `
+        <div class="flex items-center justify-between py-1">
+          <span class="text-brand-charcoal font-medium">${item.qty}x ${item.title}</span>
+          <span class="text-brand-muted">₹${(item.price * item.qty).toFixed(2)}</span>
+        </div>
+      `).join('');
+
+      const modal = document.getElementById('orderPlatformModal');
+      const content = document.getElementById('orderPlatformContent');
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-95');
+      content.classList.add('scale-100');
+
+      // Close cart drawer if open
+      document.getElementById('cartDrawer').classList.add('opacity-0', 'pointer-events-none');
+      document.getElementById('cartDrawerContent').classList.add('translate-x-full');
+    }
+
+    function closeOrderModal() {
+      const modal = document.getElementById('orderPlatformModal');
+      const content = document.getElementById('orderPlatformContent');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      content.classList.remove('scale-100');
+      content.classList.add('scale-95');
+    }
+
+    function handleOutletChange() {
+      const val = document.querySelector('input[name="orderOutlet"]:checked')?.value || 'c_scheme';
+      selectedOutlet = val;
+      const labelC = document.getElementById('label_outlet_cscheme');
+      const labelB = document.getElementById('label_outlet_b2bypass');
+
+      if (val === 'c_scheme') {
+        labelC.classList.add('border-brand-forest');
+        labelC.classList.remove('border-brand-cardBorder');
+        labelB.classList.remove('border-brand-forest');
+        labelB.classList.add('border-brand-cardBorder');
+      } else {
+        labelB.classList.add('border-brand-forest');
+        labelB.classList.remove('border-brand-cardBorder');
+        labelC.classList.remove('border-brand-forest');
+        labelC.classList.add('border-brand-cardBorder');
+      }
+    }
+
+    // Backend Order Dispatch Function
+    async function dispatchOrder(platform) {
+      const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+      const payload = {
+        name: "Valued Customer",
+        phone: "+91 99999 99999",
+        outlet: selectedOutlet,
+        platform: platform,
+        items: cart,
+        subtotal: subtotal
+      };
+
+      try {
+        // Send order to our local backend API
+        const res = await fetch('/api/order', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          showToast(`Order created (#${data.order_id})! Opening ${platform.toUpperCase()}...`);
+          closeOrderModal();
+          setTimeout(() => {
+            window.open(data.redirect_url, '_blank');
+          }, 400);
+          return;
+        }
+      } catch (err) {
+        console.log("Local backend fetch note (fallback to direct link):", err);
+      }
+
+      // Fallback direct redirection if server offline
+      let targetUrl = '';
+      if (platform === 'zomato') {
+        targetUrl = selectedOutlet === 'c_scheme' 
+          ? 'https://www.zomato.com/jaipur/love-over-coffee-1-c-scheme' 
+          : 'https://link.zomato.com/xqzv/rshare?id=5673658930563eba';
+      } else if (platform === 'swiggy') {
+        targetUrl = 'https://www.swiggy.com/city/jaipur/love-over-coffee-c-scheme-rest382901';
+      } else {
+        const phone = selectedOutlet === 'c_scheme' ? '917976198506' : '919928783999';
+        const itemsText = cart.map(i => `• ${i.qty}x ${i.title} (₹${i.price})`).join('%0A');
+        const text = `Hi Love Over Coffee (${selectedOutlet === 'c_scheme' ? 'C-Scheme' : 'B2 Bypass'}), I would like to order:%0A${itemsText}%0A*Total: ₹${subtotal.toFixed(2)}*`;
+        targetUrl = `https://wa.me/${phone}?text=${text}`;
+      }
+
+      closeOrderModal();
+      window.open(targetUrl, '_blank');
+    }
+
+    function dispatchDirectWhatsApp() {
+      const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+      const phone = selectedOutlet === 'c_scheme' ? '917976198506' : '919928783999';
+      const itemsText = cart.map(i => `• ${i.qty}x ${i.title} (₹${i.price})`).join('%0A');
+      const text = `Hi Love Over Coffee (${selectedOutlet === 'c_scheme' ? 'C-Scheme Flagship' : 'B2 Bypass Hub'}), I would like to order:%0A${itemsText}%0A*Total: ₹${subtotal.toFixed(2)}*`;
+      window.open(`https://wa.me/${phone}?text=${text}`, '_blank');
     }
 
     // ================= RENDER HOME MENU SPECIALS =================
@@ -2251,7 +2191,6 @@
         return;
       }
       
-      // Search across complete dataset
       const matches = [];
       COMPLETE_MENU_DATASET.forEach(cat => {
         cat.items.forEach(item => {
@@ -2308,6 +2247,7 @@
         cartDrawerContent.classList.add('translate-x-full');
         searchModal.classList.add('opacity-0', 'pointer-events-none');
         videoModal.classList.add('opacity-0', 'pointer-events-none');
+        closeOrderModal();
       }
     });
 
