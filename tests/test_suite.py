@@ -356,12 +356,12 @@ def test_backend_api():
     except Exception as e:
         R.fail("Logo asset serving", str(e))
 
-    # Order API POST
+    # Order API POST: Apps order without phone (should succeed)
     try:
         order_payload = json.dumps({
-            "name": "Test User",
+            "name": "App User",
             "outlet": "c_scheme",
-            "platform": "whatsapp",
+            "platform": "zomato",
             "items": [{"title": "Flat White", "price": 190, "qty": 1}],
             "subtotal": 190
         }).encode("utf-8")
@@ -374,11 +374,64 @@ def test_backend_api():
         resp = urllib.request.urlopen(req, timeout=5)
         data = json.loads(resp.read())
         if data.get("success") and data.get("order_id", "").startswith("LOC-"):
-            R.ok(f"API POST /api/order works", f"Order ID: {data['order_id']}")
+            R.ok("API POST /api/order for apps does not require phone", f"Platform: {data['platform']}")
         else:
-            R.fail("API POST /api/order", f"Unexpected: {data}")
+            R.fail("API POST /api/order for apps", f"Unexpected: {data}")
     except Exception as e:
-        R.fail("API POST /api/order", str(e))
+        R.fail("API POST /api/order for apps", str(e))
+
+    # Order API POST: Direct order WITHOUT phone (should be rejected with 400)
+    try:
+        order_payload = json.dumps({
+            "name": "Direct User",
+            "outlet": "c_scheme",
+            "platform": "direct",
+            "phone": "",
+            "items": [{"title": "Flat White", "price": 190, "qty": 1}],
+            "subtotal": 190
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            f"{SERVER_URL}/api/order",
+            data=order_payload,
+            headers={"Content-Type": "application/json"},
+            method="POST"
+        )
+        try:
+            resp = urllib.request.urlopen(req, timeout=5)
+            R.fail("Direct order without phone should return 400", "Received 200 OK unexpectedly")
+        except urllib.error.HTTPError as e:
+            if e.code == 400:
+                R.ok("Direct order without phone rejected with 400 (Compulsory Phone Enforced)")
+            else:
+                R.fail("Direct order without phone HTTP error", f"Expected 400, got {e.code}")
+    except Exception as e:
+        R.fail("Direct order validation check", str(e))
+
+    # Order API POST: Direct order WITH valid 10-digit phone (should succeed)
+    try:
+        order_payload = json.dumps({
+            "name": "Direct Foodie",
+            "outlet": "c_scheme",
+            "platform": "direct",
+            "phone": "+91 98290 12345",
+            "address": "Table 4",
+            "items": [{"title": "Flat White", "price": 190, "qty": 1}],
+            "subtotal": 190
+        }).encode("utf-8")
+        req = urllib.request.Request(
+            f"{SERVER_URL}/api/order",
+            data=order_payload,
+            headers={"Content-Type": "application/json"},
+            method="POST"
+        )
+        resp = urllib.request.urlopen(req, timeout=5)
+        data = json.loads(resp.read())
+        if data.get("success") and data.get("order_id", "").startswith("LOC-"):
+            R.ok("Direct order with valid phone accepted", f"Order ID: {data['order_id']}")
+        else:
+            R.fail("Direct order with valid phone", f"Unexpected: {data}")
+    except Exception as e:
+        R.fail("Direct order with valid phone", str(e))
 
     # GET orders
     try:

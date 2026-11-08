@@ -78,6 +78,22 @@ class LOCHandler(http.server.SimpleHTTPRequestHandler):
                 self.send_error(400, f"Invalid JSON payload: {str(e)}")
                 return
 
+            platform = order_data.get("platform", "whatsapp")
+            phone = str(order_data.get("phone", "")).strip()
+
+            # Enforce compulsory phone for direct orders (apps like Zomato/Swiggy use their own account)
+            digits = ''.join(filter(str.isdigit, phone))
+            if platform == 'direct' and (not phone or len(digits) < 10):
+                self.send_response(400)
+                self.send_header('Content-Type', 'application/json')
+                self.send_header('Access-Control-Allow-Origin', '*')
+                self.end_headers()
+                self.wfile.write(json.dumps({
+                    "success": False,
+                    "error": "Phone number is compulsory for direct orders (minimum 10 digits)"
+                }).encode('utf-8'))
+                return
+
             # Enrich order metadata
             order_id = f"LOC-{int(datetime.now().timestamp())}"
             order_record = {

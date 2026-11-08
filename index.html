@@ -301,7 +301,10 @@
           </div>
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
             <input type="text" id="directOrderName" placeholder="Your Name" value="Guest Foodie" class="p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none focus:border-brand-forest">
-            <input type="tel" id="directOrderPhone" placeholder="Mobile / WhatsApp (+91)" class="p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none focus:border-brand-forest">
+            <div class="flex flex-col">
+              <input type="tel" id="directOrderPhone" required placeholder="Phone / WhatsApp Number *" class="p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none focus:border-brand-forest transition-colors">
+              <span id="phoneErrorMsg" class="hidden text-[10px] text-red-600 font-semibold mt-1 pl-1">⚠️ Phone number is compulsory (10 digits)</span>
+            </div>
           </div>
           <input type="text" id="directOrderAddress" placeholder="Table Number (Dine-in) or Delivery Address in Jaipur" class="w-full p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none focus:border-brand-forest">
           <button onclick="submitDirectOrder()" type="button" class="w-full py-3 rounded-full bg-brand-forest hover:bg-brand-darkHover text-brand-cream font-bold text-xs uppercase tracking-wider transition-all shadow-md flex items-center justify-center space-x-2 cursor-pointer">
@@ -2297,6 +2300,15 @@
         confirmScreen.innerHTML = '';
       }
 
+      // Reset phone error state
+      const phoneInput = document.getElementById('directOrderPhone');
+      const phoneErrorMsg = document.getElementById('phoneErrorMsg');
+      if (phoneInput) {
+        phoneInput.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        phoneInput.classList.add('border-brand-cardBorder');
+      }
+      if (phoneErrorMsg) phoneErrorMsg.classList.add('hidden');
+
       // Populate modal summary
       const totalCount = cart.reduce((acc, curr) => acc + curr.qty, 0);
       const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
@@ -2371,9 +2383,41 @@
       const nameInput = document.getElementById('directOrderName');
       const phoneInput = document.getElementById('directOrderPhone');
       const addrInput = document.getElementById('directOrderAddress');
+      const phoneErrorMsg = document.getElementById('phoneErrorMsg');
+
+      // 1. Enforce cart items
+      if (cart.length === 0) {
+        showToast("⚠️ Your cart is empty! Please add dishes to order.");
+        return;
+      }
+
+      // 2. Enforce compulsory phone number for direct orders (apps handle their own login)
+      const rawPhone = (phoneInput && phoneInput.value.trim()) || '';
+      const phoneDigits = rawPhone.replace(/\D/g, '');
+
+      if (!rawPhone || phoneDigits.length < 10) {
+        if (phoneInput) {
+          phoneInput.classList.remove('border-brand-cardBorder');
+          phoneInput.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          phoneInput.focus();
+        }
+        if (phoneErrorMsg) {
+          phoneErrorMsg.classList.remove('hidden');
+        }
+        showToast("⚠️ Phone number is compulsory! Please enter a 10-digit number.");
+        return;
+      } else {
+        if (phoneInput) {
+          phoneInput.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+          phoneInput.classList.add('border-brand-cardBorder');
+        }
+        if (phoneErrorMsg) {
+          phoneErrorMsg.classList.add('hidden');
+        }
+      }
 
       const customerName = (nameInput && nameInput.value.trim()) || 'Guest Foodie';
-      const customerPhone = (phoneInput && phoneInput.value.trim()) || '+91 98290 12345';
+      const customerPhone = rawPhone;
       const customerAddr = (addrInput && addrInput.value.trim()) || 'Dine-in / Direct Pickup (Jaipur)';
 
       const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
@@ -3088,6 +3132,20 @@
         document.getElementById('leadInput').value = '';
       }
     });
+
+    // Real-time Phone Validation on Direct Order Form
+    const phoneInputEl = document.getElementById('directOrderPhone');
+    if (phoneInputEl) {
+      phoneInputEl.addEventListener('input', () => {
+        const digits = phoneInputEl.value.replace(/\D/g, '');
+        if (digits.length >= 10) {
+          phoneInputEl.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+          phoneInputEl.classList.add('border-brand-cardBorder');
+          const phoneErrorMsg = document.getElementById('phoneErrorMsg');
+          if (phoneErrorMsg) phoneErrorMsg.classList.add('hidden');
+        }
+      });
+    }
 
     // ================= VIDEO MODAL CONTROLS =================
     function openVideoModal() {
