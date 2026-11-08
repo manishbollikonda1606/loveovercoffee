@@ -1,0 +1,2396 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Love Over Coffee (LOC) | Jaipur Ordering Ecosystem & KDS</title>
+  <meta name="description" content="Next-Generation Mobile Ordering System, Kitchen Display System (KDS), Captain Pad, and Admin Portal for Love Over Coffee (LOC) Jaipur.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Playfair+Display:ital,wght@0,500;0,600;0,700;0,800;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              dark: '#11261F',
+              forest: '#142B23',
+              forestLight: '#1b3b30',
+              cream: '#F3E5AB',
+              gold: '#D4A359',
+              goldHover: '#c19149',
+              bronze: '#9C7A44',
+              alabaster: '#F9F6F0',
+              sand: '#F3EDE2',
+              cardBorder: '#EBE4D8',
+              charcoal: '#1C2421',
+              muted: '#6B7280',
+              accent: '#FF6B35', // Warm Vibrant Food Accent
+              accentHover: '#E85A25'
+            }
+          },
+          fontFamily: {
+            serif: ['"Playfair Display"', 'Georgia', 'serif'],
+            script: ['"Caveat"', 'cursive'],
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+          },
+          boxShadow: {
+            'app': '0 15px 35px -5px rgba(17, 38, 31, 0.12), 0 5px 15px rgba(0,0,0,0.05)',
+            'card': '0 8px 24px -4px rgba(27, 38, 31, 0.08)',
+            'float': '0 20px 40px -10px rgba(20, 43, 35, 0.25)',
+            'pill': '0 4px 14px rgba(255, 107, 53, 0.35)'
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons (Pinned UMD bundle) -->
+  <script src="https://unpkg.com/lucide@1.70.0/dist/umd/lucide.min.js"></script>
+
+  <style>
+    /* Mobile-first app container with clean iOS scroll physics */
+    body {
+      background-color: #EFE9E0;
+      -webkit-tap-highlight-color: transparent;
+      overscroll-behavior-y: none;
+    }
+    
+    .scrollbar-none::-webkit-scrollbar {
+      display: none;
+    }
+    .scrollbar-none {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    /* Thermal receipt printer preview font */
+    .receipt-mono {
+      font-family: 'Courier New', Courier, monospace;
+    }
+
+    /* Floating dock glassmorphism */
+    .dock-glass {
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(235, 228, 216, 0.9);
+    }
+
+    /* Modal Backdrop Transitions */
+    .modal-backdrop {
+      background: rgba(17, 38, 31, 0.75);
+      backdrop-filter: blur(8px);
+    }
+    
+    @keyframes pulseSoft {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.04); }
+    }
+    .animate-pulse-soft {
+      animation: pulseSoft 2.5s ease-in-out infinite;
+    }
+
+    @media print {
+      body * {
+        visibility: hidden;
+      }
+      #printableThermalKOT, #printableThermalKOT * {
+        visibility: visible;
+      }
+      #printableThermalKOT {
+        position: fixed;
+        left: 0;
+        top: 0;
+        width: 80mm;
+        margin: 0;
+        padding: 5mm;
+        background: white !important;
+        color: black !important;
+      }
+    }
+  </style>
+</head>
+<body class="text-brand-charcoal font-sans antialiased selection:bg-brand-gold selection:text-white min-h-screen flex flex-col items-center">
+
+  <!-- ================= TOP ROLE SWITCHER DEMO BAR (CLIENT PRESENTATION BAR) ================= -->
+  <header class="w-full bg-brand-dark text-brand-cream border-b border-brand-gold/20 py-2.5 px-3 sm:px-6 sticky top-0 z-50 shadow-md">
+    <div class="max-w-7xl mx-auto flex flex-wrap items-center justify-between gap-2.5">
+      
+      <!-- Brand Tag & Mode Badge -->
+      <div class="flex items-center space-x-2">
+        <a href="../index.html" class="flex items-center space-x-2 group">
+          <div class="w-7 h-7 rounded-full overflow-hidden border border-brand-gold bg-brand-sand shrink-0">
+            <img src="../assets/logo.jpg" alt="LOC Logo" class="w-full h-full object-cover">
+          </div>
+          <span class="font-serif font-bold text-sm tracking-wide text-white group-hover:text-brand-gold transition-colors">
+            Love Over Coffee
+          </span>
+        </a>
+        <span class="text-[10px] bg-brand-forestLight text-brand-gold px-2 py-0.5 rounded-full border border-brand-gold/30 font-semibold uppercase tracking-wider hidden sm:inline-block">
+          Enterprise Ordering System
+        </span>
+      </div>
+
+      <!-- Role Selector Navigation Pills -->
+      <nav class="flex items-center space-x-1 sm:space-x-1.5 overflow-x-auto scrollbar-none py-0.5 text-xs font-semibold">
+        <button onclick="switchRoleView('customer_home')" id="roleBtn_customer_home" class="px-2.5 sm:px-3 py-1.5 rounded-full transition-all flex items-center space-x-1 bg-brand-gold text-brand-dark shadow-sm">
+          <i data-lucide="smartphone" class="w-3.5 h-3.5"></i>
+          <span>App Home</span>
+        </button>
+
+        <button onclick="switchRoleView('customer_order')" id="roleBtn_customer_order" class="px-2.5 sm:px-3 py-1.5 rounded-full text-brand-cream/80 hover:text-white hover:bg-white/10 transition-all flex items-center space-x-1">
+          <i data-lucide="shopping-bag" class="w-3.5 h-3.5"></i>
+          <span>Order Menu</span>
+        </button>
+
+        <button onclick="switchRoleView('order_tracker')" id="roleBtn_order_tracker" class="px-2.5 sm:px-3 py-1.5 rounded-full text-brand-cream/80 hover:text-white hover:bg-white/10 transition-all flex items-center space-x-1">
+          <i data-lucide="clock" class="w-3.5 h-3.5"></i>
+          <span>Live Tracker</span>
+        </button>
+
+        <button onclick="switchRoleView('kds_view')" id="roleBtn_kds_view" class="px-2.5 sm:px-3 py-1.5 rounded-full text-brand-cream/80 hover:text-white hover:bg-white/10 transition-all flex items-center space-x-1">
+          <i data-lucide="chef-hat" class="w-3.5 h-3.5 text-brand-gold"></i>
+          <span>Kitchen KDS</span>
+          <span id="kdsActiveBadge" class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-ping"></span>
+        </button>
+
+        <button onclick="switchRoleView('captain_pad')" id="roleBtn_captain_pad" class="px-2.5 sm:px-3 py-1.5 rounded-full text-brand-cream/80 hover:text-white hover:bg-white/10 transition-all flex items-center space-x-1">
+          <i data-lucide="clipboard-list" class="w-3.5 h-3.5"></i>
+          <span>Captain Pad</span>
+        </button>
+
+        <button onclick="switchRoleView('admin_hq')" id="roleBtn_admin_hq" class="px-2.5 sm:px-3 py-1.5 rounded-full text-brand-cream/80 hover:text-white hover:bg-white/10 transition-all flex items-center space-x-1">
+          <i data-lucide="bar-chart-3" class="w-3.5 h-3.5 text-amber-300"></i>
+          <span>Admin HQ</span>
+        </button>
+      </nav>
+
+      <!-- Frame Device Toggle (Desktop Full-width vs Mobile Simulator) -->
+      <div class="hidden lg:flex items-center space-x-2">
+        <button onclick="toggleDeviceFrame()" id="frameToggleBtn" class="text-[11px] font-semibold text-brand-cream/80 hover:text-brand-gold px-2.5 py-1 rounded-lg border border-white/15 bg-white/5 transition-all flex items-center space-x-1.5 cursor-pointer">
+          <i data-lucide="monitor" class="w-3.5 h-3.5"></i>
+          <span id="frameToggleLabel">Desktop View</span>
+        </button>
+        <a href="../index.html" class="text-[11px] font-semibold text-brand-cream/70 hover:text-white transition-colors underline pl-1">
+          ← Main Website
+        </a>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- ================= NOTIFICATION TOAST CONTAINER ================= -->
+  <div id="toastContainer" class="fixed top-14 left-1/2 -translate-x-1/2 z-50 pointer-events-none transition-all duration-300 space-y-2"></div>
+
+  <!-- ================= MAIN APP CANVAS WRAPPER ================= -->
+  <main id="appWrapper" class="w-full flex justify-center py-2 sm:py-6 px-1.5 sm:px-4">
+    
+    <!-- Mobile Frame Viewport (defaults to mobile-first app width 440px on desktop or expands via toggle) -->
+    <div id="viewportContainer" class="w-full max-w-[440px] bg-brand-alabaster min-h-[844px] rounded-[36px] shadow-2xl border-4 sm:border-8 border-brand-dark relative overflow-hidden flex flex-col transition-all duration-300">
+
+      <!-- ================= PHONE NOTCH & STATUS BAR SIMULATION ================= -->
+      <div id="phoneStatusBar" class="h-8 bg-brand-alabaster flex items-center justify-between px-6 shrink-0 z-30 select-none text-[11px] font-bold text-brand-charcoal pt-1">
+        <span id="liveClock">11:30</span>
+        <div class="w-20 h-4 bg-brand-dark rounded-full mx-auto"></div>
+        <div class="flex items-center space-x-1.5 text-xs">
+          <i data-lucide="wifi" class="w-3.5 h-3.5"></i>
+          <i data-lucide="battery-charging" class="w-3.5 h-3.5 text-emerald-600"></i>
+        </div>
+      </div>
+
+      <!-- ================= VIEW 1: CUSTOMER APP ONBOARDING / SPLASH ================= -->
+      <section id="view_splash" class="app-view hidden flex-1 flex flex-col justify-between p-6 bg-gradient-to-b from-[#FFF5EC] via-[#FCEEE2] to-[#F8E2D2] text-center relative overflow-hidden">
+        
+        <!-- Floating decorative badges -->
+        <div class="absolute top-8 left-6 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full shadow-card border border-orange-100 flex items-center space-x-1.5 text-xs font-bold text-brand-forest">
+          <span class="text-amber-500">★</span>
+          <span>4.6 Rated Jaipur Bistro</span>
+        </div>
+
+        <div class="absolute top-12 right-6 bg-brand-accent text-white px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider shadow-pill">
+          Open till 4 AM
+        </div>
+
+        <!-- Center Floating Hero Item with Shadows (Inspired by reference screenshot 1) -->
+        <div class="my-auto pt-8 flex flex-col items-center">
+          <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center">
+            <!-- Organic Soft Radial Glow Background -->
+            <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-orange-200/60 via-amber-100/50 to-transparent blur-2xl"></div>
+            
+            <!-- Food/Coffee Hero Cutout -->
+            <img 
+              src="https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=700&q=80" 
+              alt="Handcrafted Coffee and Artisan Food" 
+              class="w-56 h-56 object-cover rounded-3xl shadow-2xl transform -rotate-3 hover:rotate-0 transition-transform duration-500 border-4 border-white"
+            >
+
+            <!-- Floating 20% OFF Sticker -->
+            <div class="absolute -bottom-3 -right-2 bg-white rounded-2xl p-2.5 shadow-lg border border-orange-100 flex items-center space-x-2 animate-bounce">
+              <span class="text-xl">☕</span>
+              <div class="text-left">
+                <span class="block text-[10px] font-bold uppercase text-brand-accent">First Order</span>
+                <span class="font-serif font-bold text-xs text-brand-dark">20% OFF</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Headline & Pitch -->
+          <div class="space-y-3 mt-8">
+            <h1 class="font-serif text-3xl sm:text-4xl font-extrabold text-brand-dark tracking-tight leading-tight">
+              Fuel Your Day <br>
+              <span class="text-brand-accent font-script text-4xl font-bold">The LOC Way.</span>
+            </h1>
+            <p class="text-xs sm:text-sm text-brand-muted max-w-xs mx-auto leading-relaxed">
+              Jaipur's iconic specialty roasts, molten sourdough melts, and comforting 4 AM bistro favorites.
+            </p>
+          </div>
+        </div>
+
+        <!-- Splash Primary Action CTA -->
+        <div class="space-y-3 pb-4">
+          <button onclick="startOrderingFromSplash()" class="w-full py-4 rounded-2xl bg-brand-accent hover:bg-brand-accentHover text-white font-bold text-sm tracking-wide shadow-pill transition-all transform hover:-translate-y-0.5 active:scale-95 flex items-center justify-center space-x-2 cursor-pointer">
+            <span>Get Started & Order Now</span>
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </button>
+          <button onclick="switchRoleView('kds_view')" class="text-xs font-semibold text-brand-muted hover:text-brand-dark transition-colors">
+            Staff or Barista Login ➔
+          </button>
+        </div>
+
+      </section>
+
+      <!-- ================= VIEW 2: CUSTOMER APP HOME (INSPIRED BY REFERENCE SCREEN 2) ================= -->
+      <section id="view_customer_home" class="app-view flex-1 flex flex-col bg-brand-alabaster overflow-y-auto scrollbar-none pb-24">
+        
+        <!-- Header: Avatar, Outlet Pill, Notification Bell -->
+        <div class="p-4 sm:p-5 flex items-center justify-between shrink-0 bg-white/80 backdrop-blur-md sticky top-0 z-20 border-b border-brand-cardBorder/60">
+          <button onclick="openDrawer('navMenuDrawer')" aria-label="Open Navigation" class="w-9 h-9 rounded-full bg-brand-sand/80 flex items-center justify-center text-brand-dark hover:bg-brand-cardBorder transition-colors cursor-pointer">
+            <i data-lucide="menu" class="w-5 h-5 pointer-events-none"></i>
+          </button>
+
+          <!-- Interactive Jaipur Outlet Selector Pill -->
+          <div class="relative">
+            <button onclick="toggleOutletDropdown()" id="currentOutletBtn" class="px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream text-xs font-bold flex items-center space-x-1.5 shadow-sm cursor-pointer hover:bg-brand-dark transition-all">
+              <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-gold"></i>
+              <span id="currentOutletLabel">C-Scheme Flagship</span>
+              <i data-lucide="chevron-down" class="w-3 h-3 text-brand-gold"></i>
+            </button>
+            
+            <!-- Outlet Switcher Dropdown Modal -->
+            <div id="outletDropdownMenu" class="hidden absolute top-10 left-1/2 -translate-x-1/2 w-72 bg-white rounded-2xl shadow-2xl border border-brand-cardBorder p-2 z-40 space-y-1">
+              <div class="p-2 border-b border-brand-cardBorder/60">
+                <span class="text-[10px] font-bold text-brand-bronze uppercase tracking-wider">Select Jaipur Branch</span>
+              </div>
+              <div id="outletListContainer" class="space-y-1 text-xs">
+                <!-- Dynamically Populated with Jaipur Outlets & 4 AM Status -->
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center space-x-2">
+            <button onclick="showToast('🔔 No pending alerts. Kitchen is operational!')" aria-label="Notifications" class="w-9 h-9 rounded-full bg-brand-sand/80 flex items-center justify-center text-brand-dark hover:bg-brand-cardBorder transition-colors cursor-pointer relative">
+              <i data-lucide="bell" class="w-4 h-4 pointer-events-none"></i>
+              <span class="w-2 h-2 rounded-full bg-brand-accent absolute top-2 right-2"></span>
+            </button>
+            <div class="w-9 h-9 rounded-full overflow-hidden border-2 border-brand-gold/60 shadow-sm">
+              <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=150&q=80" alt="Customer Profile" class="w-full h-full object-cover">
+            </div>
+          </div>
+        </div>
+
+        <div class="p-4 sm:p-5 space-y-5">
+
+          <!-- Greeting Header -->
+          <div class="space-y-1 text-left">
+            <span class="text-xs font-bold text-brand-accent tracking-widest uppercase">JAIPUR SPECIALTY BISTRO</span>
+            <h2 class="font-serif text-2xl sm:text-3xl font-extrabold text-brand-dark tracking-tight">
+              Let's Pick Your <br>
+              <span class="text-brand-forest">Coffee & Bites Together</span>
+            </h2>
+          </div>
+
+          <!-- Search Input with Filter Icon -->
+          <div class="relative flex items-center">
+            <i data-lucide="search" class="w-4 h-4 text-brand-muted absolute left-4 pointer-events-none"></i>
+            <input 
+              type="text" 
+              id="appSearchInput"
+              oninput="handleAppSearch(this.value)"
+              placeholder="Search flat white, nirmana pizza, maggi..."
+              class="w-full pl-11 pr-11 py-3 bg-white rounded-2xl border border-brand-cardBorder text-xs sm:text-sm text-brand-charcoal placeholder:text-brand-muted focus:outline-none focus:border-brand-accent focus:ring-2 focus:ring-brand-accent/20 shadow-sm transition-all"
+            >
+            <button onclick="clearAppSearch()" id="clearSearchBtn" class="hidden absolute right-3 p-1.5 rounded-full hover:bg-brand-sand text-brand-muted">
+              <i data-lucide="x" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+
+          <!-- Order Mode Context Pill Strip: Dine-In QR | Curbside Pickup | Delivery -->
+          <div class="bg-white p-1 rounded-2xl border border-brand-cardBorder shadow-sm grid grid-cols-3 gap-1 text-center font-bold text-xs">
+            <button onclick="setOrderMode('dine_in')" id="modeBtn_dine_in" class="py-2 px-1 rounded-xl transition-all flex items-center justify-center space-x-1 bg-brand-forest text-brand-cream shadow-sm">
+              <span>🍽️ Dine-In</span>
+            </button>
+            <button onclick="setOrderMode('pickup')" id="modeBtn_pickup" class="py-2 px-1 rounded-xl transition-all flex items-center justify-center space-x-1 text-brand-muted hover:text-brand-dark">
+              <span>🚗 Curbside</span>
+            </button>
+            <button onclick="setOrderMode('delivery')" id="modeBtn_delivery" class="py-2 px-1 rounded-xl transition-all flex items-center justify-center space-x-1 text-brand-muted hover:text-brand-dark">
+              <span>🛵 Delivery</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Order Mode Banner Context -->
+          <div id="orderModeContextBanner" class="p-3 rounded-2xl bg-brand-sand/70 border border-brand-cardBorder flex items-center justify-between text-xs">
+            <div class="flex items-center space-x-2">
+              <span class="text-base" id="contextIcon">📍</span>
+              <div>
+                <span class="font-bold text-brand-dark block" id="contextTitle">Table #7 • Dine-In QR</span>
+                <span class="text-[10px] text-brand-muted" id="contextSub">Running tab or counter payment</span>
+              </div>
+            </div>
+            <button onclick="openTableConfigModal()" class="px-2.5 py-1 rounded-full bg-white text-brand-forest font-semibold border border-brand-cardBorder shadow-sm text-[11px] hover:bg-brand-cream transition-colors">
+              Change
+            </button>
+          </div>
+
+          <!-- Category Horizontal Pills Strip (Coffee / Shakes / Pizzas / Maggi / Pastas / Desserts) -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold text-brand-charcoal uppercase tracking-wider">Categories</span>
+              <a href="#view_brochure" onclick="switchRoleView('customer_order')" class="text-xs font-semibold text-brand-accent hover:underline">View All (55+)</a>
+            </div>
+
+            <div class="flex items-center space-x-2 overflow-x-auto scrollbar-none pb-1" id="categoryPillStrip">
+              <!-- Injected dynamically -->
+            </div>
+          </div>
+
+          <!-- Featured Specials Showcase (Inspired by reference screenshot 2: Popular Lunch Card with Circular Floating Cutout) -->
+          <div class="space-y-3">
+            <div class="flex items-center justify-between">
+              <span class="font-serif text-lg font-bold text-brand-dark" id="categorySectionHeading">Popular Coffee & Bites</span>
+              <span class="text-xs text-brand-muted" id="categoryItemCountLabel">18 items</span>
+            </div>
+
+            <!-- Specials Cards Container (Mobile-first large cards with floating visual and Buy Now CTA) -->
+            <div id="homeDishesGrid" class="space-y-4">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= VIEW 3: FULL ORDERING MENU (/order) ================= -->
+      <section id="view_customer_order" class="app-view hidden flex-1 flex flex-col bg-brand-alabaster overflow-y-auto scrollbar-none pb-24">
+        
+        <!-- Sticky Header with Search & Filter -->
+        <div class="p-4 bg-brand-forest text-brand-cream flex items-center justify-between sticky top-0 z-20 shadow-md">
+          <div class="flex items-center space-x-2">
+            <button onclick="switchRoleView('customer_home')" class="p-1 rounded-full hover:bg-white/10 text-brand-cream transition-colors">
+              <i data-lucide="arrow-left" class="w-5 h-5 pointer-events-none"></i>
+            </button>
+            <h3 class="font-serif font-bold text-lg text-white">Full Digital Menu</h3>
+          </div>
+          <span class="text-xs bg-brand-gold text-brand-dark px-2.5 py-0.5 rounded-full font-bold">55+ Items</span>
+        </div>
+
+        <!-- Category Sticky Sub-Navbar -->
+        <div class="bg-white/90 backdrop-blur-md border-b border-brand-cardBorder px-4 py-2.5 flex items-center space-x-2 overflow-x-auto scrollbar-none sticky top-14 z-10" id="brochureCategoryBar">
+          <!-- Injected via JS -->
+        </div>
+
+        <!-- Search Bar within Menu -->
+        <div class="p-4 pb-0">
+          <input 
+            type="text" 
+            id="fullMenuSearch" 
+            oninput="handleFullMenuSearch(this.value)" 
+            placeholder="Search all 55+ C-Scheme items..."
+            class="w-full p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs focus:outline-none focus:border-brand-accent shadow-sm"
+          >
+        </div>
+
+        <!-- Complete 10-Category Menu Items Container -->
+        <div class="p-4 space-y-6" id="completeMenuContainer">
+          <!-- Populated by JS -->
+        </div>
+
+      </section>
+
+      <!-- ================= VIEW 4: LIVE ORDER TRACKER (/track/:id) ================= -->
+      <section id="view_order_tracker" class="app-view hidden flex-1 flex flex-col bg-brand-alabaster overflow-y-auto scrollbar-none pb-24">
+        
+        <div class="p-4 bg-brand-forest text-brand-cream flex items-center justify-between sticky top-0 z-20 shadow-md">
+          <div class="flex items-center space-x-2">
+            <button onclick="switchRoleView('customer_home')" class="p-1 rounded-full hover:bg-white/10 text-brand-cream transition-colors">
+              <i data-lucide="arrow-left" class="w-5 h-5 pointer-events-none"></i>
+            </button>
+            <h3 class="font-serif font-bold text-lg text-white">Live Order Tracker</h3>
+          </div>
+          <span id="trackerOrderIdBadge" class="text-xs bg-brand-gold text-brand-dark px-2.5 py-0.5 rounded-full font-bold">#LOC-8042</span>
+        </div>
+
+        <div class="p-4 sm:p-5 space-y-5">
+
+          <!-- Order Status Progress Card -->
+          <div class="bg-white rounded-3xl p-5 border border-brand-cardBorder shadow-sm space-y-4">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="text-[10px] font-bold text-brand-accent uppercase tracking-wider block">Estimated Kitchen Time</span>
+                <span class="font-serif text-2xl font-extrabold text-brand-dark" id="trackerEtaText">12 – 15 Mins</span>
+              </div>
+              <div class="w-12 h-12 rounded-2xl bg-orange-50 text-brand-accent border border-orange-200 flex items-center justify-center text-xl animate-pulse">
+                ☕
+              </div>
+            </div>
+
+            <!-- 4-Step Animated Timeline -->
+            <div class="space-y-3 pt-2">
+              <div class="flex items-center space-x-3 text-xs" id="step1_placed">
+                <div class="w-6 h-6 rounded-full bg-emerald-500 text-white flex items-center justify-center font-bold text-[10px]">✓</div>
+                <div class="flex-1">
+                  <span class="font-bold text-brand-dark block">Order Confirmed</span>
+                  <span class="text-[10px] text-brand-muted">Sent to Barista & Hot Kitchen</span>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-3 text-xs" id="step2_kitchen">
+                <div class="w-6 h-6 rounded-full bg-amber-400 text-brand-dark flex items-center justify-center font-bold text-[10px] animate-spin">⏳</div>
+                <div class="flex-1">
+                  <span class="font-bold text-brand-dark block">Brewing & Cooking</span>
+                  <span class="text-[10px] text-brand-muted">Barista is handcrafting your Arabica roast</span>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-3 text-xs opacity-40" id="step3_ready">
+                <div class="w-6 h-6 rounded-full bg-brand-sand text-brand-charcoal flex items-center justify-center font-bold text-[10px]">3</div>
+                <div class="flex-1">
+                  <span class="font-bold text-brand-dark block">Ready for Table / Pickup</span>
+                  <span class="text-[10px] text-brand-muted">Hot and fresh at dispatch counter</span>
+                </div>
+              </div>
+
+              <div class="flex items-center space-x-3 text-xs opacity-40" id="step4_completed">
+                <div class="w-6 h-6 rounded-full bg-brand-sand text-brand-charcoal flex items-center justify-center font-bold text-[10px]">4</div>
+                <div class="flex-1">
+                  <span class="font-bold text-brand-dark block">Order Settle & Enjoy</span>
+                  <span class="text-[10px] text-brand-muted">Thank you for loving coffee in Jaipur!</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- Active Table Context & Add More to Tab -->
+          <div class="bg-gradient-to-r from-brand-sand/80 to-brand-alabaster p-4 rounded-2xl border border-brand-cardBorder flex items-center justify-between">
+            <div>
+              <span class="font-serif font-bold text-xs text-brand-dark block" id="trackerTableContext">B2 Bypass • Table #7 (Dine-In)</span>
+              <span class="text-[10px] text-brand-muted">Running Tab Active</span>
+            </div>
+            <button onclick="switchRoleView('customer_order')" class="px-3 py-1.5 rounded-full bg-brand-forest text-brand-cream text-xs font-bold hover:bg-brand-dark transition-colors shadow-sm">
+              + Add More to Tab
+            </button>
+          </div>
+
+          <!-- Digital Invoice & Receipt Summary -->
+          <div class="bg-white rounded-3xl p-5 border border-brand-cardBorder shadow-sm space-y-3">
+            <div class="flex items-center justify-between border-b border-brand-cardBorder/60 pb-2">
+              <span class="font-serif font-bold text-sm text-brand-dark">Itemized Receipt</span>
+              <span class="text-xs text-brand-muted" id="trackerTimestamp">Just now</span>
+            </div>
+
+            <div id="trackerItemsList" class="space-y-2 text-xs divide-y divide-brand-cardBorder/40">
+              <!-- Dynamically populated -->
+            </div>
+
+            <div class="border-t border-brand-cardBorder pt-3 space-y-1 text-xs">
+              <div class="flex justify-between text-brand-muted">
+                <span>Subtotal</span>
+                <span id="trackerSubtotal">₹470.00</span>
+              </div>
+              <div class="flex justify-between text-brand-muted">
+                <span>5% GST (CGST 2.5% + SGST 2.5%)</span>
+                <span id="trackerGst">₹23.50</span>
+              </div>
+              <div class="flex justify-between text-brand-muted">
+                <span>Discount (LOCFIRST20)</span>
+                <span class="text-emerald-600 font-bold" id="trackerDiscount">-₹94.00</span>
+              </div>
+              <div class="flex justify-between font-bold text-brand-dark text-sm pt-2 border-t border-dashed border-brand-cardBorder">
+                <span>Total Amount</span>
+                <span class="text-brand-forest font-extrabold text-base" id="trackerGrandTotal">₹399.50</span>
+              </div>
+            </div>
+
+            <!-- Action buttons: Thermal KOT print & WhatsApp invoice -->
+            <div class="grid grid-cols-2 gap-2 pt-2">
+              <button onclick="previewThermalReceipt()" class="py-2.5 rounded-xl border border-brand-cardBorder hover:bg-brand-sand text-brand-charcoal text-xs font-bold transition-colors flex items-center justify-center space-x-1.5 cursor-pointer">
+                <i data-lucide="printer" class="w-3.5 h-3.5 text-brand-bronze"></i>
+                <span>Thermal Bill</span>
+              </button>
+              <button onclick="shareWhatsAppReceipt()" class="py-2.5 rounded-xl bg-[#25D366] hover:bg-[#20ba59] text-white text-xs font-bold transition-colors flex items-center justify-center space-x-1.5 cursor-pointer">
+                <i data-lucide="share-2" class="w-3.5 h-3.5"></i>
+                <span>WhatsApp</span>
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= VIEW 5: KITCHEN DISPLAY SYSTEM (KDS) & POS (/kds) ================= -->
+      <section id="view_kds" class="app-view hidden flex-1 flex flex-col bg-[#1A2522] text-white overflow-y-auto scrollbar-none pb-20">
+        
+        <!-- KDS Top Header Bar -->
+        <div class="p-4 bg-brand-dark border-b border-white/10 flex items-center justify-between sticky top-0 z-20">
+          <div class="flex items-center space-x-2">
+            <span class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse"></span>
+            <h3 class="font-serif font-bold text-base text-brand-cream">Outlet KDS • Barista & Hot Kitchen</h3>
+          </div>
+          
+          <div class="flex items-center space-x-2 text-xs">
+            <!-- Split KDS Filter: All | Barista Bar | Hot Kitchen -->
+            <select id="kdsStationSelect" onchange="renderKdsBoard()" class="bg-white/10 border border-white/20 text-white rounded-lg px-2 py-1 text-xs focus:outline-none">
+              <option value="all" class="text-black">All Stations</option>
+              <option value="barista" class="text-black">☕ Barista Coffee Bar</option>
+              <option value="kitchen" class="text-black">🍕 Hot Kitchen Food</option>
+            </select>
+            <button onclick="toggleStockModal()" class="px-2.5 py-1 rounded-lg bg-white/10 hover:bg-white/20 text-brand-gold text-xs font-bold border border-white/15">
+              Stock Toggle
+            </button>
+          </div>
+        </div>
+
+        <!-- Real-time Kanban Board -->
+        <div class="p-3 sm:p-4 space-y-4">
+          
+          <!-- Column 1: New Incoming KOTs -->
+          <div class="space-y-2">
+            <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-amber-300">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-amber-400"></span>
+                <span>1. New Orders (<span id="kdsNewCount">0</span>)</span>
+              </span>
+              <span class="text-[10px] text-white/50">Auto-Refreshes</span>
+            </div>
+            <div id="kdsColumn_new" class="space-y-3">
+              <!-- Dynamically populated cards -->
+            </div>
+          </div>
+
+          <!-- Column 2: In Preparation (Oven / Espresso Extraction) -->
+          <div class="space-y-2 pt-2 border-t border-white/10">
+            <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-blue-300">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></span>
+                <span>2. In Kitchen / Brewing (<span id="kdsPrepCount">0</span>)</span>
+              </span>
+            </div>
+            <div id="kdsColumn_prep" class="space-y-3">
+              <!-- Dynamically populated cards -->
+            </div>
+          </div>
+
+          <!-- Column 3: Ready for Table / Dispatch -->
+          <div class="space-y-2 pt-2 border-t border-white/10">
+            <div class="flex items-center justify-between text-xs font-bold uppercase tracking-wider text-emerald-300">
+              <span class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400"></span>
+                <span>3. Ready for Table / Pickup (<span id="kdsReadyCount">0</span>)</span>
+              </span>
+            </div>
+            <div id="kdsColumn_ready" class="space-y-3">
+              <!-- Dynamically populated cards -->
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= VIEW 6: CAPTAIN PAD (/staff/captain) ================= -->
+      <section id="view_captain_pad" class="app-view hidden flex-1 flex flex-col bg-brand-alabaster overflow-y-auto scrollbar-none pb-20">
+        
+        <div class="p-4 bg-brand-forest text-brand-cream flex items-center justify-between sticky top-0 z-20 shadow-md">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="clipboard-list" class="w-5 h-5 text-brand-gold"></i>
+            <h3 class="font-serif font-bold text-base text-white">Captain Pad • Table Manager</h3>
+          </div>
+          <span class="text-xs bg-brand-sand text-brand-forest font-bold px-2.5 py-0.5 rounded-full">B2 Bypass Hub</span>
+        </div>
+
+        <div class="p-4 space-y-4">
+          <div class="flex items-center justify-between">
+            <span class="font-serif font-bold text-sm text-brand-dark">Active Jaipur Tables (1 - 12)</span>
+            <button onclick="promptQuickWalkInOrder()" class="px-3 py-1 rounded-full bg-brand-accent text-white text-xs font-bold shadow-sm">
+              + Punch Walk-in Order
+            </button>
+          </div>
+
+          <!-- 12-Table Interactive Grid -->
+          <div class="grid grid-cols-3 sm:grid-cols-4 gap-2.5" id="captainTablesGrid">
+            <!-- Populated dynamically: Tables 1-12 with status (Occupied / Available) -->
+          </div>
+
+          <!-- Table Actions (Transfer Table, Merge Tab, Pay at Counter Approval) -->
+          <div class="bg-white p-4 rounded-2xl border border-brand-cardBorder space-y-3 shadow-sm text-xs">
+            <h4 class="font-serif font-bold text-sm text-brand-dark">Captain Quick Actions</h4>
+            <div class="grid grid-cols-2 gap-2">
+              <button onclick="handleTableTransferPrompt()" class="p-2.5 rounded-xl border border-brand-cardBorder hover:bg-brand-sand text-brand-charcoal font-semibold text-center transition-colors">
+                🔄 Transfer Table
+              </button>
+              <button onclick="showToast('Bill settlement code verified! Table marked complete.')" class="p-2.5 rounded-xl border border-brand-cardBorder hover:bg-brand-sand text-brand-charcoal font-semibold text-center transition-colors">
+                ✓ Settle Cash at Counter
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- ================= VIEW 7: SUPER-ADMIN HQ (/admin) ================= -->
+      <section id="view_admin_hq" class="app-view hidden flex-1 flex flex-col bg-[#0F1E19] text-white overflow-y-auto scrollbar-none pb-20">
+        
+        <div class="p-4 bg-brand-dark border-b border-white/10 flex items-center justify-between sticky top-0 z-20">
+          <div>
+            <span class="text-[9px] font-bold uppercase tracking-widest text-brand-gold">GLOBAL LOC JAIPUR HQ</span>
+            <h3 class="font-serif font-bold text-base text-white">Brand Analytics & Operations</h3>
+          </div>
+          <button onclick="exportCustomerCrmCsv()" class="px-2.5 py-1 rounded-lg bg-brand-gold text-brand-dark font-bold text-xs shadow-sm">
+            Export CRM
+          </button>
+        </div>
+
+        <div class="p-4 space-y-5 text-xs">
+          
+          <!-- Key Metrics Across all 6 Jaipur Outlets -->
+          <div class="grid grid-cols-2 gap-2.5">
+            <div class="bg-white/5 p-3 rounded-2xl border border-white/10">
+              <span class="text-white/60 block text-[10px] uppercase">Today's Revenue</span>
+              <span class="font-serif text-xl font-bold text-brand-gold mt-1 block">₹54,280</span>
+              <span class="text-[10px] text-emerald-400">↑ 18% vs yesterday</span>
+            </div>
+            <div class="bg-white/5 p-3 rounded-2xl border border-white/10">
+              <span class="text-white/60 block text-[10px] uppercase">Total Orders</span>
+              <span class="font-serif text-xl font-bold text-white mt-1 block">118 Orders</span>
+              <span class="text-[10px] text-amber-300">Avg ticket: ₹460</span>
+            </div>
+          </div>
+
+          <!-- Late Night 4 AM Operational Override Simulator -->
+          <div class="bg-white/5 p-4 rounded-2xl border border-white/10 space-y-2.5">
+            <div class="flex items-center justify-between">
+              <div>
+                <span class="font-bold text-white block">🌙 Late-Night 4 AM Rule Simulator</span>
+                <span class="text-[10px] text-white/60">Simulate Jaipur midnight operations</span>
+              </div>
+              <label class="relative inline-flex items-center cursor-pointer">
+                <input type="checkbox" id="lateNightSimulatorToggle" onchange="toggleLateNightSimulation()" class="sr-only peer">
+                <div class="w-11 h-6 bg-white/20 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-brand-gold after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-emerald-600"></div>
+              </label>
+            </div>
+            <p class="text-[10px] text-white/50 leading-relaxed">
+              When enabled, C-Scheme & JLN Road close at 11:00 PM while Tonk Road (B2 Bypass) shines as the 4:00 AM late-night hub.
+            </p>
+          </div>
+
+          <!-- 6 Jaipur Outlets Performance Breakdown -->
+          <div class="space-y-2">
+            <span class="font-bold uppercase tracking-wider text-brand-gold block text-[11px]">6 Jaipur Outlets Snapshot</span>
+            <div class="space-y-1.5" id="adminOutletsSnapshot">
+              <!-- Dynamically populated -->
+            </div>
+          </div>
+
+          <!-- Customer WhatsApp CRM Table -->
+          <div class="space-y-2 pt-2 border-t border-white/10">
+            <div class="flex items-center justify-between">
+              <span class="font-bold uppercase tracking-wider text-brand-gold block text-[11px]">Customer WhatsApp Database</span>
+              <span class="text-[10px] text-white/50" id="crmCountLabel">6 Records</span>
+            </div>
+            <div class="bg-white/5 rounded-2xl p-2 border border-white/10 overflow-x-auto">
+              <table class="w-full text-left text-[11px]">
+                <thead>
+                  <tr class="text-white/50 border-b border-white/10">
+                    <th class="p-1.5">Customer</th>
+                    <th class="p-1.5">Mobile</th>
+                    <th class="p-1.5">Outlet</th>
+                    <th class="p-1.5 text-right">Spend</th>
+                  </tr>
+                </thead>
+                <tbody id="crmTableBody" class="divide-y divide-white/5">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+        </div>
+
+      </section>
+
+      <!-- ================= FLOATING BOTTOM NAVIGATION DOCK (CUSTOMER APP) ================= -->
+      <nav id="customerBottomDock" class="absolute bottom-3 left-4 right-4 h-16 dock-glass rounded-2xl shadow-float flex items-center justify-around px-2 z-30 transition-all duration-300">
+        
+        <button onclick="switchRoleView('customer_home')" id="dockBtn_home" class="flex flex-col items-center justify-center space-y-1 text-brand-accent transition-colors w-14">
+          <i data-lucide="home" class="w-5 h-5 pointer-events-none"></i>
+          <span class="text-[9px] font-bold">Home</span>
+        </button>
+
+        <button onclick="switchRoleView('customer_order')" id="dockBtn_menu" class="flex flex-col items-center justify-center space-y-1 text-brand-muted hover:text-brand-dark transition-colors w-14">
+          <i data-lucide="book-open" class="w-5 h-5 pointer-events-none"></i>
+          <span class="text-[9px] font-bold">Menu</span>
+        </button>
+
+        <!-- Floating High-Contrast Cart Button Center -->
+        <button onclick="openCartDrawer()" aria-label="Shopping Cart" class="w-12 h-12 rounded-full bg-brand-forest hover:bg-brand-dark text-brand-cream flex items-center justify-center shadow-lg transform -translate-y-4 hover:scale-105 active:scale-95 transition-all relative cursor-pointer border-2 border-white">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-gold pointer-events-none"></i>
+          <span id="dockCartCount" class="absolute -top-1 -right-1 w-5 h-5 rounded-full bg-brand-accent text-white font-bold text-[10px] flex items-center justify-center shadow-md">0</span>
+        </button>
+
+        <button onclick="switchRoleView('order_tracker')" id="dockBtn_track" class="flex flex-col items-center justify-center space-y-1 text-brand-muted hover:text-brand-dark transition-colors w-14">
+          <i data-lucide="clock" class="w-5 h-5 pointer-events-none"></i>
+          <span class="text-[9px] font-bold">Track</span>
+        </button>
+
+        <button onclick="openDrawer('navMenuDrawer')" id="dockBtn_more" class="flex flex-col items-center justify-center space-y-1 text-brand-muted hover:text-brand-dark transition-colors w-14">
+          <i data-lucide="user" class="w-5 h-5 pointer-events-none"></i>
+          <span class="text-[9px] font-bold">Account</span>
+        </button>
+
+      </nav>
+
+    </div>
+  </main>
+
+  <!-- ================= PRODUCT CUSTOMIZER / DETAIL MODAL (INSPIRED BY REFERENCE SCREEN 3) ================= -->
+  <div id="productDetailModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 modal-backdrop flex items-end sm:items-center justify-center p-0 sm:p-4">
+    <div id="productDetailContent" onclick="event.stopPropagation()" class="w-full max-w-md bg-white rounded-t-[36px] sm:rounded-[36px] shadow-2xl max-h-[90vh] overflow-y-auto scrollbar-none transform translate-y-full transition-transform duration-300 flex flex-col relative">
+      
+      <!-- Modal Floating Top Actions -->
+      <div class="absolute top-4 left-4 right-4 flex items-center justify-between z-20 pointer-events-auto">
+        <button onclick="closeProductDetailModal()" aria-label="Back" class="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-md text-brand-charcoal flex items-center justify-center hover:bg-white transition-colors cursor-pointer">
+          <i data-lucide="arrow-left" class="w-5 h-5 pointer-events-none"></i>
+        </button>
+        <button onclick="toggleFavoriteCurrentItem()" id="favItemBtn" aria-label="Favorite" class="w-10 h-10 rounded-full bg-white/90 backdrop-blur-md shadow-md text-rose-500 flex items-center justify-center hover:bg-white transition-colors cursor-pointer">
+          <i data-lucide="heart" class="w-5 h-5 pointer-events-none"></i>
+        </button>
+      </div>
+
+      <!-- Large Floating Food Visual Hero -->
+      <div class="h-64 sm:h-72 w-full relative bg-gradient-to-b from-orange-100/50 to-brand-alabaster flex items-center justify-center overflow-hidden shrink-0">
+        <img id="detailHeroImage" src="" alt="Dish Hero" class="w-52 h-52 sm:w-56 sm:h-56 object-cover rounded-full shadow-2xl border-4 border-white transform hover:scale-105 transition-transform duration-300">
+      </div>
+
+      <!-- Details Container -->
+      <div class="p-6 space-y-5 flex-1">
+        
+        <div class="space-y-1">
+          <div class="flex items-center justify-between">
+            <span class="text-[10px] font-bold uppercase tracking-wider text-brand-accent bg-orange-50 px-2.5 py-0.5 rounded-full border border-orange-200" id="detailCategoryBadge">
+              Hot Coffee
+            </span>
+            <span class="text-xs text-brand-muted" id="detailPortionInfo">Serves 1 • Handcrafted fresh</span>
+          </div>
+          <h3 class="font-serif text-2xl sm:text-3xl font-extrabold text-brand-dark" id="detailTitle">
+            Flat White
+          </h3>
+          <p class="text-xs text-brand-muted leading-relaxed" id="detailDesc">
+            Velvety micro-foam layered over a concentrated double Arabica espresso shot with rich golden crema.
+          </p>
+        </div>
+
+        <!-- Customization Group 1: Size / Portions -->
+        <div class="space-y-2 border-t border-brand-cardBorder pt-3">
+          <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider">Select Size</label>
+          <div class="grid grid-cols-2 gap-2 text-xs" id="customSizeOptions">
+            <label class="flex items-center justify-between p-3 rounded-2xl border-2 border-brand-forest bg-brand-sand/30 cursor-pointer">
+              <span class="font-bold text-brand-dark">Regular Size</span>
+              <span class="text-brand-muted">Included</span>
+            </label>
+            <label class="flex items-center justify-between p-3 rounded-2xl border border-brand-cardBorder bg-white cursor-pointer hover:border-brand-gold">
+              <span class="font-bold text-brand-dark">Large (+₹60)</span>
+              <input type="radio" name="customSize" value="60" class="accent-brand-forest">
+            </label>
+          </div>
+        </div>
+
+        <!-- Customization Group 2: Add-ons & Dairy -->
+        <div class="space-y-2 border-t border-brand-cardBorder pt-3" id="dynamicAddonsSection">
+          <label class="block text-xs font-bold text-brand-dark uppercase tracking-wider">Personalize Your Cup / Bite</label>
+          <div class="space-y-2 text-xs" id="customAddonList">
+            <!-- Dynamically populated according to beverage vs food -->
+          </div>
+        </div>
+
+        <!-- Special Notes / Jain Preparation -->
+        <div class="space-y-1.5 border-t border-brand-cardBorder pt-3">
+          <label class="block text-[11px] font-bold text-brand-dark uppercase tracking-wider">Chef & Barista Notes</label>
+          <input 
+            type="text" 
+            id="detailInstructions" 
+            placeholder="e.g. Less ice, Jain prep, extra hot..." 
+            class="w-full p-2.5 rounded-xl border border-brand-cardBorder text-xs text-brand-charcoal focus:outline-none focus:border-brand-forest"
+          >
+        </div>
+
+      </div>
+
+      <!-- Sticky Bottom Price & Add to Cart Bar -->
+      <div class="p-5 bg-white border-t border-brand-cardBorder flex items-center justify-between gap-4 sticky bottom-0 z-20">
+        <div>
+          <span class="text-[10px] text-brand-muted uppercase tracking-wider block">Total Price</span>
+          <span class="font-serif text-2xl font-extrabold text-brand-dark" id="detailCalculatedPrice">₹190.00</span>
+        </div>
+
+        <div class="flex items-center space-x-3">
+          <!-- Quantity Counter Stepper (- 1 +) -->
+          <div class="flex items-center space-x-2.5 bg-brand-sand p-1.5 rounded-full border border-brand-cardBorder">
+            <button onclick="decrementDetailQty()" class="w-7 h-7 rounded-full bg-white text-brand-dark hover:bg-brand-cardBorder flex items-center justify-center font-bold text-xs shadow-sm">-</button>
+            <span class="w-5 text-center font-bold text-xs text-brand-dark" id="detailQtyCount">1</span>
+            <button onclick="incrementDetailQty()" class="w-7 h-7 rounded-full bg-white text-brand-dark hover:bg-brand-cardBorder flex items-center justify-center font-bold text-xs shadow-sm">+</button>
+          </div>
+
+          <button onclick="commitDetailAddToCart()" class="px-6 py-3.5 rounded-full bg-brand-accent hover:bg-brand-accentHover text-white font-bold text-xs uppercase tracking-wider shadow-pill transition-all transform active:scale-95 cursor-pointer">
+            Add to Cart
+          </button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= SMART CART DRAWER & DEMO PAYMENT MODAL ================= -->
+  <div id="cartDrawerModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 modal-backdrop flex justify-end">
+    <div id="cartDrawerContent" onclick="event.stopPropagation()" class="w-full max-w-md bg-brand-alabaster h-full shadow-2xl flex flex-col transform translate-x-full transition-transform duration-300">
+      
+      <!-- Drawer Header -->
+      <div class="p-5 bg-brand-forest text-brand-cream flex items-center justify-between shrink-0">
+        <div class="flex items-center space-x-2.5">
+          <i data-lucide="shopping-bag" class="w-5 h-5 text-brand-gold"></i>
+          <div>
+            <h3 class="font-serif font-bold text-lg text-white">Your Cart Tab</h3>
+            <span class="text-[10px] text-brand-cream/80" id="cartDrawerOutletLabel">C-Scheme Flagship</span>
+          </div>
+        </div>
+        <button onclick="closeCartDrawer()" class="p-1 rounded-full hover:bg-white/10 text-white transition-colors cursor-pointer">
+          <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
+        </button>
+      </div>
+
+      <!-- Drawer Items List -->
+      <div class="flex-1 overflow-y-auto p-4 space-y-3 scrollbar-none" id="cartItemsContainer">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Upsell Strip: Frequently Paired with Coffee/Food -->
+      <div class="bg-brand-sand/60 p-3 border-t border-brand-cardBorder shrink-0 space-y-1.5" id="cartUpsellStrip">
+        <span class="text-[10px] font-bold uppercase tracking-wider text-brand-bronze block">Smart Chef Upsell</span>
+        <div class="flex items-center justify-between bg-white p-2 rounded-xl border border-brand-cardBorder">
+          <div class="flex items-center space-x-2">
+            <span class="text-base">🥖</span>
+            <div>
+              <span class="font-bold text-xs text-brand-dark block">Cheese Garlic Bread</span>
+              <span class="text-[10px] text-brand-muted">₹530.00 • Oven Hot</span>
+            </div>
+          </div>
+          <button onclick="quickAddUpsell('Cheese Garlic Bread', 530, 'Pizzas & Garlic Breads')" class="px-2.5 py-1 rounded-full bg-brand-forest text-brand-cream text-[10px] font-bold hover:bg-brand-dark transition-colors">
+            + Add ₹530
+          </button>
+        </div>
+      </div>
+
+      <!-- Promo Code Box -->
+      <div class="p-4 bg-white border-t border-brand-cardBorder shrink-0 space-y-2">
+        <div class="flex items-center space-x-2">
+          <input 
+            type="text" 
+            id="couponInput" 
+            placeholder="Coupon (LOCFIRST20, NIGHT4AM, LOCBDAY)" 
+            class="flex-1 p-2 rounded-xl border border-brand-cardBorder text-xs text-brand-charcoal focus:outline-none uppercase"
+          >
+          <button onclick="applyCouponCode()" class="px-3 py-2 rounded-xl bg-brand-dark text-brand-cream font-bold text-xs hover:bg-brand-forest transition-colors">
+            Apply
+          </button>
+        </div>
+        <div id="couponAppliedBadge" class="hidden text-[11px] text-emerald-600 font-bold flex items-center justify-between">
+          <span id="couponSuccessMsg">✓ Coupon Applied</span>
+          <button onclick="removeCoupon()" class="text-red-500 hover:underline text-[10px]">Remove</button>
+        </div>
+      </div>
+
+      <!-- Checkout Form: Compulsory Mobile Phone + Customer Info -->
+      <div class="p-4 bg-brand-alabaster border-t border-brand-cardBorder shrink-0 space-y-2.5">
+        <span class="text-xs font-bold text-brand-dark uppercase tracking-wider block">Customer Details</span>
+        
+        <div class="grid grid-cols-2 gap-2">
+          <input type="text" id="checkoutName" placeholder="Your Name" value="Guest Foodie" class="p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none">
+          <div class="flex flex-col">
+            <input 
+              type="tel" 
+              id="checkoutPhone" 
+              required 
+              placeholder="Mobile Phone * (Compulsory)" 
+              class="p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none transition-all"
+            >
+            <span id="checkoutPhoneError" class="hidden text-[9px] text-red-600 font-semibold mt-0.5">⚠️ 10-digit mobile number mandatory</span>
+          </div>
+        </div>
+
+        <input type="text" id="checkoutAddress" placeholder="Table # / Curbside Vehicle # / Jaipur Address" value="Table #7 (Dine-in)" class="w-full p-2.5 rounded-xl border border-brand-cardBorder bg-white text-xs text-brand-charcoal focus:outline-none">
+
+        <!-- Bill Breakdown -->
+        <div class="space-y-1 text-xs pt-1 border-t border-brand-cardBorder/70">
+          <div class="flex justify-between text-brand-muted">
+            <span>Item Subtotal</span>
+            <span id="checkoutSubtotal">₹0.00</span>
+          </div>
+          <div class="flex justify-between text-brand-muted">
+            <span>GST (5%)</span>
+            <span id="checkoutGst">₹0.00</span>
+          </div>
+          <div class="flex justify-between text-brand-muted">
+            <span>Packaging & Service</span>
+            <span id="checkoutPackaging">₹0.00</span>
+          </div>
+          <div class="flex justify-between text-emerald-600 font-semibold" id="checkoutDiscountRow">
+            <span>Discount</span>
+            <span id="checkoutDiscount">-₹0.00</span>
+          </div>
+          <div class="flex justify-between text-base font-extrabold text-brand-dark pt-1 border-t border-dashed border-brand-cardBorder">
+            <span>Grand Total</span>
+            <span class="text-brand-forest" id="checkoutGrandTotal">₹0.00</span>
+          </div>
+        </div>
+
+        <!-- Payment Mode: Demo Direct to Owner -->
+        <div class="space-y-2 pt-2">
+          <button onclick="promptDemoOwnerPayment()" class="w-full py-3.5 rounded-2xl bg-brand-accent hover:bg-brand-accentHover text-white font-bold text-xs uppercase tracking-wider shadow-pill transition-all transform active:scale-95 flex items-center justify-center space-x-2 cursor-pointer">
+            <i data-lucide="qr-code" class="w-4 h-4 text-white"></i>
+            <span>Pay Direct to Owner (Demo QR / Cash)</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ================= DEMO OWNER PAYMENT MODAL ================= -->
+  <div id="demoPaymentModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 modal-backdrop flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="w-full max-w-sm bg-white rounded-3xl p-6 shadow-2xl border border-brand-cardBorder text-center space-y-4">
+      <div class="w-12 h-12 rounded-full bg-orange-100 text-brand-accent flex items-center justify-center mx-auto text-xl">
+        📱
+      </div>
+      <div>
+        <h4 class="font-serif text-xl font-bold text-brand-dark">Direct Payment to Owner</h4>
+        <p class="text-xs text-brand-muted mt-1">
+          Demo Mode: Simulated direct merchant QR & Pay-at-Counter. (Once owner confirms their UPI, live merchant QR will activate).
+        </p>
+      </div>
+
+      <!-- Simulated Owner QR Code Frame -->
+      <div class="p-4 bg-brand-sand rounded-2xl border border-brand-cardBorder inline-block">
+        <div class="w-40 h-40 bg-white rounded-xl p-2 flex flex-col items-center justify-center border border-dashed border-brand-gold mx-auto relative">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=upi%3A%2F%2Fpay%3Fpa%3Dloveovercoffee%40upi%26pn%3DLove%20Over%20Coffee%20Jaipur" alt="Owner UPI QR" class="w-32 h-32">
+          <span class="text-[9px] font-bold text-brand-forest mt-1">loveovercoffee@upi</span>
+        </div>
+      </div>
+
+      <div class="space-y-2">
+        <button onclick="completeDemoOrder('upi_demo')" class="w-full py-3 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-wider shadow-md transition-all">
+          ✓ Confirm Demo UPI Payment (₹<span id="demoPayAmountText">0.00</span>)
+        </button>
+        <button onclick="completeDemoOrder('counter_cash')" class="w-full py-2.5 rounded-full bg-brand-sand hover:bg-brand-cardBorder text-brand-dark font-bold text-xs transition-colors">
+          Pay Cash at Counter (Dine-In)
+        </button>
+        <button onclick="closeDemoPaymentModal()" class="text-xs text-brand-muted hover:underline block mx-auto pt-1">
+          Cancel
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= 80MM THERMAL KOT RECEIPT MODAL (KITCHEN & CUSTOMER PRINT) ================= -->
+  <div id="thermalReceiptModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 modal-backdrop flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="w-full max-w-sm bg-white rounded-2xl p-5 shadow-2xl border border-gray-300 text-left space-y-3 max-h-[85vh] overflow-y-auto">
+      
+      <div id="printableThermalKOT" class="receipt-mono text-xs text-black space-y-2 border border-gray-200 p-4 bg-white">
+        <!-- Thermal Receipt Body Populated by JS -->
+      </div>
+
+      <div class="flex items-center space-x-2 pt-2">
+        <button onclick="window.print()" class="flex-1 py-2 rounded-xl bg-brand-dark text-white font-bold text-xs hover:bg-brand-forest transition-colors flex items-center justify-center gap-1.5">
+          <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+          <span>Print KOT (80mm)</span>
+        </button>
+        <button onclick="closeThermalModal()" class="px-4 py-2 rounded-xl border border-gray-300 text-xs font-semibold hover:bg-gray-100">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= LIVE ITEM STOCKOUT TOGGLE MODAL (KDS) ================= -->
+  <div id="stockToggleModal" class="fixed inset-0 z-50 hidden opacity-0 transition-opacity duration-300 modal-backdrop flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="w-full max-w-md bg-white rounded-3xl p-6 shadow-2xl border border-brand-cardBorder space-y-4 max-h-[80vh] flex flex-col">
+      <div class="flex items-center justify-between border-b border-brand-cardBorder pb-2 shrink-0">
+        <div>
+          <h4 class="font-serif font-bold text-lg text-brand-dark">Kitchen Inventory Live Toggle</h4>
+          <span class="text-[11px] text-brand-muted">1-click to toggle out-of-stock items</span>
+        </div>
+        <button onclick="toggleStockModal()" class="p-1 rounded-full hover:bg-brand-sand">
+          <i data-lucide="x" class="w-5 h-5 pointer-events-none"></i>
+        </button>
+      </div>
+
+      <div class="flex-1 overflow-y-auto space-y-2 pr-1" id="stockItemsList">
+        <!-- Dynamically injected item toggles -->
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= JAVASCRIPT: LOGIC, 55+ MENU DATASET & MULTI-ROLE STORE ================= -->
+  <script>
+    // Safe icon initializer
+    function safeCreateIcons() {
+      try {
+        if (typeof lucide !== 'undefined' && typeof lucide.createIcons === 'function') {
+          lucide.createIcons();
+        }
+      } catch (e) {
+        console.warn('Lucide skipped:', e);
+      }
+    }
+
+    // ================= REAL JAIPUR OUTLETS DATASET =================
+    const JAIPUR_OUTLETS = [
+      { id: 'c_scheme', name: 'C-Scheme Flagship', address: 'F-5, Jamnalal Bajaj Marg, C-Scheme', rating: '4.6★', closesAt: '11:00 PM', phone: '917976198506', isLateNight: false },
+      { id: 'b2_bypass', name: 'B2 Bypass Hub (Tonk Rd)', address: 'Tonk Rd, Opp. Bella Casa', rating: '4.3★', closesAt: '4:00 AM', phone: '919928783999', isLateNight: true },
+      { id: 'jln_road', name: 'JLN Road (LOC SELECT)', address: 'C-16, Jawahar Circle, Terminal 2', rating: 'New', closesAt: '11:30 PM', phone: '917976198506', isLateNight: false },
+      { id: 'durgapura', name: 'Durgapura Branch', address: 'S-7 Lakhanpuri, Durgapura', rating: 'Cozy', closesAt: '11:00 PM', phone: '919928783999', isLateNight: false },
+      { id: 'vaishali', name: 'Vaishali Nagar', address: 'Main Queens Road Corner', rating: '5.0★', closesAt: '11:00 PM', phone: '919928783999', isLateNight: false },
+      { id: 'vdn', name: 'Vidhyadhar Nagar (VDN)', address: 'Central Spine, North Jaipur', rating: 'Special', closesAt: '11:00 PM', phone: '917976198506', isLateNight: false }
+    ];
+
+    let currentOutlet = JAIPUR_OUTLETS[0];
+    let isLateNightSimulated = false;
+
+    // ================= COMPLETE 10-CATEGORY C-SCHEME JAIPUR DATASET (55+ ITEMS) =================
+    const MENU_CATALOG = [
+      {
+        id: 'hot_coffee_black',
+        name: 'Hot Coffee (Black)',
+        station: 'barista',
+        items: [
+          { id: 'h1', title: 'Espresso', price: 320, badge: 'Strong', desc: '60ml concentrated shot of Arabica roast with thick golden crema', image: 'https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?auto=format&fit=crop&w=400&q=80' },
+          { id: 'h2', title: 'Americano', price: 390, badge: 'Clean', desc: 'Double espresso poured over hot water for a smooth robust brew', image: 'https://images.unsplash.com/photo-1551030173-122aabc4489c?auto=format&fit=crop&w=400&q=80' },
+          { id: 'h3', title: 'Irish Americano', price: 460, badge: 'Specialty', desc: 'Double espresso infused with non-alcoholic Irish whiskey syrup notes', image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=400&q=80' }
+        ]
+      },
+      {
+        id: 'hot_coffee_milk',
+        name: 'Hot Coffee & Cocoa',
+        station: 'barista',
+        items: [
+          { id: 'hm1', title: 'Cappuccino', price: 390, badge: 'Classic', desc: 'Rich espresso topped with velvety steamed milk and thick foam', image: 'https://images.unsplash.com/photo-1534778101976-62847782c213?auto=format&fit=crop&w=400&q=80' },
+          { id: 'hm2', title: 'Cafe Latte', price: 420, badge: 'Smooth', desc: 'Gentle espresso balanced with plenty of silky steamed milk', image: 'https://images.unsplash.com/photo-1570968915860-54d5c301fa9f?auto=format&fit=crop&w=400&q=80' },
+          { id: 'hm3', title: 'Cafe Mocha', price: 460, badge: 'Popular', desc: 'Rich dark Belgian cocoa swirled with fresh espresso and steamed milk', image: 'https://images.unsplash.com/photo-1578314675249-a6910f80cc4e?auto=format&fit=crop&w=400&q=80' },
+          { id: 'hm4', title: 'Flat White', price: 500, badge: 'Bestseller ★', desc: 'Double espresso layered with steamed micro-foam and deep crema', image: 'https://images.unsplash.com/photo-1577968897966-3d4325b36b61?auto=format&fit=crop&w=400&q=80' },
+          { id: 'hm5', title: 'Biscoff Cappuccino', price: 510, badge: 'New Hit', desc: 'Signature cappuccino infused with caramelized Lotus Biscoff crunch', image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=400&q=80' },
+          { id: 'hm6', title: 'Signature Hot Chocolate', price: 520, badge: 'Indulgent ★', desc: 'Velvety dark chocolate elevated with roasted hazelnut drizzle', image: 'https://images.unsplash.com/photo-1542990253-0d0f5be5f0ed?auto=format&fit=crop&w=400&q=80' }
+        ]
+      },
+      {
+        id: 'cold_coffee',
+        name: 'Cold Coffee & Frappes',
+        station: 'barista',
+        items: [
+          { id: 'cf1', title: 'Cafe Frappe', price: 470, badge: 'Iconic LOC ★', desc: 'Blended chilled Arabica, cold milk, and thick rich espresso foam', image: 'https://images.unsplash.com/photo-1517256064527-09c73fc73e38?auto=format&fit=crop&w=400&q=80' },
+          { id: 'cf2', title: 'Dark Chocolate Frappe', price: 540, badge: 'Rich', desc: 'Cold blended coffee loaded with dark Belgian chocolate syrup', image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=400&q=80' },
+          { id: 'cf3', title: 'Mocha Hazelnut Frappe', price: 580, badge: 'Customer Favorite ★', desc: 'Slow-roasted hazelnut syrup whipped into creamy mocha frappe', image: 'https://images.unsplash.com/photo-1579954115563-e72bf1381629?auto=format&fit=crop&w=400&q=80' },
+          { id: 'cf4', title: 'Tiramisu Frappe', price: 580, badge: 'Dessert Cup', desc: 'Savoiardi biscuit notes, espresso, and creamy mascarpone finish', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=400&q=80' }
+        ]
+      },
+      {
+        id: 'shakes',
+        name: 'Thick Shakes',
+        station: 'barista',
+        items: [
+          { id: 's1', title: 'Dark Chocolate Shake', price: 480, badge: 'Dense', desc: '70% dark cocoa churned with whole vanilla dairy', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=400&q=80' },
+          { id: 's2', title: 'Oreo Shake', price: 530, badge: 'Favorite', desc: 'Crushed Oreo cookies whipped into dense vanilla cream', image: 'https://images.unsplash.com/photo-1579954115563-e72bf1381629?auto=format&fit=crop&w=400&q=80' },
+          { id: 's3', title: 'Choco Brownie Shake', price: 550, badge: 'Signature ★', desc: 'Rich walnut fudge brownie blended into a decadent thick shake', image: 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=400&q=80' },
+          { id: 's4', title: 'Lotus Biscoff Shake', price: 580, badge: 'Top Pick', desc: 'Whipped Lotus spread, caramelized biscuits, and vanilla cream', image: 'https://images.unsplash.com/photo-1553787499-6f9133860278?auto=format&fit=crop&w=400&q=80' }
+        ]
+      },
+      {
+        id: 'pizzas_breads',
+        name: 'Pizzas & Garlic Bread',
+        station: 'kitchen',
+        items: [
+          { id: 'p1', title: 'Cheese Garlic Bread', price: 530, badge: 'Crispy', desc: 'Toasted baguette with garlic herb butter and melted mozzarella', image: 'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=400&q=80' },
+          { id: 'p2', title: 'OTC Garlic Bread', price: 650, badge: 'Must Try ★', desc: 'Onion, tomato, capsicum, and golden bubbling cheese pull', image: 'https://images.unsplash.com/photo-1619895092538-128341789043?auto=format&fit=crop&w=400&q=80' },
+          { id: 'p3', title: 'Classic Margherita Pizza', price: 720, badge: 'Thin Crust', desc: 'Slow-simmered San Marzano style sauce, basil, and mozzarella', image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002?auto=format&fit=crop&w=400&q=80' },
+          { id: 'p4', title: 'Farm Fresh Pizza', price: 820, badge: 'Loaded ★', desc: 'Sweet corn, bell peppers, button mushrooms, olives, and herbs', image: 'https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?auto=format&fit=crop&w=400&q=80' },
+          { id: 'p5', title: 'Multi Cheese Nirmana Pizza', price: 920, badge: 'Chef Special ★', desc: 'Quad-cheese blend with mozzarella, cheddar, gouda, and fresh herbs', image: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=400&q=80' }
+        ]
+      },
+      {
+        id: 'maggi_nachos_fries',
+        name: 'Maggi, Nachos & Fries',
+        station: 'kitchen',
+        items: [
+          { id: 'm1', title: 'French Fries', price: 390, badge: 'Crispy', desc: 'Double-fried golden potato fingers dusted with seasoning', image: 'https://images.unsplash.com/photo-1630384060421-cb20d0e0649d?auto=format&fit=crop&w=400&q=80' },
+          { id: 'm2', title: 'Masala Maggi', price: 440, badge: 'Jaipur 2 AM Hit ★', desc: 'Classic noodles tossed with signature spices and fresh diced veggies', image: 'https://images.unsplash.com/photo-1569718212165-3a8278d5f624?auto=format&fit=crop&w=400&q=80' },
+          { id: 'm3', title: 'Cheese Maggi', price: 530, badge: 'Cheesy', desc: 'Comforting 2 AM noodles draped in rich melted cheddar & mozzarella', image: 'https://images.unsplash.com/photo-1612927601601-6638404737ce?auto=format&fit=crop&w=400&q=80' },
+          { id: 'm4', title: 'Chilli Mayo Fries', price: 530, badge: 'Spicy Dip', desc: 'Paprika-dusted crisp fries loaded with garlic chili mayonnaise', image: 'https://images.unsplash.com/photo-1585109649139-366815a0d713?auto=format&fit=crop&w=400&q=80' },
+          { id: 'm5', title: 'Cheese Nachos', price: 640, badge: 'Crunchy', desc: 'Loaded corn tortilla chips, jalapeños, salsa, and hot cheese dip', image: 'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?auto=format&fit=crop&w=400&q=80' }
+        ]
+      },
+      {
+        id: 'sandwiches_wraps',
+        name: 'Sandwiches & Wraps',
+        station: 'kitchen',
+        items: [
+          { id: 'sw1', title: 'Veg Grill Sandwich', price: 510, badge: 'Street Style', desc: 'Mint chutney, cucumbers, potatoes, tomatoes, and chaat spices', image: 'https://images.unsplash.com/photo-1553909489-cd47e0907980?auto=format&fit=crop&w=400&q=80' },
+          { id: 'sw2', title: 'Tandoori Paneer Sandwich', price: 670, badge: 'Spicy Grill ★', desc: 'Marinated cottage cheese cubes grilled with smoked tandoori relish', image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80' },
+          { id: 'sw3', title: 'Triple Cheese Sandwich', price: 760, badge: 'Must Try ★', desc: 'Three molten cheese layers grilled between artisanal sourdough', image: 'https://images.unsplash.com/photo-1528735602780-2552fd46c7af?auto=format&fit=crop&w=400&q=80' }
+        ]
+      },
+      {
+        id: 'pastas',
+        name: 'Pastas & Lasagne',
+        station: 'kitchen',
+        items: [
+          { id: 'pa1', title: 'Penne Arrabiata', price: 640, badge: 'Tangy', desc: 'Penne pasta tossed in garlic, spicy red chili, and pomodoro sauce', image: 'https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=400&q=80' },
+          { id: 'pa2', title: 'Penne Alfredo', price: 680, badge: 'Creamy', desc: 'Velvety parmesan cream sauce with sauteed garlic mushrooms', image: 'https://images.unsplash.com/photo-1608897013039-887f21d8c804?auto=format&fit=crop&w=400&q=80' },
+          { id: 'pa3', title: 'Penne Pink Sauce', price: 710, badge: 'Favorite ★', desc: 'Harmonious blend of rich cream and tangy pomodoro sauce', image: 'https://images.unsplash.com/photo-1621996346565-e3d5d6281134?auto=format&fit=crop&w=400&q=80' }
+        ]
+      },
+      {
+        id: 'desserts',
+        name: 'Desserts & Bakery',
+        station: 'barista',
+        items: [
+          { id: 'd1', title: 'Red Velvet Muffin', price: 280, badge: 'Bakery', desc: 'Moist cocoa crumb muffin with velvety cream cheese frosting core', image: 'https://images.unsplash.com/photo-1587668178277-295251f900ce?auto=format&fit=crop&w=400&q=80' },
+          { id: 'd2', title: 'New York Cheesecake Slice', price: 420, badge: 'Classic', desc: 'Dense, smooth baked cream cheese with buttery biscuit crust', image: 'https://images.unsplash.com/photo-1533134242443-d4fd215305ad?auto=format&fit=crop&w=400&q=80' },
+          { id: 'd3', title: 'Oreo Brownie Sundae', price: 490, badge: 'Must Try ★', desc: 'Warm chocolate fudge brownie topped with vanilla scoop & Oreos', image: 'https://images.unsplash.com/photo-1563805042-7684c019e1cb?auto=format&fit=crop&w=400&q=80' }
+        ]
+      }
+    ];
+
+    // ================= GLOBAL APPLICATION STATE =================
+    let cart = [];
+    let activeCategory = 'hot_coffee_milk';
+    let activeOrderMode = 'dine_in'; // dine_in | pickup | delivery
+    let activeTableNumber = 7;
+    let curbsideVehicleNo = 'RJ-14-CC-8042';
+    let appliedCoupon = null; // { code: 'LOCFIRST20', discount: 0 }
+    let outOfStockItemIds = new Set();
+    
+    // Customizer Modal Temporary State
+    let currentCustomizingItem = null;
+    let customSelectedSize = 0;
+    let customSelectedAddons = [];
+    let customQuantity = 1;
+
+    // Shared Orders Store (Syncs in real-time across Customer, Tracker & KDS)
+    let liveOrders = [
+      {
+        orderId: 'LOC-8042',
+        customerName: 'Aarav Sharma',
+        customerPhone: '9829012345',
+        outlet: 'b2_bypass',
+        outletName: 'B2 Bypass Hub',
+        mode: 'dine_in',
+        table: 7,
+        status: 'preparing', // placed -> preparing -> ready -> completed
+        timestamp: '11:24 PM',
+        station: 'both',
+        items: [
+          { title: 'Flat White', price: 500, qty: 1, customization: 'Almond Milk (+₹80), Extra Shot (+₹60)' },
+          { title: 'Masala Maggi', price: 440, qty: 1, customization: 'Spicy Prep, Extra Cheese (+₹70)' }
+        ],
+        subtotal: 1150,
+        gst: 57.5,
+        discount: 150,
+        grandTotal: 1057.5,
+        paymentStatus: 'Demo Paid (Owner UPI)'
+      }
+    ];
+
+    // Customer CRM Database for Super-Admin
+    let customerCrm = [
+      { name: 'Aarav Sharma', phone: '9829012345', outlet: 'B2 Bypass Hub', spend: '₹2,450', visits: 4 },
+      { name: 'Radhika Agarwal', phone: '9876543210', outlet: 'C-Scheme Flagship', spend: '₹4,120', visits: 8 },
+      { name: 'Nidhi Kucheria', phone: '9928783999', outlet: 'B2 Bypass Hub', spend: '₹1,850', visits: 3 },
+      { name: 'Emon Saxena', phone: '9829099887', outlet: 'JLN Road (SELECT)', spend: '₹3,200', visits: 5 },
+      { name: 'Manish B.', phone: '9179761985', outlet: 'C-Scheme Flagship', spend: '₹5,600', visits: 11 }
+    ];
+
+    // ================= INITIALIZATION =================
+    window.addEventListener('DOMContentLoaded', () => {
+      renderOutletOptions();
+      renderCategoryPills();
+      renderHomeDishes();
+      renderCompleteBrochureMenu();
+      renderKdsBoard();
+      renderCaptainGrid();
+      renderAdminView();
+      updateCartBadge();
+      updateClock();
+      setInterval(updateClock, 30000);
+      safeCreateIcons();
+
+      // Check URL params for direct table QR simulation
+      const urlParams = new URLSearchParams(window.location.search);
+      const tableParam = urlParams.get('table');
+      if (tableParam) {
+        activeTableNumber = parseInt(tableParam) || 7;
+        updateOrderModeContextUI();
+      }
+    });
+
+    function updateClock() {
+      const now = new Date();
+      const clockEl = document.getElementById('liveClock');
+      if (clockEl) {
+        clockEl.textContent = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+      }
+    }
+
+    // ================= MULTI-ROLE SWITCHER =================
+    function switchRoleView(viewId) {
+      document.querySelectorAll('.app-view').forEach(el => el.classList.add('hidden'));
+      
+      const targetView = document.getElementById(`view_${viewId}`);
+      if (targetView) {
+        targetView.classList.remove('hidden');
+        targetView.scrollTop = 0;
+      }
+
+      // Update Top Nav Button Styling
+      document.querySelectorAll('[id^="roleBtn_"]').forEach(btn => {
+        btn.classList.remove('bg-brand-gold', 'text-brand-dark', 'shadow-sm');
+        btn.classList.add('text-brand-cream/80');
+      });
+      const activeBtn = document.getElementById(`roleBtn_${viewId}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-brand-gold', 'text-brand-dark', 'shadow-sm');
+        activeBtn.classList.remove('text-brand-cream/80');
+      }
+
+      // Hide or show bottom dock based on role view (dock only for customer app)
+      const bottomDock = document.getElementById('customerBottomDock');
+      if (viewId === 'customer_home' || viewId === 'customer_order') {
+        if (bottomDock) bottomDock.classList.remove('hidden');
+      } else {
+        if (bottomDock) bottomDock.classList.add('hidden');
+      }
+
+      if (viewId === 'kds_view') renderKdsBoard();
+      if (viewId === 'captain_pad') renderCaptainGrid();
+      if (viewId === 'admin_hq') renderAdminView();
+      if (viewId === 'order_tracker') renderOrderTrackerData();
+
+      safeCreateIcons();
+    }
+
+    function toggleDeviceFrame() {
+      const container = document.getElementById('viewportContainer');
+      const label = document.getElementById('frameToggleLabel');
+      if (container.classList.contains('max-w-[440px]')) {
+        container.classList.remove('max-w-[440px]', 'rounded-[36px]', 'border-4', 'sm:border-8');
+        container.classList.add('max-w-6xl', 'rounded-2xl', 'border-2');
+        if (label) label.textContent = 'Phone Frame View';
+      } else {
+        container.classList.add('max-w-[440px]', 'rounded-[36px]', 'border-4', 'sm:border-8');
+        container.classList.remove('max-w-6xl', 'rounded-2xl', 'border-2');
+        if (label) label.textContent = 'Desktop View';
+      }
+      safeCreateIcons();
+    }
+
+    function startOrderingFromSplash() {
+      switchRoleView('customer_home');
+    }
+
+    // ================= JAIPUR OUTLETS & 4:00 AM ENGINE =================
+    function renderOutletOptions() {
+      const container = document.getElementById('outletListContainer');
+      if (!container) return;
+
+      container.innerHTML = JAIPUR_OUTLETS.map(o => {
+        const isLateNightActive = isLateNightSimulated && o.isLateNight;
+        const isClosed = isLateNightSimulated && !o.isLateNight;
+
+        return `
+          <button onclick="selectOutlet('${o.id}')" class="w-full text-left p-2 rounded-xl hover:bg-brand-sand flex items-center justify-between transition-colors ${o.id === currentOutlet.id ? 'bg-brand-sand/80 font-bold' : ''}">
+            <div>
+              <span class="block font-serif text-brand-dark">${o.name}</span>
+              <span class="text-[10px] text-brand-muted">${o.address}</span>
+            </div>
+            <div class="text-right shrink-0">
+              ${isLateNightActive ? `
+                <span class="px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 text-[9px] font-bold animate-pulse block">
+                  🌙 OPEN TILL 4 AM
+                </span>
+              ` : isClosed ? `
+                <span class="px-2 py-0.5 rounded-full bg-gray-100 text-gray-500 text-[9px] font-bold block">
+                  Closed (Opens 9 AM)
+                </span>
+              ` : `
+                <span class="text-[10px] font-semibold text-brand-gold">${o.rating} • ${o.closesAt}</span>
+              `}
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function toggleOutletDropdown() {
+      const menu = document.getElementById('outletDropdownMenu');
+      if (menu) menu.classList.toggle('hidden');
+    }
+
+    function selectOutlet(outletId) {
+      const found = JAIPUR_OUTLETS.find(o => o.id === outletId);
+      if (found) {
+        currentOutlet = found;
+        document.getElementById('currentOutletLabel').textContent = found.name;
+        document.getElementById('cartDrawerOutletLabel').textContent = found.name;
+        toggleOutletDropdown();
+        renderOutletOptions();
+        showToast(`📍 Switched to ${found.name} (${found.closesAt})`);
+      }
+    }
+
+    function toggleLateNightSimulation() {
+      const toggle = document.getElementById('lateNightSimulatorToggle');
+      isLateNightSimulated = toggle.checked;
+      renderOutletOptions();
+      
+      if (isLateNightSimulated) {
+        selectOutlet('b2_bypass');
+        showToast("🌙 Late-Night 4:00 AM Simulator Active! B2 Bypass Hub is highlighted.");
+      } else {
+        selectOutlet('c_scheme');
+        showToast("☀️ Normal Daytime Operating Hours Restored.");
+      }
+    }
+
+    // ================= ORDER MODE: DINE-IN / CURBSIDE / DELIVERY =================
+    function setOrderMode(mode) {
+      activeOrderMode = mode;
+      
+      const btnDineIn = document.getElementById('modeBtn_dine_in');
+      const btnPickup = document.getElementById('modeBtn_pickup');
+      const btnDelivery = document.getElementById('modeBtn_delivery');
+
+      [btnDineIn, btnPickup, btnDelivery].forEach(b => {
+        b.className = 'py-2 px-1 rounded-xl transition-all flex items-center justify-center space-x-1 text-brand-muted hover:text-brand-dark';
+      });
+
+      if (mode === 'dine_in') {
+        btnDineIn.className = 'py-2 px-1 rounded-xl transition-all flex items-center justify-center space-x-1 bg-brand-forest text-brand-cream shadow-sm font-bold';
+      } else if (mode === 'pickup') {
+        btnPickup.className = 'py-2 px-1 rounded-xl transition-all flex items-center justify-center space-x-1 bg-brand-accent text-white shadow-pill font-bold';
+      } else {
+        btnDelivery.className = 'py-2 px-1 rounded-xl transition-all flex items-center justify-center space-x-1 bg-brand-gold text-brand-dark shadow-sm font-bold';
+      }
+
+      updateOrderModeContextUI();
+    }
+
+    function updateOrderModeContextUI() {
+      const icon = document.getElementById('contextIcon');
+      const title = document.getElementById('contextTitle');
+      const sub = document.getElementById('contextSub');
+      const addrInput = document.getElementById('checkoutAddress');
+
+      if (activeOrderMode === 'dine_in') {
+        icon.textContent = '🍽️';
+        title.textContent = `Table #${activeTableNumber} • Dine-In QR`;
+        sub.textContent = 'Running tab or pay direct to owner';
+        if (addrInput) addrInput.value = `Table #${activeTableNumber} (Dine-in)`;
+      } else if (activeOrderMode === 'pickup') {
+        icon.textContent = '🚗';
+        title.textContent = `Curbside Car Pickup (${curbsideVehicleNo})`;
+        sub.textContent = 'Park outside outlet & barista delivers to car';
+        if (addrInput) addrInput.value = `Curbside Car Pickup (${curbsideVehicleNo})`;
+      } else {
+        icon.textContent = '🛵';
+        title.textContent = 'Direct Pink City Delivery';
+        sub.textContent = 'Delivered fresh in insulated hot bags';
+        if (addrInput) addrInput.value = 'C-Scheme / Civil Lines, Jaipur';
+      }
+      calculateCartTotals();
+    }
+
+    function openTableConfigModal() {
+      const newTable = prompt("Enter Jaipur Dine-In Table Number (1 - 20) or Curbside Car Reg:", activeOrderMode === 'dine_in' ? activeTableNumber : curbsideVehicleNo);
+      if (newTable) {
+        if (activeOrderMode === 'dine_in') {
+          activeTableNumber = parseInt(newTable) || activeTableNumber;
+        } else {
+          curbsideVehicleNo = newTable;
+        }
+        updateOrderModeContextUI();
+        showToast("✓ Order context updated!");
+      }
+    }
+
+    // ================= CATEGORY PILLS & POPULAR SPECIALS =================
+    function renderCategoryPills() {
+      const container = document.getElementById('categoryPillStrip');
+      if (!container) return;
+
+      container.innerHTML = MENU_CATALOG.map(cat => `
+        <button 
+          onclick="selectHomeCategory('${cat.id}')"
+          class="px-4 py-2 rounded-full whitespace-nowrap text-xs font-bold transition-all shrink-0 cursor-pointer ${cat.id === activeCategory ? 'bg-brand-accent text-white shadow-pill' : 'bg-white text-brand-charcoal hover:bg-white/80 border border-brand-cardBorder'}"
+        >
+          ${cat.name}
+        </button>
+      `).join('');
+    }
+
+    function selectHomeCategory(catId) {
+      activeCategory = catId;
+      renderCategoryPills();
+      renderHomeDishes();
+    }
+
+    // Render Home Food Cards (Inspired by Reference Screen 2 with floating circle cutout)
+    function renderHomeDishes() {
+      const grid = document.getElementById('homeDishesGrid');
+      const heading = document.getElementById('categorySectionHeading');
+      const countLabel = document.getElementById('categoryItemCountLabel');
+      if (!grid) return;
+
+      const currentCategoryObj = MENU_CATALOG.find(c => c.id === activeCategory) || MENU_CATALOG[1];
+      if (heading) heading.textContent = currentCategoryObj.name;
+      if (countLabel) countLabel.textContent = `${currentCategoryObj.items.length} dishes`;
+
+      grid.innerHTML = currentCategoryObj.items.map(item => {
+        const isSoldOut = outOfStockItemIds.has(item.id);
+
+        return `
+          <div class="bg-white rounded-3xl p-4 border border-brand-cardBorder shadow-card flex items-center justify-between gap-4 group hover:shadow-app transition-all ${isSoldOut ? 'opacity-60' : ''}">
+            
+            <!-- Left Info -->
+            <div class="space-y-1.5 flex-1 text-left">
+              <div class="flex items-center space-x-2">
+                <span class="text-[9px] font-extrabold uppercase px-2 py-0.5 rounded-full ${item.badge.includes('★') ? 'bg-orange-50 text-brand-accent border border-orange-200' : 'bg-brand-sand text-brand-bronze'}">
+                  ${item.badge || 'LOC Special'}
+                </span>
+                ${isSoldOut ? '<span class="text-[9px] bg-red-100 text-red-700 px-2 py-0.5 rounded-full font-bold">Sold Out Today</span>' : ''}
+              </div>
+
+              <h4 class="font-serif font-bold text-base sm:text-lg text-brand-dark leading-snug">
+                ${item.title}
+              </h4>
+
+              <p class="text-[11px] text-brand-muted line-clamp-2 leading-relaxed">
+                ${item.desc}
+              </p>
+
+              <div class="flex items-center justify-between pt-2">
+                <span class="font-serif font-extrabold text-base text-brand-forest">
+                  ₹${item.price.toFixed(2)}
+                </span>
+                <button 
+                  onclick="openProductCustomizer('${item.id}')"
+                  ${isSoldOut ? 'disabled' : ''}
+                  class="px-4 py-1.5 rounded-full ${isSoldOut ? 'bg-gray-200 text-gray-500 cursor-not-allowed' : 'bg-brand-accent hover:bg-brand-accentHover text-white shadow-pill transform active:scale-95 cursor-pointer'} text-xs font-bold transition-all flex items-center space-x-1"
+                >
+                  <span>${isSoldOut ? 'Sold Out' : 'Buy Now'}</span>
+                  <span class="text-sm leading-none">+</span>
+                </button>
+              </div>
+            </div>
+
+            <!-- Right Circular Food Cutout with Subtle Shadow (Like in reference UI) -->
+            <div class="relative w-28 h-28 shrink-0 flex items-center justify-center">
+              <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-orange-100 to-amber-50"></div>
+              <img 
+                src="${item.image}" 
+                alt="${item.title}" 
+                class="w-24 h-24 rounded-full object-cover shadow-md transform group-hover:scale-105 transition-transform duration-300 border-2 border-white"
+              >
+              <div class="absolute -top-1 -right-1 w-7 h-7 rounded-full bg-brand-dark text-brand-gold text-[9px] font-bold flex items-center justify-center border border-brand-gold shadow-sm">
+                20%
+              </div>
+            </div>
+
+          </div>
+        `;
+      }).join('');
+
+      safeCreateIcons();
+    }
+
+    // ================= FULL MENU & BROCHURE VIEW (/order) =================
+    function renderCompleteBrochureMenu(searchQuery = '') {
+      const container = document.getElementById('completeMenuContainer');
+      const bar = document.getElementById('brochureCategoryBar');
+      if (!container) return;
+
+      const q = searchQuery.toLowerCase().trim();
+
+      // Render category horizontal jump bar
+      if (bar) {
+        bar.innerHTML = MENU_CATALOG.map(c => `
+          <a href="#cat_${c.id}" class="px-3 py-1 rounded-full whitespace-nowrap text-xs font-bold bg-brand-sand text-brand-dark hover:bg-brand-forest hover:text-white transition-colors shrink-0">
+            ${c.name}
+          </a>
+        `).join('');
+      }
+
+      let html = '';
+      MENU_CATALOG.forEach(cat => {
+        const matching = cat.items.filter(i => !q || i.title.toLowerCase().includes(q) || i.desc.toLowerCase().includes(q));
+        if (matching.length === 0) return;
+
+        html += `
+          <div id="cat_${cat.id}" class="space-y-3 pt-2">
+            <div class="border-b border-brand-cardBorder pb-1 flex items-baseline justify-between">
+              <h4 class="font-serif font-bold text-lg text-brand-forest">${cat.name}</h4>
+              <span class="text-[10px] text-brand-muted">${matching.length} items</span>
+            </div>
+
+            <div class="space-y-2.5">
+              ${matching.map(item => `
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-white border border-brand-cardBorder hover:border-brand-gold/60 transition-colors shadow-sm">
+                  <div class="space-y-0.5 flex-1 pr-3">
+                    <div class="flex items-center space-x-1.5">
+                      <span class="font-bold text-xs text-brand-dark">${item.title}</span>
+                      ${item.badge ? `<span class="text-[9px] font-bold text-brand-accent bg-orange-50 px-1.5 py-0.2 rounded">${item.badge}</span>` : ''}
+                    </div>
+                    <p class="text-[10px] text-brand-muted line-clamp-1">${item.desc}</p>
+                    <span class="font-extrabold text-xs text-brand-forest block pt-0.5">₹${item.price.toFixed(2)}</span>
+                  </div>
+                  <button onclick="openProductCustomizer('${item.id}')" class="px-3.5 py-1.5 rounded-full bg-brand-forest text-brand-cream text-xs font-bold hover:bg-brand-dark transition-colors shadow-sm">
+                    + Add
+                  </button>
+                </div>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      });
+
+      container.innerHTML = html;
+      safeCreateIcons();
+    }
+
+    function handleAppSearch(query) {
+      if (!query.trim()) {
+        renderHomeDishes();
+        document.getElementById('clearSearchBtn').classList.add('hidden');
+        return;
+      }
+      document.getElementById('clearSearchBtn').classList.remove('hidden');
+
+      // Filter across all catalog
+      const grid = document.getElementById('homeDishesGrid');
+      const allItems = MENU_CATALOG.flatMap(c => c.items);
+      const matches = allItems.filter(i => i.title.toLowerCase().includes(query.toLowerCase()) || i.desc.toLowerCase().includes(query.toLowerCase()));
+
+      grid.innerHTML = matches.map(item => `
+        <div class="bg-white rounded-3xl p-4 border border-brand-cardBorder shadow-card flex items-center justify-between gap-4">
+          <div class="space-y-1.5 flex-1 text-left">
+            <h4 class="font-serif font-bold text-base text-brand-dark">${item.title}</h4>
+            <p class="text-[11px] text-brand-muted line-clamp-2">${item.desc}</p>
+            <div class="flex items-center justify-between pt-1">
+              <span class="font-serif font-extrabold text-base text-brand-forest">₹${item.price.toFixed(2)}</span>
+              <button onclick="openProductCustomizer('${item.id}')" class="px-4 py-1.5 rounded-full bg-brand-accent text-white text-xs font-bold shadow-pill">
+                Buy Now +
+              </button>
+            </div>
+          </div>
+          <img src="${item.image}" alt="${item.title}" class="w-20 h-20 rounded-full object-cover border-2 border-white shadow-md shrink-0">
+        </div>
+      `).join('');
+    }
+
+    function clearAppSearch() {
+      const input = document.getElementById('appSearchInput');
+      if (input) input.value = '';
+      document.getElementById('clearSearchBtn').classList.add('hidden');
+      renderHomeDishes();
+    }
+
+    function handleFullMenuSearch(query) {
+      renderCompleteBrochureMenu(query);
+    }
+
+    // ================= PRODUCT DETAIL & CUSTOMIZER MODAL =================
+    function openProductCustomizer(itemId) {
+      let foundItem = null;
+      for (const cat of MENU_CATALOG) {
+        const it = cat.items.find(i => i.id === itemId);
+        if (it) {
+          foundItem = it;
+          break;
+        }
+      }
+      if (!foundItem) return;
+
+      currentCustomizingItem = foundItem;
+      customSelectedSize = 0;
+      customSelectedAddons = [];
+      customQuantity = 1;
+
+      document.getElementById('detailTitle').textContent = foundItem.title;
+      document.getElementById('detailDesc').textContent = foundItem.desc;
+      document.getElementById('detailHeroImage').src = foundItem.image;
+      document.getElementById('detailCategoryBadge').textContent = foundItem.badge || 'LOC Special';
+      document.getElementById('detailQtyCount').textContent = '1';
+      document.getElementById('detailInstructions').value = '';
+
+      // Populate Dynamic Add-on Options according to beverage vs food
+      const isBeverage = itemId.startsWith('h') || itemId.startsWith('cf') || itemId.startsWith('s');
+      const addonContainer = document.getElementById('customAddonList');
+
+      if (isBeverage) {
+        addonContainer.innerHTML = `
+          <label class="flex items-center justify-between p-2.5 rounded-xl border border-brand-cardBorder bg-white cursor-pointer hover:border-brand-gold">
+            <span class="font-medium text-brand-dark">Hazelnut Syrup (+₹50)</span>
+            <input type="checkbox" onchange="toggleAddon('Hazelnut Syrup', 50, this.checked)" class="accent-brand-forest w-4 h-4">
+          </label>
+          <label class="flex items-center justify-between p-2.5 rounded-xl border border-brand-cardBorder bg-white cursor-pointer hover:border-brand-gold">
+            <span class="font-medium text-brand-dark">Irish Cream Notes (+₹50)</span>
+            <input type="checkbox" onchange="toggleAddon('Irish Cream', 50, this.checked)" class="accent-brand-forest w-4 h-4">
+          </label>
+          <label class="flex items-center justify-between p-2.5 rounded-xl border border-brand-cardBorder bg-white cursor-pointer hover:border-brand-gold">
+            <span class="font-medium text-brand-dark">Almond / Oat Milk (+₹80)</span>
+            <input type="checkbox" onchange="toggleAddon('Oat Milk', 80, this.checked)" class="accent-brand-forest w-4 h-4">
+          </label>
+          <label class="flex items-center justify-between p-2.5 rounded-xl border border-brand-cardBorder bg-white cursor-pointer hover:border-brand-gold">
+            <span class="font-medium text-brand-dark">Extra Espresso Shot (+₹60)</span>
+            <input type="checkbox" onchange="toggleAddon('Extra Shot', 60, this.checked)" class="accent-brand-forest w-4 h-4">
+          </label>
+        `;
+      } else {
+        addonContainer.innerHTML = `
+          <label class="flex items-center justify-between p-2.5 rounded-xl border border-brand-cardBorder bg-white cursor-pointer hover:border-brand-gold">
+            <span class="font-medium text-brand-dark">Extra Molten Cheese (+₹70)</span>
+            <input type="checkbox" onchange="toggleAddon('Extra Cheese', 70, this.checked)" class="accent-brand-forest w-4 h-4">
+          </label>
+          <label class="flex items-center justify-between p-2.5 rounded-xl border border-brand-cardBorder bg-white cursor-pointer hover:border-brand-gold">
+            <span class="font-medium text-brand-dark">Jalapeños & Olives (+₹50)</span>
+            <input type="checkbox" onchange="toggleAddon('Jalapenos', 50, this.checked)" class="accent-brand-forest w-4 h-4">
+          </label>
+          <label class="flex items-center justify-between p-2.5 rounded-xl border border-brand-cardBorder bg-white cursor-pointer hover:border-brand-gold">
+            <span class="font-medium text-brand-dark">Peri-Peri Spice Dust (+₹30)</span>
+            <input type="checkbox" onchange="toggleAddon('Peri-Peri', 30, this.checked)" class="accent-brand-forest w-4 h-4">
+          </label>
+        `;
+      }
+
+      updateDetailPriceCalculation();
+
+      // Open Modal with smooth slide-up
+      const modal = document.getElementById('productDetailModal');
+      const content = document.getElementById('productDetailContent');
+      modal.classList.remove('hidden');
+      void modal.offsetWidth;
+      modal.classList.remove('opacity-0');
+      modal.classList.add('opacity-100');
+      content.classList.remove('translate-y-full');
+      safeCreateIcons();
+    }
+
+    function closeProductDetailModal() {
+      const modal = document.getElementById('productDetailModal');
+      const content = document.getElementById('productDetailContent');
+      content.classList.add('translate-y-full');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 250);
+    }
+
+    function toggleAddon(name, price, isChecked) {
+      if (isChecked) {
+        customSelectedAddons.push({ name, price });
+      } else {
+        customSelectedAddons = customSelectedAddons.filter(a => a.name !== name);
+      }
+      updateDetailPriceCalculation();
+    }
+
+    function incrementDetailQty() {
+      customQuantity++;
+      document.getElementById('detailQtyCount').textContent = customQuantity;
+      updateDetailPriceCalculation();
+    }
+
+    function decrementDetailQty() {
+      if (customQuantity > 1) {
+        customQuantity--;
+        document.getElementById('detailQtyCount').textContent = customQuantity;
+        updateDetailPriceCalculation();
+      }
+    }
+
+    function updateDetailPriceCalculation() {
+      if (!currentCustomizingItem) return;
+      const addonsTotal = customSelectedAddons.reduce((sum, a) => sum + a.price, 0);
+      const unitPrice = currentCustomizingItem.price + customSelectedSize + addonsTotal;
+      const total = unitPrice * customQuantity;
+      document.getElementById('detailCalculatedPrice').textContent = `₹${total.toFixed(2)}`;
+    }
+
+    function commitDetailAddToCart() {
+      if (!currentCustomizingItem) return;
+
+      const addonsDesc = customSelectedAddons.map(a => `${a.name} (+₹${a.price})`).join(', ');
+      const notes = document.getElementById('detailInstructions').value.trim();
+      const customizationStr = [addonsDesc, notes].filter(Boolean).join(' • ');
+
+      const addonsTotal = customSelectedAddons.reduce((sum, a) => sum + a.price, 0);
+      const finalItemPrice = currentCustomizingItem.price + customSelectedSize + addonsTotal;
+
+      cart.push({
+        id: 'cart_' + Date.now(),
+        title: currentCustomizingItem.title,
+        basePrice: currentCustomizingItem.price,
+        price: finalItemPrice,
+        qty: customQuantity,
+        customization: customizationStr || 'Chef Classic Prep',
+        image: currentCustomizingItem.image
+      });
+
+      closeProductDetailModal();
+      updateCartBadge();
+      showToast(`🛒 Added ${customQuantity}x ${currentCustomizingItem.title} to Cart Tab!`);
+    }
+
+    function toggleFavoriteCurrentItem() {
+      const btn = document.getElementById('favItemBtn');
+      if (btn) {
+        btn.classList.toggle('text-rose-500');
+        btn.classList.toggle('text-red-600');
+        showToast('❤️ Saved to favorite cravings!');
+      }
+    }
+
+    // ================= CART DRAWER & DEMO BILL ENGINE =================
+    function openCartDrawer() {
+      renderCartDrawerItems();
+      calculateCartTotals();
+
+      const modal = document.getElementById('cartDrawerModal');
+      const content = document.getElementById('cartDrawerContent');
+      modal.classList.remove('hidden');
+      void modal.offsetWidth;
+      modal.classList.remove('opacity-0');
+      content.classList.remove('translate-x-full');
+      safeCreateIcons();
+    }
+
+    function closeCartDrawer() {
+      const modal = document.getElementById('cartDrawerModal');
+      const content = document.getElementById('cartDrawerContent');
+      content.classList.add('translate-x-full');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 250);
+    }
+
+    function renderCartDrawerItems() {
+      const container = document.getElementById('cartItemsContainer');
+      if (!container) return;
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div class="py-14 text-center text-brand-muted space-y-3">
+            <span class="text-4xl block">☕</span>
+            <h4 class="font-serif font-bold text-base text-brand-dark">Your Cart Tab is Empty</h4>
+            <p class="text-xs">Browse the Jaipur menu and tap "Buy Now" to start crafting your feast!</p>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = cart.map(item => `
+        <div class="bg-white p-3.5 rounded-2xl border border-brand-cardBorder shadow-sm flex items-start justify-between gap-3">
+          <img src="${item.image}" alt="${item.title}" class="w-12 h-12 rounded-xl object-cover border border-brand-cardBorder shrink-0">
+          <div class="flex-1 space-y-0.5 text-left">
+            <div class="flex items-center justify-between">
+              <h5 class="font-serif font-bold text-xs text-brand-dark">${item.title}</h5>
+              <span class="font-bold text-xs text-brand-forest">₹${(item.price * item.qty).toFixed(2)}</span>
+            </div>
+            <p class="text-[10px] text-brand-muted line-clamp-1">${item.customization}</p>
+            <div class="flex items-center space-x-2 pt-1">
+              <button onclick="changeCartItemQty('${item.id}', -1)" class="w-5 h-5 rounded-full bg-brand-sand hover:bg-brand-cardBorder text-brand-dark flex items-center justify-center font-bold text-xs">-</button>
+              <span class="text-xs font-bold text-brand-dark">${item.qty}</span>
+              <button onclick="changeCartItemQty('${item.id}', 1)" class="w-5 h-5 rounded-full bg-brand-sand hover:bg-brand-cardBorder text-brand-dark flex items-center justify-center font-bold text-xs">+</button>
+              <button onclick="removeCartItem('${item.id}')" class="text-[10px] text-red-500 hover:underline pl-2">Delete</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function changeCartItemQty(cartId, delta) {
+      const it = cart.find(i => i.id === cartId);
+      if (!it) return;
+      it.qty += delta;
+      if (it.qty <= 0) {
+        cart = cart.filter(i => i.id !== cartId);
+      }
+      renderCartDrawerItems();
+      calculateCartTotals();
+      updateCartBadge();
+    }
+
+    function removeCartItem(cartId) {
+      cart = cart.filter(i => i.id !== cartId);
+      renderCartDrawerItems();
+      calculateCartTotals();
+      updateCartBadge();
+    }
+
+    function quickAddUpsell(title, price, cat) {
+      cart.push({
+        id: 'cart_' + Date.now(),
+        title: title,
+        basePrice: price,
+        price: price,
+        qty: 1,
+        customization: 'Oven Hot Garlic Herb Pairing',
+        image: 'https://images.unsplash.com/photo-1509722747041-616f39b57569?auto=format&fit=crop&w=400&q=80'
+      });
+      renderCartDrawerItems();
+      calculateCartTotals();
+      updateCartBadge();
+      showToast(`+ Added ${title} to Cart Tab!`);
+    }
+
+    function calculateCartTotals() {
+      const subtotal = cart.reduce((acc, curr) => acc + (curr.price * curr.qty), 0);
+      const gst = subtotal * 0.05; // 5% Restaurant GST
+      
+      // Packaging: Dine-In = 0, Takeaway/Delivery = ₹20 per item (capped at ₹60)
+      let packaging = 0;
+      if (activeOrderMode !== 'dine_in' && cart.length > 0) {
+        packaging = Math.min(60, cart.reduce((acc, c) => acc + c.qty, 0) * 20);
+      }
+
+      let discount = 0;
+      if (appliedCoupon) {
+        if (appliedCoupon.code === 'LOCFIRST20') {
+          discount = Math.min(150, subtotal * 0.20);
+        } else if (appliedCoupon.code === 'NIGHT4AM' && subtotal >= 999) {
+          discount = 140; // Value of free Peri-Peri fries
+        } else if (appliedCoupon.code === 'LOCBDAY') {
+          discount = 120; // Complimentary birthday treat credit
+        }
+      }
+
+      const grandTotal = Math.max(0, subtotal + gst + packaging - discount);
+
+      document.getElementById('checkoutSubtotal').textContent = `₹${subtotal.toFixed(2)}`;
+      document.getElementById('checkoutGst').textContent = `₹${gst.toFixed(2)}`;
+      document.getElementById('checkoutPackaging').textContent = `₹${packaging.toFixed(2)}`;
+      document.getElementById('checkoutDiscount').textContent = `-₹${discount.toFixed(2)}`;
+      document.getElementById('checkoutGrandTotal').textContent = `₹${grandTotal.toFixed(2)}`;
+      document.getElementById('demoPayAmountText').textContent = grandTotal.toFixed(2);
+
+      return { subtotal, gst, packaging, discount, grandTotal };
+    }
+
+    function updateCartBadge() {
+      const count = cart.reduce((acc, c) => acc + c.qty, 0);
+      const badge = document.getElementById('dockCartCount');
+      if (badge) badge.textContent = count;
+    }
+
+    function applyCouponCode() {
+      const input = document.getElementById('couponInput');
+      const val = input ? input.value.trim().toUpperCase() : '';
+
+      if (val === 'LOCFIRST20') {
+        appliedCoupon = { code: 'LOCFIRST20' };
+        showCouponApplied("🎉 20% OFF Applied (up to ₹150)!");
+      } else if (val === 'NIGHT4AM') {
+        appliedCoupon = { code: 'NIGHT4AM' };
+        showCouponApplied("🌙 Night Owl Code: Free Peri-Peri Fries on ₹999+");
+      } else if (val === 'LOCBDAY') {
+        appliedCoupon = { code: 'LOCBDAY' };
+        showCouponApplied("🎂 Birthday Special: Free Pastry Credit Applied!");
+      } else {
+        showToast("⚠️ Invalid Code. Try: LOCFIRST20, NIGHT4AM, or LOCBDAY");
+      }
+      calculateCartTotals();
+    }
+
+    function showCouponApplied(msg) {
+      document.getElementById('couponAppliedBadge').classList.remove('hidden');
+      document.getElementById('couponSuccessMsg').textContent = msg;
+    }
+
+    function removeCoupon() {
+      appliedCoupon = null;
+      document.getElementById('couponAppliedBadge').classList.add('hidden');
+      document.getElementById('couponInput').value = '';
+      calculateCartTotals();
+      showToast("Coupon removed.");
+    }
+
+    // ================= COMPULSORY PHONE & DEMO OWNER PAYMENT =================
+    function promptDemoOwnerPayment() {
+      if (cart.length === 0) {
+        showToast("⚠️ Your cart is empty! Please add items first.");
+        return;
+      }
+
+      // Enforce Compulsory 10-Digit Mobile Phone
+      const phoneInput = document.getElementById('checkoutPhone');
+      const phoneError = document.getElementById('checkoutPhoneError');
+      const rawPhone = phoneInput ? phoneInput.value.trim() : '';
+      const digits = rawPhone.replace(/\D/g, '');
+
+      if (!rawPhone || digits.length < 10) {
+        if (phoneInput) {
+          phoneInput.classList.add('border-red-500', 'ring-2', 'ring-red-200');
+          phoneInput.focus();
+        }
+        if (phoneError) phoneError.classList.remove('hidden');
+        showToast("⚠️ Mobile phone number is compulsory (10 digits)!");
+        return;
+      } else {
+        if (phoneInput) phoneInput.classList.remove('border-red-500', 'ring-2', 'ring-red-200');
+        if (phoneError) phoneError.classList.add('hidden');
+      }
+
+      // Open Demo Payment Modal
+      calculateCartTotals();
+      const modal = document.getElementById('demoPaymentModal');
+      modal.classList.remove('hidden');
+      void modal.offsetWidth;
+      modal.classList.remove('opacity-0');
+      modal.classList.add('opacity-100');
+      safeCreateIcons();
+    }
+
+    function closeDemoPaymentModal() {
+      const modal = document.getElementById('demoPaymentModal');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 250);
+    }
+
+    function completeDemoOrder(paymentType) {
+      const phoneInput = document.getElementById('checkoutPhone');
+      const nameInput = document.getElementById('checkoutName');
+      const addrInput = document.getElementById('checkoutAddress');
+
+      const phone = phoneInput ? phoneInput.value.trim() : '9829012345';
+      const name = (nameInput && nameInput.value.trim()) || 'Guest Foodie';
+      const address = (addrInput && addrInput.value.trim()) || `Table #${activeTableNumber}`;
+
+      const { subtotal, gst, packaging, discount, grandTotal } = calculateCartTotals();
+      const orderId = 'LOC-' + Math.floor(1000 + Math.random() * 9000);
+
+      const newOrder = {
+        orderId: orderId,
+        customerName: name,
+        customerPhone: phone,
+        outlet: currentOutlet.id,
+        outletName: currentOutlet.name,
+        mode: activeOrderMode,
+        table: activeTableNumber,
+        status: 'placed', // placed -> preparing -> ready -> completed
+        timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
+        station: 'both',
+        items: [...cart],
+        subtotal: subtotal,
+        gst: gst,
+        discount: discount,
+        packaging: packaging,
+        grandTotal: grandTotal,
+        paymentStatus: paymentType === 'upi_demo' ? 'Demo Paid (Owner UPI)' : 'Pay Cash at Counter'
+      };
+
+      // Add to shared live orders store
+      liveOrders.unshift(newOrder);
+
+      // Add to CRM if not existing
+      customerCrm.unshift({
+        name: name,
+        phone: phone,
+        outlet: currentOutlet.name,
+        spend: `₹${grandTotal.toFixed(0)}`,
+        visits: 1
+      });
+
+      // Clear cart
+      cart = [];
+      appliedCoupon = null;
+      updateCartBadge();
+      closeDemoPaymentModal();
+      closeCartDrawer();
+
+      // Switch to Live Order Tracker view
+      renderOrderTrackerData(newOrder);
+      switchRoleView('order_tracker');
+      showToast(`🎉 Order #${orderId} Placed! Kitchen is brewing.`);
+    }
+
+    // ================= LIVE ORDER TRACKER ENGINE =================
+    function renderOrderTrackerData(specificOrder = null) {
+      const order = specificOrder || liveOrders[0];
+      if (!order) return;
+
+      document.getElementById('trackerOrderIdBadge').textContent = `#${order.orderId}`;
+      document.getElementById('trackerTimestamp').textContent = order.timestamp;
+      document.getElementById('trackerTableContext').textContent = `${order.outletName} • ${order.mode === 'dine_in' ? `Table #${order.table}` : 'Curbside / Delivery'}`;
+
+      const itemsContainer = document.getElementById('trackerItemsList');
+      if (itemsContainer) {
+        itemsContainer.innerHTML = order.items.map(item => `
+          <div class="flex items-center justify-between py-1">
+            <div>
+              <span class="font-bold text-brand-dark">${item.qty}x ${item.title}</span>
+              <span class="text-[10px] text-brand-muted block">${item.customization}</span>
+            </div>
+            <span class="font-bold text-brand-forest">₹${(item.price * item.qty).toFixed(2)}</span>
+          </div>
+        `).join('');
+      }
+
+      document.getElementById('trackerSubtotal').textContent = `₹${order.subtotal.toFixed(2)}`;
+      document.getElementById('trackerGst').textContent = `₹${order.gst.toFixed(2)}`;
+      document.getElementById('trackerDiscount').textContent = `-₹${order.discount.toFixed(2)}`;
+      document.getElementById('trackerGrandTotal').textContent = `₹${order.grandTotal.toFixed(2)}`;
+
+      // Update Step Progress Tracker
+      const s1 = document.getElementById('step1_placed');
+      const s2 = document.getElementById('step2_kitchen');
+      const s3 = document.getElementById('step3_ready');
+      const s4 = document.getElementById('step4_completed');
+
+      if (order.status === 'placed') {
+        s1.className = 'flex items-center space-x-3 text-xs';
+        s2.className = 'flex items-center space-x-3 text-xs opacity-50';
+        s3.className = 'flex items-center space-x-3 text-xs opacity-40';
+        s4.className = 'flex items-center space-x-3 text-xs opacity-40';
+      } else if (order.status === 'preparing') {
+        s1.className = 'flex items-center space-x-3 text-xs';
+        s2.className = 'flex items-center space-x-3 text-xs font-bold text-brand-forest';
+        s3.className = 'flex items-center space-x-3 text-xs opacity-50';
+        s4.className = 'flex items-center space-x-3 text-xs opacity-40';
+      } else if (order.status === 'ready') {
+        s1.className = 'flex items-center space-x-3 text-xs';
+        s2.className = 'flex items-center space-x-3 text-xs';
+        s3.className = 'flex items-center space-x-3 text-xs font-bold text-emerald-600 animate-pulse';
+        s4.className = 'flex items-center space-x-3 text-xs opacity-50';
+      } else if (order.status === 'completed') {
+        [s1, s2, s3, s4].forEach(s => s.className = 'flex items-center space-x-3 text-xs font-bold text-emerald-700');
+      }
+    }
+
+    function shareWhatsAppReceipt() {
+      const order = liveOrders[0];
+      if (!order) return;
+      const text = `☕ *Love Over Coffee Jaipur - Order #${order.orderId}*\nOutlet: ${order.outletName}\nAmount: ₹${order.grandTotal.toFixed(2)}\nStatus: ${order.status.toUpperCase()}\nPayment: ${order.paymentStatus}`;
+      window.open(`https://wa.me/?text=${encodeURIComponent(text)}`, '_blank');
+    }
+
+    // ================= KITCHEN DISPLAY SYSTEM (KDS) LOGIC =================
+    function renderKdsBoard() {
+      const station = document.getElementById('kdsStationSelect')?.value || 'all';
+
+      const colNew = document.getElementById('kdsColumn_new');
+      const colPrep = document.getElementById('kdsColumn_prep');
+      const colReady = document.getElementById('kdsColumn_ready');
+      if (!colNew) return;
+
+      const newOrders = liveOrders.filter(o => o.status === 'placed');
+      const prepOrders = liveOrders.filter(o => o.status === 'preparing');
+      const readyOrders = liveOrders.filter(o => o.status === 'ready');
+
+      document.getElementById('kdsNewCount').textContent = newOrders.length;
+      document.getElementById('kdsPrepCount').textContent = prepOrders.length;
+      document.getElementById('kdsReadyCount').textContent = readyOrders.length;
+
+      colNew.innerHTML = newOrders.length === 0 ? '<div class="text-[11px] text-white/40 p-3 bg-white/5 rounded-xl">No new orders waiting.</div>' : newOrders.map(o => createKdsOrderCardHtml(o, 'placed')).join('');
+      colPrep.innerHTML = prepOrders.length === 0 ? '<div class="text-[11px] text-white/40 p-3 bg-white/5 rounded-xl">Ovens & Barista clear.</div>' : prepOrders.map(o => createKdsOrderCardHtml(o, 'preparing')).join('');
+      colReady.innerHTML = readyOrders.length === 0 ? '<div class="text-[11px] text-white/40 p-3 bg-white/5 rounded-xl">No orders at dispatch counter.</div>' : readyOrders.map(o => createKdsOrderCardHtml(o, 'ready')).join('');
+
+      safeCreateIcons();
+    }
+
+    function createKdsOrderCardHtml(o, currentStatus) {
+      return `
+        <div class="bg-brand-dark p-3.5 rounded-2xl border border-white/15 space-y-2.5 shadow-sm text-left">
+          <div class="flex items-center justify-between border-b border-white/10 pb-2">
+            <div>
+              <span class="font-serif font-bold text-sm text-brand-gold">#${o.orderId}</span>
+              <span class="text-[10px] text-white/60 block">${o.customerName} • ${o.mode === 'dine_in' ? `Table #${o.table}` : 'Curbside Pickup'}</span>
+            </div>
+            <span class="text-[10px] bg-white/10 px-2 py-0.5 rounded font-bold">${o.timestamp}</span>
+          </div>
+
+          <div class="space-y-1.5 text-xs text-white/90">
+            ${o.items.map(i => `
+              <div class="flex items-start justify-between">
+                <span class="font-bold">${i.qty}x ${i.title}</span>
+                <span class="text-[10px] text-white/60">${i.customization}</span>
+              </div>
+            `).join('')}
+          </div>
+
+          <div class="flex items-center space-x-2 pt-2 border-t border-white/10">
+            <button onclick="previewThermalReceipt('${o.orderId}')" title="Print KOT" class="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white text-xs">
+              <i data-lucide="printer" class="w-3.5 h-3.5"></i>
+            </button>
+            ${currentStatus === 'placed' ? `
+              <button onclick="advanceKdsStatus('${o.orderId}', 'preparing')" class="flex-1 py-2 rounded-xl bg-amber-500 hover:bg-amber-600 text-brand-dark font-bold text-xs uppercase tracking-wider transition-colors">
+                Accept & Cook ➔
+              </button>
+            ` : currentStatus === 'preparing' ? `
+              <button onclick="advanceKdsStatus('${o.orderId}', 'ready')" class="flex-1 py-2 rounded-xl bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs uppercase tracking-wider transition-colors">
+                Mark Ready ✓
+              </button>
+            ` : `
+              <button onclick="advanceKdsStatus('${o.orderId}', 'completed')" class="flex-1 py-2 rounded-xl bg-blue-500 hover:bg-blue-600 text-white font-bold text-xs uppercase tracking-wider transition-colors">
+                Settle & Clear
+              </button>
+            `}
+          </div>
+        </div>
+      `;
+    }
+
+    function advanceKdsStatus(orderId, nextStatus) {
+      const order = liveOrders.find(o => o.orderId === orderId);
+      if (order) {
+        order.status = nextStatus;
+        renderKdsBoard();
+        renderOrderTrackerData(order);
+        showToast(`🔔 Order #${orderId} moved to ${nextStatus.toUpperCase()}!`);
+      }
+    }
+
+    // ================= THERMAL KOT RECEIPT PREVIEW (80MM RESTAURANT FORMAT) =================
+    function previewThermalReceipt(orderId = null) {
+      const order = (orderId ? liveOrders.find(o => o.orderId === orderId) : null) || liveOrders[0];
+      if (!order) return;
+
+      const body = document.getElementById('printableThermalKOT');
+      body.innerHTML = `
+        <div class="text-center pb-2 border-b border-black">
+          <p class="font-bold text-sm">LOVE OVER COFFEE</p>
+          <p class="text-[10px]">JAIPUR SPECIALTY BISTRO</p>
+          <p class="text-[10px]">${order.outletName.toUpperCase()}</p>
+          <p class="text-[9px]">GSTIN: 08AAACL1234F1Z8</p>
+        </div>
+
+        <div class="py-1 border-b border-black text-[10px]">
+          <p>KOT / INVOICE: #${order.orderId}</p>
+          <p>DATE: ${new Date().toLocaleDateString()} ${order.timestamp}</p>
+          <p>MODE: ${order.mode.toUpperCase()} (TABLE #${order.table})</p>
+          <p>CUSTOMER: ${order.customerName} (${order.customerPhone})</p>
+        </div>
+
+        <div class="py-2 border-b border-black space-y-1 text-[10px]">
+          ${order.items.map(i => `
+            <div class="flex justify-between">
+              <span>${i.qty}x ${i.title}</span>
+              <span>₹${(i.price * i.qty).toFixed(2)}</span>
+            </div>
+            <p class="text-[9px] text-gray-700 italic pl-2">${i.customization}</p>
+          `).join('')}
+        </div>
+
+        <div class="py-1 text-[10px] space-y-0.5">
+          <div class="flex justify-between">
+            <span>SUBTOTAL:</span>
+            <span>₹${order.subtotal.toFixed(2)}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>CGST (2.5%):</span>
+            <span>₹${(order.gst / 2).toFixed(2)}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>SGST (2.5%):</span>
+            <span>₹${(order.gst / 2).toFixed(2)}</span>
+          </div>
+          <div class="flex justify-between">
+            <span>DISCOUNT:</span>
+            <span>-₹${order.discount.toFixed(2)}</span>
+          </div>
+          <div class="flex justify-between font-bold text-xs pt-1 border-t border-black">
+            <span>NET TOTAL:</span>
+            <span>₹${order.grandTotal.toFixed(2)}</span>
+          </div>
+          <p class="text-[9px] text-center pt-2">PAYMENT: ${order.paymentStatus.toUpperCase()}</p>
+          <p class="text-[8px] text-center italic">Thank you for dining at LOC Jaipur!</p>
+        </div>
+      `;
+
+      const modal = document.getElementById('thermalReceiptModal');
+      modal.classList.remove('hidden');
+      void modal.offsetWidth;
+      modal.classList.remove('opacity-0');
+      modal.classList.add('opacity-100');
+      safeCreateIcons();
+    }
+
+    function closeThermalModal() {
+      const modal = document.getElementById('thermalReceiptModal');
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0');
+      setTimeout(() => modal.classList.add('hidden'), 250);
+    }
+
+    // ================= LIVE STOCKOUT TOGGLE =================
+    function toggleStockModal() {
+      const modal = document.getElementById('stockToggleModal');
+      const list = document.getElementById('stockItemsList');
+
+      if (modal.classList.contains('hidden')) {
+        const allItems = MENU_CATALOG.flatMap(c => c.items);
+        list.innerHTML = allItems.map(item => `
+          <div class="flex items-center justify-between p-2.5 rounded-xl border border-brand-cardBorder text-xs">
+            <div>
+              <span class="font-bold text-brand-dark block">${item.title}</span>
+              <span class="text-[10px] text-brand-muted">₹${item.price}</span>
+            </div>
+            <button 
+              onclick="toggleItemStockState('${item.id}')"
+              class="px-3 py-1 rounded-full text-xs font-bold transition-colors ${outOfStockItemIds.has(item.id) ? 'bg-red-600 text-white' : 'bg-emerald-100 text-emerald-800'}"
+            >
+              ${outOfStockItemIds.has(item.id) ? 'Sold Out' : 'In Stock'}
+            </button>
+          </div>
+        `).join('');
+
+        modal.classList.remove('hidden');
+        void modal.offsetWidth;
+        modal.classList.remove('opacity-0');
+      } else {
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0');
+        setTimeout(() => modal.classList.add('hidden'), 250);
+      }
+    }
+
+    function toggleItemStockState(itemId) {
+      if (outOfStockItemIds.has(itemId)) {
+        outOfStockItemIds.delete(itemId);
+      } else {
+        outOfStockItemIds.add(itemId);
+      }
+      toggleStockModal(); // Re-render modal list
+      renderHomeDishes(); // Sync customer menu
+      showToast(`Inventory updated for ${itemId}`);
+    }
+
+    // ================= CAPTAIN PAD (TABLES 1-12) =================
+    function renderCaptainGrid() {
+      const grid = document.getElementById('captainTablesGrid');
+      if (!grid) return;
+
+      const tables = Array.from({ length: 12 }, (_, i) => i + 1);
+      grid.innerHTML = tables.map(t => {
+        const hasOrder = liveOrders.some(o => o.table === t && o.status !== 'completed');
+        return `
+          <div class="p-3 rounded-2xl border-2 text-center transition-all ${hasOrder ? 'border-amber-400 bg-amber-50/70 shadow-sm' : 'border-brand-cardBorder bg-white'}">
+            <span class="font-serif font-extrabold text-sm text-brand-dark block">Table #${t}</span>
+            <span class="text-[9px] font-bold ${hasOrder ? 'text-amber-800' : 'text-emerald-700'} block mt-0.5">
+              ${hasOrder ? 'Occupied (KOT Active)' : 'Vacant'}
+            </span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function promptQuickWalkInOrder() {
+      const table = prompt("Punch Order - Enter Table Number (1-12):", "4");
+      if (table) {
+        activeTableNumber = parseInt(table) || 4;
+        setOrderMode('dine_in');
+        switchRoleView('customer_order');
+        showToast(`Ordering on Captain Pad for Table #${activeTableNumber}`);
+      }
+    }
+
+    function handleTableTransferPrompt() {
+      const from = prompt("Transfer From Table #:", "4");
+      const to = prompt("Transfer To Table #:", "9");
+      if (from && to) {
+        liveOrders.forEach(o => {
+          if (o.table === parseInt(from)) o.table = parseInt(to);
+        });
+        renderCaptainGrid();
+        showToast(`Table #${from} transferred to Table #${to} successfully!`);
+      }
+    }
+
+    // ================= SUPER-ADMIN HQ DATA =================
+    function renderAdminView() {
+      const snapshot = document.getElementById('adminOutletsSnapshot');
+      const crmTable = document.getElementById('crmTableBody');
+      if (!snapshot) return;
+
+      snapshot.innerHTML = JAIPUR_OUTLETS.map(o => `
+        <div class="p-2.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-between text-xs">
+          <div>
+            <span class="font-bold text-white block">${o.name}</span>
+            <span class="text-[10px] text-white/50">${o.closesAt} • ${o.rating}</span>
+          </div>
+          <span class="font-serif font-bold text-brand-gold">₹${(Math.random() * 8000 + 4000).toFixed(0)}</span>
+        </div>
+      `).join('');
+
+      if (crmTable) {
+        crmTable.innerHTML = customerCrm.map(c => `
+          <tr class="hover:bg-white/5">
+            <td class="p-1.5 font-bold text-white">${c.name}</td>
+            <td class="p-1.5 text-white/70">${c.phone}</td>
+            <td class="p-1.5 text-white/70">${c.outlet}</td>
+            <td class="p-1.5 text-right font-bold text-brand-gold">${c.spend}</td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function exportCustomerCrmCsv() {
+      const csv = "Name,Phone,Outlet,Spend\n" + customerCrm.map(c => `"${c.name}","${c.phone}","${c.outlet}","${c.spend}"`).join("\n");
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `LOC_Jaipur_CRM_${Date.now()}.csv`;
+      a.click();
+      showToast("📥 Exported Customer CRM CSV!");
+    }
+
+    // ================= TOAST SYSTEM =================
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      if (!container) return;
+
+      const toast = document.createElement('div');
+      toast.className = 'px-4 py-2.5 rounded-full bg-brand-dark/95 backdrop-blur-md text-brand-cream border border-brand-gold/40 text-xs font-semibold shadow-xl flex items-center space-x-2 animate-toast pointer-events-auto';
+      toast.innerHTML = `<span>${message}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => toast.remove(), 3200);
+    }
+  </script>
+
+</body>
+</html>
